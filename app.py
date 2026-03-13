@@ -9,7 +9,7 @@ ROOT = pathlib.Path(__file__).resolve().parent
 # ── Page Config (must be first Streamlit call) ────────────────────────────────
 st.set_page_config(
     page_title="Courtside Cre8ives — Heat Analytics",
-    page_icon=str(ROOT / "assets" / "CC-Icon-Black-4x-4.jpg"),
+    page_icon=str(ROOT / "assets" / "CC-Icon-Black-4x-4.jpg") if (ROOT / "assets" / "CC-Icon-Black-4x-4.jpg").exists() else "🔥",
     layout="wide",
     initial_sidebar_state="expanded",
 )
