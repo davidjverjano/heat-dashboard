@@ -1,0 +1,37 @@
+/* ── Miami Heat Dashboard — Custom CSS ──────────────────────────────────────── */
+
+/* Load Hyperspace Race Capsule font */
+@font-face {
+    font-family: 'Hyperspace Race Capsule';
+    src: url('fonts/hyperspaceracecapsule-variablevf-14.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+}
+
+/* ── Global ── */
+html, body, [data-testid="stAppViewContainer"] {
+    background-color: #252422 !important;
+    color: #FFFCF2 !important;
+    font-family: 'Hyperspace Race Capsule', 'Barlow Condensed', 'Oswald', sans-serif !important;
+}
+
+[data-testid="stSidebar"] {
+    background-color: #81171B !important;
+}
+
+h1 {
+    color: #F7B267 !important;
+    border-bottom: 2px solid #C75146;
+    padding-bottom: 8px;
+}
+
+[data-testid="stMetric"] {
+    background: #1a1816 !important;
+    border-left: 4px solid #C75146 !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+}
+
+a {
+    color: #F7B267 !important;
+}
