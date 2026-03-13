@@ -1,0 +1,34 @@
+{
+  "league": {
+    "ortg": 114.2,
+    "drtg": 114.2,
+    "pace": 99.8,
+    "ts_pct": 0.578,
+    "efg_pct": 0.534,
+    "tov_pct": 13.2,
+    "oreb_pct": 25.5,
+    "ft_rate": 0.245,
+    "ppg": 112.5,
+    "rpg": 43.8,
+    "apg": 25.8,
+    "fg_pct": 0.467,
+    "fg3_pct": 0.365,
+    "ft_pct": 0.782
+  },
+  "eastern_conference": {
+    "ortg": 113.8,
+    "drtg": 114.5,
+    "pace": 99.2,
+    "ts_pct": 0.575,
+    "efg_pct": 0.53,
+    "tov_pct": 13.4,
+    "oreb_pct": 25.8,
+    "ft_rate": 0.248,
+    "ppg": 111.8,
+    "rpg": 43.5,
+    "apg": 25.5,
+    "fg_pct": 0.464,
+    "fg3_pct": 0.361,
+    "ft_pct": 0.779
+  }
+}
