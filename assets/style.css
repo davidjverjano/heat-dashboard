@@ -8,15 +8,40 @@
     font-style: normal;
 }
 
-/* ── Global ── */
+/* ── Global ──────────────────────────────────────────────────────────────────── */
 html, body, [data-testid="stAppViewContainer"] {
     background-color: #252422 !important;
     color: #FFFCF2 !important;
     font-family: 'Hyperspace Race Capsule', 'Barlow Condensed', 'Oswald', sans-serif !important;
 }
 
+[data-testid="stAppViewContainer"] > .main {
+    background-color: #252422 !important;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────────────────── */
 [data-testid="stSidebar"] {
     background-color: #81171B !important;
+}
+
+[data-testid="stSidebar"] * {
+    color: #FFFCF2 !important;
+}
+
+[data-testid="stSidebar"] .stRadio label,
+[data-testid="stSidebar"] .stSelectbox label {
+    color: #FFFCF2 !important;
+}
+
+[data-testid="stSidebar"] hr {
+    border-color: rgba(255, 252, 242, 0.2) !important;
+}
+
+/* ── Headers ─────────────────────────────────────────────────────────────────── */
+h1, h2, h3 {
+    font-family: 'Hyperspace Race Capsule', 'Barlow Condensed', 'Oswald', sans-serif !important;
+    color: #FFFCF2 !important;
+    letter-spacing: 1px;
 }
 
 h1 {
@@ -25,6 +50,7 @@ h1 {
     padding-bottom: 8px;
 }
 
+/* ── Metric Cards ────────────────────────────────────────────────────────────── */
 [data-testid="stMetric"] {
     background: #1a1816 !important;
     border-left: 4px solid #C75146 !important;
@@ -32,6 +58,86 @@ h1 {
     padding: 12px 16px !important;
 }
 
+[data-testid="stMetric"] label {
+    color: #CCC5B9 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.75rem !important;
+}
+
+[data-testid="stMetric"] [data-testid="stMetricValue"] {
+    color: #FFFCF2 !important;
+    font-weight: 700 !important;
+}
+
+/* ── Dataframes / Tables ─────────────────────────────────────────────────────── */
+[data-testid="stDataFrame"] {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+/* ── Selectboxes and inputs ──────────────────────────────────────────────────── */
+[data-testid="stSelectbox"] > div > div {
+    background-color: #1a1816 !important;
+    border-color: #F4845F !important;
+    color: #FFFCF2 !important;
+}
+
+.stDateInput > div > div > input {
+    background-color: #1a1816 !important;
+    color: #FFFCF2 !important;
+    border-color: #F4845F !important;
+}
+
+/* ── Tabs ────────────────────────────────────────────────────────────────────── */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 4px;
+}
+
+.stTabs [data-baseweb="tab"] {
+    background-color: #1a1816 !important;
+    color: #CCC5B9 !important;
+    border-radius: 6px 6px 0 0 !important;
+    padding: 8px 20px !important;
+}
+
+.stTabs [aria-selected="true"] {
+    background-color: #C75146 !important;
+    color: #FFFCF2 !important;
+}
+
+/* ── Dividers ────────────────────────────────────────────────────────────────── */
+hr {
+    border-color: rgba(204, 197, 185, 0.2) !important;
+}
+
+/* ── Expanders ───────────────────────────────────────────────────────────────── */
+[data-testid="stExpander"] {
+    background-color: #1a1816 !important;
+    border: 1px solid rgba(204, 197, 185, 0.15) !important;
+    border-radius: 8px !important;
+}
+
+/* ── Links ───────────────────────────────────────────────────────────────────── */
 a {
     color: #F7B267 !important;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #252422;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #CCC5B9;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #F4845F;
 }
