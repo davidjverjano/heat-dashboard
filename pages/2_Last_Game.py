@@ -38,22 +38,18 @@ badge_color = COLORS["win_green"] if game.result == "W" else COLORS["loss_red"]
 
 st.markdown(
     f"""
-    <div style="display:flex; align-items:center; gap:20px; margin-bottom:20px;">
-        <span style="background:{badge_color}; color:#fff; padding:8px 20px; border-radius:24px; font-size:1.3rem; font-weight:700;">
-            {game.result}
-        </span>
-        <div>
-            <span style="font-size:1.5rem; font-weight:800; color:#FFFCF2; font-family:-apple-system,system-ui,sans-serif; font-variant-numeric:tabular-nums;">
-                Miami Heat {game.team_score} — {game.opponent_score} {game.opponent}
-            </span><br>
-            <span style="color:#b0ada6; font-size:0.9rem;">{game.game_date.strftime('%B %d, %Y')} &nbsp;|&nbsp; {game.home_away}</span>
+    <div class="cc-game-header">
+        <span class="cc-game-header-badge" style="background:{badge_color};">{game.result}</span>
+        <div class="cc-game-header-info">
+            <span class="cc-game-header-score">Miami Heat {game.team_score} — {game.opponent_score} {game.opponent}</span>
+            <span class="cc-game-header-meta">{game.game_date.strftime('%B %d, %Y')} &nbsp;|&nbsp; {game.home_away}</span>
         </div>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# ── Team Advanced Stats ────────────────────────────────────────────────────────
+# ── Team Advanced Stats ───────────────────────────────────────────────────────
 kpi_row([
     {"label": "Off Rating", "value": f"{game.ortg:.1f}"},
     {"label": "Def Rating", "value": f"{game.drtg:.1f}"},
