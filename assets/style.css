@@ -145,6 +145,18 @@ section[data-testid="stMain"] {
     gap: 24px;
 }
 
+/* Hamburger button — hidden on desktop */
+.cc-hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    margin: -10px;
+    -webkit-tap-highlight-color: transparent;
+    flex-shrink: 0;
+}
+
 .cc-nav-brand {
     display: flex;
     align-items: center;
@@ -180,14 +192,6 @@ section[data-testid="stMain"] {
     border-radius: 4px !important;
     border: 1px solid rgba(247, 178, 103, 0.2) !important;
     flex-shrink: 0;
-}
-
-/* Hide the marker div (zero-height) */
-.cc-nav-links-row {
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: hidden !important;
 }
 
 /* Style the st.page_link row as a horizontal nav */
@@ -754,45 +758,69 @@ a {
         padding: 3px 8px !important;
     }
 
-    /* ── Nav links row — horizontal scroll with touch momentum ────────── */
-    /* Target the stHorizontalBlock that contains page links specifically */
+    /* ── Hamburger menu — visible on mobile ───────────────────────────── */
+    .cc-hamburger-btn {
+        display: flex !important;
+        align-items: center;
+    }
+
+    /* Animate hamburger lines */
+    .cc-ham-line {
+        transition: all 250ms ease;
+        transform-origin: center;
+    }
+
+    body.cc-menu-open .cc-ham-1 {
+        transform: translateY(6px) rotate(45deg);
+    }
+    body.cc-menu-open .cc-ham-2 {
+        opacity: 0;
+    }
+    body.cc-menu-open .cc-ham-3 {
+        transform: translateY(-6px) rotate(-45deg);
+    }
+
+    /* Nav links row — hidden by default on mobile */
     .cc-top-nav + div [data-testid="stHorizontalBlock"],
     [data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) {
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        flex-wrap: nowrap !important;
-        margin: -1rem -4px 0.5rem -4px !important;
-        padding: 0 4px 8px 4px !important;
-        gap: 0px !important;
-        scrollbar-width: none !important;
-    }
-
-    .cc-top-nav + div [data-testid="stHorizontalBlock"]::-webkit-scrollbar,
-    [data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"])::-webkit-scrollbar {
         display: none !important;
+        flex-direction: column !important;
+        background: var(--bg-secondary) !important;
+        margin: 0 -12px 8px -12px !important;
+        padding: 8px 16px !important;
+        gap: 0px !important;
+        border-bottom: 1px solid rgba(247, 178, 103, 0.12) !important;
     }
 
-    /* Each nav link — larger touch targets (min 44px tall) */
+    /* When menu is open — show nav links as slide-down */
+    body.cc-menu-open .cc-top-nav + div [data-testid="stHorizontalBlock"],
+    body.cc-menu-open [data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) {
+        display: flex !important;
+    }
+
+    /* Each nav link in mobile menu — full-width rows */
     [data-testid="stPageLink"] a {
-        padding: 10px 14px !important;
-        font-size: 10px !important;
-        min-height: 44px !important;
-        display: inline-flex !important;
+        padding: 14px 16px !important;
+        font-size: 11px !important;
+        min-height: 48px !important;
+        display: flex !important;
         align-items: center !important;
+        width: 100% !important;
+        border-radius: 6px !important;
     }
 
     [data-testid="stPageLink"],
     [data-testid="stPageLink"] a,
     [data-testid="stPageLink"] a * {
-        font-size: 10px !important;
-        letter-spacing: 1px !important;
+        font-size: 11px !important;
+        letter-spacing: 1.5px !important;
     }
 
-    /* Force nav children to not shrink (enable scroll) */
+    /* Nav children stack vertically */
     .cc-top-nav + div [data-testid="stHorizontalBlock"] > div,
     [data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) > div {
-        flex-shrink: 0 !important;
-        min-width: auto !important;
+        min-width: 100% !important;
+        flex-basis: 100% !important;
     }
 
     /* ── Headers ──────────────────────────────────────────────────────────── */
