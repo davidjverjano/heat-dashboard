@@ -9,10 +9,11 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 from components.page_setup import setup_page
 setup_page()
 
-from utils.data_loader import load_game_log, load_league_averages
+from utils.data_loader import load_game_log, load_league_averages, load_league_team_ratings, load_team_rankings
 from utils.calculations import season_splits
 from components.tables import comparison_table
 from components.charts import radar_chart, scatter_plot, bar_chart
+from components.metrics import rating_card
 from components.theme import COLORS, apply_plotly_theme
 import plotly.graph_objects as go
 
@@ -22,7 +23,7 @@ st.markdown("# SEASON VIEW")
 game_log = load_game_log()
 league_avg = load_league_averages()
 
-# ── Team Season Averages ───────────────────────────────────────────────────────
+# ── Team Season Averages ──────────────────────────────────────────────────────
 heat = {
     "ORtg": round(game_log["ortg"].mean(), 1),
     "DRtg": round(game_log["drtg"].mean(), 1),
@@ -66,7 +67,7 @@ comparison_table(heat, league_mapped, east_mapped, metrics)
 
 st.markdown("---")
 
-# ── Radar Chart & Scatter ──────────────────────────────────────────────────────
+# ── Radar Chart & Scatter ─────────────────────────────────────────────────────
 col1, col2 = st.columns(2)
 
 with col1:
@@ -93,38 +94,38 @@ with col1:
 
 with col2:
     st.markdown("### ORtg vs DRtg")
-    # Generate fake league data for context scatter
-    np.random.seed(99)
-    n_teams = 30
-    fake_teams = pd.DataFrame({
-        "ortg": np.random.normal(114, 3.5, n_teams),
-        "drtg": np.random.normal(114, 3.5, n_teams),
-        "team": [f"Team {i}" for i in range(n_teams)],
-    })
-    # Replace one entry with Heat
-    heat_idx = 0
-    fake_teams.loc[heat_idx, "ortg"] = heat["ORtg"]
-    fake_teams.loc[heat_idx, "drtg"] = heat["DRtg"]
-    fake_teams.loc[heat_idx, "team"] = "MIA"
+    # Real NBA team ratings
+    league_ratings = load_league_team_ratings()
+    heat_idx = league_ratings.index[league_ratings["team"] == "MIA"].tolist()[0]
     st.plotly_chart(
-        scatter_plot(fake_teams, "ortg", "drtg", text_col="team", title="", highlight_idx=heat_idx),
+        scatter_plot(league_ratings, "ortg", "drtg", text_col="team", title="", highlight_idx=heat_idx),
         use_container_width=True,
     )
 
 st.markdown("---")
 
-# ── Category Rankings ──────────────────────────────────────────────────────────
+# ── Category Rankings ─────────────────────────────────────────────────────────
 st.markdown("### Category Rankings")
+team_ranks = load_team_rankings()
 rank_cats = ["PPG", "RPG", "APG", "FG%", "3P%"]
 col_list = st.columns(len(rank_cats))
 for col, cat in zip(col_list, rank_cats):
     with col:
         heat_val = heat[cat]
+        rank_num = team_ranks[cat]["rank"]
         league_val = league_mapped[cat]
         diff = heat_val - league_val
-        st.metric(cat, f"{heat_val}", delta=f"{diff:+.1f} vs Lg Avg")
+        diff_sign = "+" if diff > 0 else ""
+        diff_good = diff > 0 if cat != "TOV%" else diff < 0
+        rating_card(
+            rank=rank_num,
+            name=cat,
+            value=f"{heat_val}",
+            compare=f"{diff_sign}{diff:.1f} vs Lg Avg",
+            compare_positive=diff_good,
+        )
 
-# ── Season Splits ──────────────────────────────────────────────────────────────
+# ── Season Splits ─────────────────────────────────────────────────────────────
 st.markdown("---")
 st.markdown("### Season Splits")
 

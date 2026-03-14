@@ -50,3 +50,14 @@ def load_schedule() -> pd.DataFrame:
 def load_league_averages() -> dict:
     with open(DATA_DIR / "league_averages.json") as f:
         return json.load(f)
+
+
+@st.cache_data(ttl=300)
+def load_league_team_ratings() -> pd.DataFrame:
+    return pd.read_csv(DATA_DIR / "league_team_ratings.csv")
+
+
+@st.cache_data(ttl=300)
+def load_team_rankings() -> dict:
+    with open(DATA_DIR / "team_rankings.json") as f:
+        return json.load(f)
