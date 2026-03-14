@@ -1,143 +1,555 @@
-/* ── Miami Heat Dashboard — Custom CSS ──────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   COURTSIDE CRE8IVES — Heat Analytics Dashboard
+   Design: Asphalt Black + Hyperspace Race Capsule + Databallr/Ringer fusion
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Load Hyperspace Race Capsule font */
+/* ── Font Loading ───────────────────────────────────────────────────────── */
 @font-face {
-    font-family: 'Hyperspace Race Capsule';
-    src: url('fonts/hyperspaceracecapsule-variablevf-14.ttf') format('truetype');
-    font-weight: 100 900;
-    font-style: normal;
+  font-family: 'Hyperspace';
+  src: url('fonts/hyperspaceracecapsule-variablevf-14.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* ── Global ──────────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Hyperspace';
+  src: url('fonts/hyperspaceracecapsule-bold-27.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Hyperspace';
+  src: url('fonts/hyperspaceracecapsule-heavy-28.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Hyperspace';
+  src: url('fonts/hyperspaceracecapsule-regular-30.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Hyperspace Wide';
+  src: url('fonts/hyperspaceracecapsule-widebold-15.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Design Tokens (CSS Variables) ──────────────────────────────────────── */
+:root {
+  /* Brand — Courtside Cre8ives */
+  --brand-black: #252422;
+  --brand-white: #FFFCF2;
+  --brand-red: #C75146;
+  --brand-dark-red: #81171B;
+  --brand-flame: #F7B267;
+  --brand-coral: #F4845F;
+  --brand-mamey: #F25C54;
+  --brand-grey: #CCC5B9;
+
+  /* Dark Theme — Asphalt Black variations */
+  --bg-primary: #1a1917;
+  --bg-secondary: #201f1d;
+  --bg-tertiary: #252422;
+  --bg-card: #2a2926;
+  --bg-card-hover: #31302d;
+  --bg-elevated: #353432;
+
+  /* Text */
+  --text-primary: #FFFCF2;
+  --text-secondary: #b0ada6;
+  --text-muted: #6e6b64;
+  --text-faint: #484541;
+
+  /* Accents */
+  --accent-primary: #F7B267;
+  --accent-hover: #f9c48a;
+  --accent-red: #C75146;
+  --accent-dark-red: #81171B;
+  --accent-coral: #F4845F;
+  --accent-mamey: #F25C54;
+
+  /* Semantic */
+  --win: #3fb950;
+  --loss: #F25C54;
+  --positive: #3fb950;
+  --negative: #F25C54;
+
+  /* Fonts */
+  --font-brand: 'Hyperspace', 'Barlow Condensed', 'Oswald', sans-serif;
+  --font-brand-wide: 'Hyperspace Wide', 'Hyperspace', 'Barlow Condensed', sans-serif;
+  --font-data: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ── Global Overrides ───────────────────────────────────────────────────── */
 html, body, [data-testid="stAppViewContainer"] {
-    background-color: #252422 !important;
-    color: #FFFCF2 !important;
-    font-family: 'Hyperspace Race Capsule', 'Barlow Condensed', 'Oswald', sans-serif !important;
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-data) !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 [data-testid="stAppViewContainer"] > .main {
-    background-color: #252422 !important;
+    background-color: var(--bg-primary) !important;
 }
 
-/* ── Sidebar ─────────────────────────────────────────────────────────────────── */
+/* Main block container — reduce default padding */
+[data-testid="stAppViewContainer"] .block-container {
+    padding-top: 2rem !important;
+    max-width: 1440px !important;
+}
+
+/* ── Sidebar (Asphalt Black with flame accents) ─────────────────────────── */
 [data-testid="stSidebar"] {
-    background-color: #81171B !important;
+    background-color: var(--bg-secondary) !important;
+    border-right: 1px solid rgba(247, 178, 103, 0.12) !important;
 }
 
 [data-testid="stSidebar"] * {
-    color: #FFFCF2 !important;
+    color: var(--text-primary) !important;
 }
 
 [data-testid="stSidebar"] .stRadio label,
 [data-testid="stSidebar"] .stSelectbox label {
-    color: #FFFCF2 !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-brand-wide) !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
 }
 
 [data-testid="stSidebar"] hr {
-    border-color: rgba(255, 252, 242, 0.2) !important;
+    border-color: rgba(247, 178, 103, 0.15) !important;
 }
 
-/* ── Headers ─────────────────────────────────────────────────────────────────── */
-h1, h2, h3 {
-    font-family: 'Hyperspace Race Capsule', 'Barlow Condensed', 'Oswald', sans-serif !important;
-    color: #FFFCF2 !important;
-    letter-spacing: 1px;
+/* Sidebar nav links — Hyperspace Wide for page names */
+[data-testid="stSidebar"] [data-testid="stSidebarNavItems"] a span {
+    font-family: var(--font-brand-wide) !important;
+    font-size: 12px !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
 }
 
+[data-testid="stSidebar"] [data-testid="stSidebarNavItems"] a[aria-current="page"] span {
+    color: var(--accent-primary) !important;
+}
+
+/* ── Headers — Brand fonts ──────────────────────────────────────────────── */
 h1 {
-    color: #F7B267 !important;
-    border-bottom: 2px solid #C75146;
-    padding-bottom: 8px;
+    font-family: var(--font-brand) !important;
+    font-weight: 900 !important;
+    color: var(--accent-primary) !important;
+    letter-spacing: 1px !important;
+    border-bottom: 2px solid rgba(247, 178, 103, 0.2) !important;
+    padding-bottom: 8px !important;
 }
 
-/* ── Metric Cards ────────────────────────────────────────────────────────────── */
+h2 {
+    font-family: var(--font-brand-wide) !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+    font-size: 1.1rem !important;
+}
+
+h3 {
+    font-family: var(--font-brand-wide) !important;
+    font-weight: 700 !important;
+    color: var(--text-secondary) !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+    font-size: 0.9rem !important;
+}
+
+/* ── Metric Cards (Asphalt card bg with flame accent border) ────────────── */
 [data-testid="stMetric"] {
-    background: #1a1816 !important;
-    border-left: 4px solid #C75146 !important;
+    background: var(--bg-card) !important;
+    border-left: 3px solid var(--accent-primary) !important;
     border-radius: 8px !important;
     padding: 12px 16px !important;
+    border: 1px solid rgba(247, 178, 103, 0.1) !important;
+    border-left: 3px solid var(--accent-primary) !important;
 }
 
 [data-testid="stMetric"] label {
-    color: #CCC5B9 !important;
+    color: var(--text-muted) !important;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.75rem !important;
+    letter-spacing: 1.5px;
+    font-size: 0.7rem !important;
+    font-family: var(--font-brand-wide) !important;
 }
 
 [data-testid="stMetric"] [data-testid="stMetricValue"] {
-    color: #FFFCF2 !important;
-    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    font-weight: 800 !important;
+    font-family: var(--font-data) !important;
+    font-variant-numeric: tabular-nums !important;
 }
 
-/* ── Dataframes / Tables ─────────────────────────────────────────────────────── */
+[data-testid="stMetric"] [data-testid="stMetricDelta"] {
+    font-family: var(--font-data) !important;
+    font-variant-numeric: tabular-nums !important;
+}
+
+/* ── Dataframes / Tables ────────────────────────────────────────────────── */
 [data-testid="stDataFrame"] {
-    border-radius: 8px !important;
+    border-radius: 12px !important;
     overflow: hidden !important;
+    border: 1px solid rgba(255, 252, 242, 0.06) !important;
 }
 
-/* ── Selectboxes and inputs ──────────────────────────────────────────────────── */
+/* ── Selectboxes and inputs ─────────────────────────────────────────────── */
 [data-testid="stSelectbox"] > div > div {
-    background-color: #1a1816 !important;
-    border-color: #F4845F !important;
-    color: #FFFCF2 !important;
+    background-color: var(--bg-card) !important;
+    border-color: rgba(247, 178, 103, 0.2) !important;
+    color: var(--text-primary) !important;
+    border-radius: 6px !important;
 }
 
 .stDateInput > div > div > input {
-    background-color: #1a1816 !important;
-    color: #FFFCF2 !important;
-    border-color: #F4845F !important;
+    background-color: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    border-color: rgba(247, 178, 103, 0.2) !important;
 }
 
-/* ── Tabs ────────────────────────────────────────────────────────────────────── */
+.stTextInput > div > div > input {
+    background-color: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    border-color: rgba(247, 178, 103, 0.2) !important;
+}
+
+/* ── Tabs (Databallr-style toolbar) ─────────────────────────────────────── */
 .stTabs [data-baseweb="tab-list"] {
     gap: 4px;
+    border-bottom-color: rgba(247, 178, 103, 0.15) !important;
 }
 
 .stTabs [data-baseweb="tab"] {
-    background-color: #1a1816 !important;
-    color: #CCC5B9 !important;
-    border-radius: 6px 6px 0 0 !important;
+    background-color: var(--bg-card) !important;
+    color: var(--text-secondary) !important;
+    border-radius: 4px 4px 0 0 !important;
     padding: 8px 20px !important;
+    font-family: var(--font-brand-wide) !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+    border: 1px solid transparent !important;
+}
+
+.stTabs [data-baseweb="tab"]:hover {
+    color: var(--text-primary) !important;
+    border-color: rgba(255, 252, 242, 0.1) !important;
 }
 
 .stTabs [aria-selected="true"] {
-    background-color: #C75146 !important;
-    color: #FFFCF2 !important;
+    background-color: var(--accent-primary) !important;
+    color: var(--bg-primary) !important;
+    border-color: var(--accent-primary) !important;
+    font-weight: 700 !important;
 }
 
-/* ── Dividers ────────────────────────────────────────────────────────────────── */
+/* ── Dividers ───────────────────────────────────────────────────────────── */
 hr {
-    border-color: rgba(204, 197, 185, 0.2) !important;
+    border-color: rgba(247, 178, 103, 0.1) !important;
 }
 
-/* ── Expanders ───────────────────────────────────────────────────────────────── */
+/* ── Expanders ──────────────────────────────────────────────────────────── */
 [data-testid="stExpander"] {
-    background-color: #1a1816 !important;
-    border: 1px solid rgba(204, 197, 185, 0.15) !important;
-    border-radius: 8px !important;
+    background-color: var(--bg-card) !important;
+    border: 1px solid rgba(255, 252, 242, 0.06) !important;
+    border-radius: 12px !important;
 }
 
-/* ── Links ───────────────────────────────────────────────────────────────────── */
+[data-testid="stExpander"] summary {
+    font-family: var(--font-brand-wide) !important;
+    letter-spacing: 1px !important;
+}
+
+/* ── Links ──────────────────────────────────────────────────────────────── */
 a {
-    color: #F7B267 !important;
+    color: var(--accent-primary) !important;
 }
 
-/* ── Scrollbar ───────────────────────────────────────────────────────────────── */
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+.stButton > button {
+    background-color: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid rgba(247, 178, 103, 0.2) !important;
+    border-radius: 6px !important;
+    font-family: var(--font-brand-wide) !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+    transition: all 150ms ease !important;
+}
+
+.stButton > button:hover {
+    background-color: rgba(247, 178, 103, 0.1) !important;
+    border-color: var(--accent-primary) !important;
+    color: var(--accent-primary) !important;
+}
+
+/* ── Multiselect ────────────────────────────────────────────────────────── */
+[data-testid="stMultiSelect"] > div > div {
+    background-color: var(--bg-card) !important;
+    border-color: rgba(247, 178, 103, 0.2) !important;
+}
+
+/* ── Plotly chart container overrides ───────────────────────────────────── */
+.js-plotly-plot .plotly .modebar {
+    background: transparent !important;
+}
+
+/* ── Scrollbar (matching Asphalt theme) ─────────────────────────────────── */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #252422;
+    background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #CCC5B9;
-    border-radius: 4px;
+    background: var(--text-muted);
+    border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #F4845F;
+    background: var(--accent-primary);
+}
+
+/* ── Custom KPI cards (rendered via markdown) ───────────────────────────── */
+.cc-kpi-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(247, 178, 103, 0.1);
+    border-left: 3px solid var(--accent-primary);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 8px;
+}
+
+.cc-kpi-label {
+    font-family: var(--font-brand-wide);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.cc-kpi-value {
+    font-family: var(--font-data);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+}
+
+.cc-kpi-delta {
+    font-family: var(--font-data);
+    font-size: 0.85rem;
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Section headers (Ringer-style line) ────────────────────────────────── */
+.cc-section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    margin-top: 16px;
+}
+
+.cc-section-header h2 {
+    font-family: var(--font-brand-wide) !important;
+    font-weight: 700 !important;
+    font-size: 18px !important;
+    letter-spacing: 3px !important;
+    text-transform: uppercase !important;
+    color: var(--text-primary) !important;
+    white-space: nowrap;
+    margin: 0 !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+.cc-section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(247, 178, 103, 0.3), transparent);
+}
+
+/* ── Hero stat strip ────────────────────────────────────────────────────── */
+.cc-hero-strip {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 24px 32px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid rgba(247, 178, 103, 0.1);
+    border-left: 3px solid var(--accent-primary);
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.cc-hero-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.cc-hero-stat-value {
+    font-family: var(--font-data);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.cc-hero-stat-label {
+    font-family: var(--font-data);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.cc-hero-sep {
+    width: 1px;
+    height: 40px;
+    background: rgba(255, 252, 242, 0.08);
+}
+
+/* ── Rating cards (Ringer-style big numbers) ────────────────────────────── */
+.cc-rating-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 252, 242, 0.06);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    transition: all 250ms ease;
+}
+
+.cc-rating-card:hover {
+    background: var(--bg-card-hover);
+    border-color: rgba(247, 178, 103, 0.15);
+}
+
+.cc-rank-number {
+    font-family: var(--font-data);
+    font-weight: 900;
+    font-size: 48px;
+    line-height: 1;
+    color: var(--accent-primary);
+    letter-spacing: -2px;
+}
+
+.cc-rank-suffix {
+    font-family: var(--font-data);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-muted);
+    position: relative;
+    top: -20px;
+}
+
+.cc-rating-value {
+    font-family: var(--font-data);
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.cc-rating-name {
+    font-family: var(--font-brand-wide);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+/* ── Game cards ─────────────────────────────────────────────────────────── */
+.cc-game-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(255, 252, 242, 0.06);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    transition: all 250ms ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.cc-game-card:hover {
+    background: var(--bg-card-hover);
+    border-color: rgba(255, 252, 242, 0.1);
+}
+
+.cc-game-card.win {
+    border-top: 3px solid var(--win);
+}
+
+.cc-game-card.loss {
+    border-top: 3px solid var(--loss);
+}
+
+.cc-game-date {
+    font-family: var(--font-data);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+}
+
+.cc-game-opp {
+    font-family: var(--font-brand-wide);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+    margin-top: 4px;
+}
+
+.cc-game-score {
+    font-family: var(--font-data);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    margin-top: 4px;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+.cc-footer {
+    text-align: center;
+    padding: 20px 0;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.cc-footer b {
+    font-family: var(--font-brand-wide);
+    letter-spacing: 1.5px;
+    color: var(--accent-primary);
 }
