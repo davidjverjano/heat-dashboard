@@ -1,1 +1,9 @@
-{"team": "Miami Heat", "season": "2025-26", "arena": "Kaseya Center", "coach": "Erik Spoelstra", "conference": "Eastern", "division": "Southeast"}
+{
+  "team_name": "Miami Heat",
+  "team_abbreviation": "MIA",
+  "conference": "Eastern",
+  "division": "Southeast",
+  "season": "2025-26",
+  "arena": "Kaseya Center",
+  "head_coach": "Erik Spoelstra"
+}
