@@ -128,12 +128,25 @@ section[data-testid="stMain"] {
     margin-left: 0 !important;
 }
 
+/* ── Streamlit header — disable pointer-events so our nav is clickable ─── */
+[data-testid="stHeader"] {
+    pointer-events: none !important;
+}
+/* Re-enable pointer-events on any actual interactive children inside header */
+[data-testid="stHeader"] button,
+[data-testid="stHeader"] a,
+[data-testid="stHeader"] [role="button"] {
+    pointer-events: auto !important;
+}
+
 /* ── Top Navigation Bar ─────────────────────────────────────────────────── */
 .cc-top-nav {
     background: #201f1d !important;
     border-bottom: 1px solid rgba(247, 178, 103, 0.12) !important;
     padding: 0 16px !important;
     margin-bottom: 12px !important;
+    position: relative;
+    z-index: 999;
 }
 
 .cc-nav-inner {
@@ -155,6 +168,9 @@ section[data-testid="stMain"] {
     margin: -10px;
     -webkit-tap-highlight-color: transparent;
     flex-shrink: 0;
+    position: relative;
+    z-index: 1001;
+    pointer-events: auto !important;
 }
 
 .cc-nav-brand {
