@@ -16,11 +16,11 @@ from components.theme import COLORS
 
 st.markdown("# PLAYERS")
 
-# ── Load Data ─────────────────────────────────────────────────────────────────────────────
+# ── Load Data ─────────────────────────────────────────────────────────────────────
 season_stats = load_player_season_stats()
 player_gl = load_player_game_log()
 
-# ── Sortable Season Stats Table ─────────────────────────────────────────────────────────────────────
+# ── Sortable Season Stats Table ───────────────────────────────────────────────────────
 st.markdown("### Season Averages")
 display_cols = ["player_name", "gp", "mpg", "ppg", "rpg", "apg", "spg", "bpg", "topg",
                 "fg_pct", "fg3_pct", "ft_pct", "ts_pct", "usage_pct", "per", "bpm", "net_rtg"]
@@ -37,7 +37,7 @@ styled_table(display, height=450)
 
 st.markdown("---")
 
-# ── Charts Row ────────────────────────────────────────────────────────────────────────────
+# ── Charts Row ──────────────────────────────────────────────────────────────────────
 col1, col2 = st.columns(2)
 
 with col1:
@@ -61,7 +61,7 @@ with col2:
 
 st.markdown("---")
 
-# ── Player Deep Dive ────────────────────────────────────────────────────────────────────────────
+# ── Player Deep Dive ──────────────────────────────────────────────────────────────────
 st.markdown("### Player Deep Dive")
 players = season_stats["player_name"].tolist()
 selected_player = st.selectbox("Select Player", players)
@@ -81,12 +81,12 @@ if selected_player:
     # On/Off Net Rating
     st.markdown("#### On/Off Court Impact")
     on_off = p_stats.get("on_off_net", 0)
-    on_color = COLORS["win_green"] if on_off >= 0 else COLORS["mamey"]
+    on_color = COLORS["win_green"] if on_off >= 0 else COLORS["loss_red"]
     st.markdown(
         f"""
-        <div style="background:#1a1816; border-radius:8px; padding:12px 20px; display:inline-block;">
-            <span style="color:#CCC5B9;">On/Off Net: </span>
-            <span style="color:{on_color}; font-weight:700; font-size:1.3rem;">{on_off:+.1f}</span>
+        <div style="background:#2a2926; border:1px solid rgba(247,178,103,0.1); border-radius:12px; padding:12px 20px; display:inline-block;">
+            <span style="color:#6e6b64; font-family:'Hyperspace Wide','Hyperspace',sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase;">On/Off Net: </span>
+            <span style="color:{on_color}; font-weight:800; font-size:1.3rem; font-family:-apple-system,system-ui,sans-serif; font-variant-numeric:tabular-nums;">{on_off:+.1f}</span>
         </div>
         """,
         unsafe_allow_html=True,

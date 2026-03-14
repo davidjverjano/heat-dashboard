@@ -17,7 +17,7 @@ from components.theme import COLORS
 
 st.markdown("# LAST GAME")
 
-# ── Load Data ─────────────────────────────────────────────────────────────────────────────
+# ── Load Data ─────────────────────────────────────────────────────────────────────
 game_log = load_game_log()
 player_gl = load_player_game_log()
 
@@ -33,9 +33,9 @@ selected_id = game_options[selected_label]
 game = game_log[game_log["game_id"] == selected_id].iloc[0]
 players = player_gl[player_gl["game_id"] == selected_id]
 
-# ── Header ────────────────────────────────────────────────────────────────────────────────
+# ── Header ──────────────────────────────────────────────────────────────────────────
 prefix = "vs" if game.home_away == "Home" else "@"
-badge_color = COLORS["win_green"] if game.result == "W" else COLORS["mamey"]
+badge_color = COLORS["win_green"] if game.result == "W" else COLORS["loss_red"]
 
 st.markdown(
     f"""
@@ -44,17 +44,17 @@ st.markdown(
             {game.result}
         </span>
         <div>
-            <span style="font-size:1.5rem; font-weight:700; color:#FFFCF2;">
+            <span style="font-size:1.5rem; font-weight:800; color:#FFFCF2; font-family:-apple-system,system-ui,sans-serif; font-variant-numeric:tabular-nums;">
                 Miami Heat {game.team_score} — {game.opponent_score} {game.opponent}
             </span><br>
-            <span style="color:#CCC5B9;">{game.game_date.strftime('%B %d, %Y')} &nbsp;|&nbsp; {game.home_away}</span>
+            <span style="color:#b0ada6; font-size:0.9rem;">{game.game_date.strftime('%B %d, %Y')} &nbsp;|&nbsp; {game.home_away}</span>
         </div>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# ── Team Advanced Stats ─────────────────────────────────────────────────────────────────────
+# ── Team Advanced Stats ───────────────────────────────────────────────────────────────
 kpi_row([
     {"label": "Off Rating", "value": f"{game.ortg:.1f}"},
     {"label": "Def Rating", "value": f"{game.drtg:.1f}"},
@@ -65,11 +65,11 @@ kpi_row([
 
 st.markdown("---")
 
-# ── Box Score ──────────────────────────────────────────────────────────────────────────────
+# ── Box Score ───────────────────────────────────────────────────────────────────────
 st.markdown("### Box Score")
 box_score_table(players)
 
-# ── Top Performer ───────────────────────────────────────────────────────────────────────────
+# ── Top Performer ────────────────────────────────────────────────────────────────────
 st.markdown("---")
 col1, col2 = st.columns([1, 1])
 
@@ -79,12 +79,12 @@ with col1:
         top = players.loc[players["game_score"].idxmax()]
         st.markdown(
             f"""
-            <div style="background:#1a1816; border-left:4px solid #F7B267; border-radius:8px; padding:16px 20px;">
-                <div style="font-size:1.4rem; font-weight:700; color:#F7B267;">{top.player_name}</div>
-                <div style="color:#FFFCF2; font-size:1.1rem; margin-top:8px;">
+            <div class="cc-kpi-card">
+                <div style="font-size:1.3rem; font-weight:700; color:#F7B267; font-family:'Hyperspace','Barlow Condensed',sans-serif;">{top.player_name}</div>
+                <div style="color:#FFFCF2; font-size:1.1rem; margin-top:8px; font-family:-apple-system,system-ui,sans-serif; font-variant-numeric:tabular-nums;">
                     {int(top.pts)} PTS &nbsp;|&nbsp; {int(top.reb)} REB &nbsp;|&nbsp; {int(top.ast)} AST
                 </div>
-                <div style="color:#CCC5B9; margin-top:4px;">
+                <div style="color:#b0ada6; margin-top:4px; font-family:-apple-system,system-ui,sans-serif; font-variant-numeric:tabular-nums;">
                     {top.fg}/{top.fga} FG &nbsp;|&nbsp; {top.fg3}/{top.fg3a} 3P &nbsp;|&nbsp;
                     Game Score: {top.game_score:.1f}
                 </div>
@@ -93,7 +93,7 @@ with col1:
             unsafe_allow_html=True,
         )
 
-# ── Four Factors ───────────────────────────────────────────────────────────────────────────
+# ── Four Factors ────────────────────────────────────────────────────────────────────
 with col2:
     st.markdown("### Four Factors")
     team_ff = {

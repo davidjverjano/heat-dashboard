@@ -14,35 +14,39 @@ from utils.calculations import last_n_record, current_streak
 from components.theme import COLORS
 
 st.markdown("# NARRATIVES")
-st.markdown('<p style="color:#CCC5B9;">Auto-generated insights from the 2025-26 Miami Heat season data.</p>', unsafe_allow_html=True)
+st.markdown('<p style="color:#b0ada6; letter-spacing:0.5px;">Auto-generated insights from the 2025-26 Miami Heat season data.</p>', unsafe_allow_html=True)
 
-# ── Load Data ─────────────────────────────────────────────────────────────────────────────
+# ── Load Data ─────────────────────────────────────────────────────────────────────
 game_log = load_game_log()
 player_gl = load_player_game_log()
 season_stats = load_player_season_stats()
 schedule = load_schedule()
 
 
-def narrative_card(title: str, body: str, accent_color: str = COLORS["rich_red"]):
+def narrative_card(title: str, body: str, accent_color: str = COLORS["accent_primary"]):
     """Render a narrative card."""
     st.markdown(
         f"""
         <div style="
-            background: #1a1816;
-            border-left: 4px solid {accent_color};
-            border-radius: 8px;
+            background: #2a2926;
+            border: 1px solid rgba(255,252,242,0.06);
+            border-left: 3px solid {accent_color};
+            border-radius: 12px;
             padding: 20px 24px;
             margin-bottom: 16px;
         ">
-            <h3 style="color:{COLORS['yellow_flame']}; margin:0 0 12px 0; border:none; padding:0;">{title}</h3>
-            <div style="color:{COLORS['off_white']}; line-height:1.7; font-size:1rem;">{body}</div>
+            <h3 style="color:#F7B267; margin:0 0 12px 0; border:none !important; padding:0 !important;
+                font-family:'Hyperspace Wide','Hyperspace',sans-serif; font-size:14px;
+                letter-spacing:2px; text-transform:uppercase;">{title}</h3>
+            <div style="color:#FFFCF2; line-height:1.7; font-size:0.95rem;
+                font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">{body}</div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
 
-# ── 1. Recent Form ──────────────────────────────────────────────────────────────────────────────
+# ── 1. Recent Form ──────────────────────────────────────────────────────────────
 recent = game_log.tail(10).copy()
 r_w, r_l = last_n_record(game_log, 10)
 s_type, s_count = current_streak(game_log)
@@ -62,7 +66,7 @@ They're averaging <b>{recent_ppg} points per game</b> in this stretch with an of
 """
 narrative_card("Recent Form", body)
 
-# ── 2. Key Player Performances ──────────────────────────────────────────────────────────────────────
+# ── 2. Key Player Performances ────────────────────────────────────────────────────────
 last5_ids = game_log.tail(5)["game_id"].tolist()
 last5_players = player_gl[player_gl["game_id"].isin(last5_ids)]
 player_avgs = last5_players.groupby("player_name").agg(
@@ -80,6 +84,7 @@ for _, p in top_3.iterrows():
 
 body = "Over the last 5 games, the top performers have been:<br><br>" + "<br>".join(player_lines)
 
+# Find a hot player
 hottest = player_avgs.iloc[0]
 season_ppg = season_stats[season_stats["player_name"] == hottest.player_name]["ppg"].values
 if len(season_ppg) > 0 and hottest.pts > season_ppg[0] * 1.1:
@@ -87,7 +92,7 @@ if len(season_ppg) > 0 and hottest.pts > season_ppg[0] * 1.1:
 
 narrative_card("Key Performers", body, COLORS["yellow_flame"])
 
-# ── 3. Offensive & Defensive Trends ───────────────────────────────────────────────────────────────────
+# ── 3. Offensive & Defensive Trends ──────────────────────────────────────────────────
 full_ortg = round(game_log["ortg"].mean(), 1)
 full_drtg = round(game_log["drtg"].mean(), 1)
 first_half = game_log.head(len(game_log) // 2)
@@ -112,7 +117,7 @@ The team's four factors show an eFG% of <b>{game_log['efg_pct'].mean():.1%}</b> 
 """
 narrative_card("Offensive & Defensive Trends", body, COLORS["warm_coral"])
 
-# ── 4. Upcoming Schedule ────────────────────────────────────────────────────────────────────────────
+# ── 4. Upcoming Schedule ──────────────────────────────────────────────────────────────
 upcoming = schedule.head(5)
 strong_teams = {"BOS", "CLE", "MIL", "NYK", "OKC", "DEN", "MIN"}
 tough_games = upcoming[upcoming["opponent_abbr"].isin(strong_teams)]
@@ -134,11 +139,11 @@ The next 5 games present a <b>{difficulty}</b> stretch with <b>{home_games} home
 """
 narrative_card("Schedule Ahead", body, COLORS["dark_red"])
 
-# ── Footer ────────────────────────────────────────────────────────────────────────────────
+# ── Footer ───────────────────────────────────────────────────────────────────────────
 st.markdown("---")
 st.markdown(
     f"""
-    <div style="text-align:center; color:{COLORS['warm_grey']}; font-size:0.85rem; padding:20px 0;">
+    <div class="cc-footer">
         Narratives auto-generated from local data &nbsp;|&nbsp; Updated through {game_log['game_date'].max().strftime('%B %d, %Y')}
     </div>
     """,

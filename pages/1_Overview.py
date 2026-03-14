@@ -11,12 +11,12 @@ if css_file.exists():
 
 from utils.data_loader import load_game_log, load_schedule, load_team_info
 from utils.calculations import last_n_record, current_streak, win_pct
-from components.metrics import kpi_row, streak_badge
+from components.metrics import hero_stats_strip, kpi_row, streak_badge
 from components.charts import win_loss_timeline, point_diff_trend
 
 st.markdown("# OVERVIEW")
 
-# ── Load Data ─────────────────────────────────────────────────────────────────────────────
+# ── Load Data ─────────────────────────────────────────────────────────────────────
 game_log = load_game_log()
 schedule = load_schedule()
 team_info = load_team_info()
@@ -37,37 +37,35 @@ elif wp >= 0.520:
 else:
     east_rank = "9th"
 
-# ── Top KPI Row ─────────────────────────────────────────────────────────────────────────
-kpi_row([
-    {"label": "Record", "value": f"{total_w}-{total_l}"},
-    {"label": "Win %", "value": f"{wp:.3f}"},
-    {"label": "Avg Pt Diff", "value": f"{avg_diff:+.1f}", "delta_good": avg_diff > 0},
-    {"label": "Net Rating", "value": f"{net_rtg:+.1f}", "delta_good": net_rtg > 0},
-    {"label": "East Rank", "value": east_rank},
-])
-
-# ── Second Row: Last 10 + Streak ────────────────────────────────────────────────────────
-st.markdown("---")
+# ── Hero Stats Strip ─────────────────────────────────────────────────────────────
 l10_w, l10_l = last_n_record(game_log, 10)
 s_type, s_count = current_streak(game_log)
 
-col1, col2, col3 = st.columns([2, 2, 6])
-with col1:
-    st.markdown("**Last 10**")
-    st.markdown(f"### {l10_w}-{l10_l}")
-with col2:
-    st.markdown("**Streak**")
-    streak_badge(s_type, s_count)
+hero_stats_strip([
+    {"label": "Record", "value": f"{total_w}-{total_l}"},
+    {"label": "Win %", "value": f"{wp:.3f}"},
+    {"label": "Avg +/-", "value": f"{avg_diff:+.1f}"},
+    {"label": "Net Rtg", "value": f"{net_rtg:+.1f}"},
+    {"label": "Last 10", "value": f"{l10_w}-{l10_l}"},
+    {"label": "Streak", "value": f"{s_type}{s_count}"},
+    {"label": "East Rank", "value": east_rank},
+])
 
-# ── Win/Loss Timeline ──────────────────────────────────────────────────────────────────
-st.markdown("---")
+# ── Win/Loss Timeline ────────────────────────────────────────────────────────────
+st.markdown(
+    '<div class="cc-section-header"><h2>Season Timeline</h2><div class="cc-section-line"></div></div>',
+    unsafe_allow_html=True,
+)
 st.plotly_chart(win_loss_timeline(game_log), use_container_width=True)
 
-# ── Layout: Upcoming + Point Diff ────────────────────────────────────────────────────────
+# ── Layout: Upcoming + Point Diff ─────────────────────────────────────────────────────
 col_a, col_b = st.columns([1, 1])
 
 with col_a:
-    st.markdown("### Upcoming Games")
+    st.markdown(
+        '<div class="cc-section-header"><h2>Upcoming</h2><div class="cc-section-line"></div></div>',
+        unsafe_allow_html=True,
+    )
     upcoming = schedule.head(5).copy()
     upcoming["game_date"] = upcoming["game_date"].dt.strftime("%b %d")
     display = upcoming[["game_date", "home_away", "opponent", "game_time"]].rename(
@@ -76,4 +74,8 @@ with col_a:
     st.dataframe(display, use_container_width=True, hide_index=True)
 
 with col_b:
+    st.markdown(
+        '<div class="cc-section-header"><h2>Pt Diff Trend</h2><div class="cc-section-line"></div></div>',
+        unsafe_allow_html=True,
+    )
     st.plotly_chart(point_diff_trend(game_log, window=7), use_container_width=True)

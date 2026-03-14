@@ -18,11 +18,11 @@ from components.theme import COLORS
 
 st.markdown("# WEEKLY TRENDS")
 
-# ── Load Data ─────────────────────────────────────────────────────────────────────────────
+# ── Load Data ─────────────────────────────────────────────────────────────────────
 game_log = load_game_log()
 league_avg = load_league_averages()
 
-# ── Date Range Selector ────────────────────────────────────────────────────────────────────
+# ── Date Range Selector ────────────────────────────────────────────────────────
 min_date = game_log["game_date"].min().date()
 max_date = game_log["game_date"].max().date()
 default_start = max_date - timedelta(days=14)
@@ -40,7 +40,7 @@ if period.empty:
     st.warning("No games found in this date range.")
     st.stop()
 
-# ── Period Record ───────────────────────────────────────────────────────────────────────────
+# ── Period Record ───────────────────────────────────────────────────────────────────
 pw = int((period["result"] == "W").sum())
 pl = int((period["result"] == "L").sum())
 avg_ortg = round(period["ortg"].mean(), 1)
@@ -57,7 +57,7 @@ kpi_row([
 
 st.markdown("---")
 
-# ── Rolling Charts ───────────────────────────────────────────────────────────────────────────
+# ── Rolling Charts ──────────────────────────────────────────────────────────────────
 st.plotly_chart(
     rolling_line_chart(
         game_log, ["ortg", "drtg"],
@@ -82,7 +82,7 @@ with col_a:
 with col_b:
     st.plotly_chart(win_loss_timeline(period), use_container_width=True)
 
-# ── Four Factors Breakdown ────────────────────────────────────────────────────────────────────
+# ── Four Factors Breakdown ───────────────────────────────────────────────────────
 st.markdown("---")
 st.markdown("### Four Factors — Selected Period")
 
@@ -98,4 +98,4 @@ with col2:
     for label, col_name in [("eFG%", "efg_pct"), ("TOV%", "tov_pct"), ("OREB%", "oreb_pct"), ("FT Rate", "ft_rate")]:
         vals = game_log.sort_values("game_date")[col_name].tolist()
         st.markdown(f"**{label}**")
-        st.plotly_chart(sparkline(vals[-20:], color=COLORS["rich_red"]), use_container_width=True)
+        st.plotly_chart(sparkline(vals[-20:], color=COLORS["accent_primary"]), use_container_width=True)
