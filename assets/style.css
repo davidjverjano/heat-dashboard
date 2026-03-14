@@ -668,3 +668,258 @@ a {
     letter-spacing: 1.5px;
     color: var(--accent-primary);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE — < 768px
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+    /* ── Reduce main content padding ─────────────────────────────────────── */
+    [data-testid="stAppViewContainer"] .block-container {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        padding-top: 1rem !important;
+    }
+
+    /* ── Nav bar — compact ───────────────────────────────────────────────── */
+    .cc-nav-inner {
+        height: 48px;
+        gap: 12px;
+        padding: 0 8px;
+    }
+
+    .cc-nav-brand-text {
+        font-size: 11px !important;
+        letter-spacing: 1.5px !important;
+    }
+
+    .cc-nav-season {
+        font-size: 9px !important;
+        padding: 3px 8px !important;
+    }
+
+    /* Nav links row — horizontal scroll, no wrap */
+    .cc-top-nav + div [data-testid="stHorizontalBlock"] {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        flex-wrap: nowrap !important;
+        margin: -1.5rem -4px 1rem -4px !important;
+        padding: 0 4px 6px 4px !important;
+        gap: 0px !important;
+        scrollbar-width: none !important;
+    }
+
+    .cc-top-nav + div [data-testid="stHorizontalBlock"]::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    /* Shrink each nav link for mobile */
+    [data-testid="stPageLink"] a {
+        padding: 6px 10px !important;
+        font-size: 10px !important;
+    }
+
+    [data-testid="stPageLink"],
+    [data-testid="stPageLink"] a,
+    [data-testid="stPageLink"] a * {
+        font-size: 10px !important;
+        letter-spacing: 1px !important;
+    }
+
+    /* Force horizontal block children to not shrink */
+    .cc-top-nav + div [data-testid="stHorizontalBlock"] > div {
+        flex-shrink: 0 !important;
+        min-width: auto !important;
+    }
+
+    /* ── Headers — smaller on mobile ─────────────────────────────────────── */
+    h1 {
+        font-size: 1.5rem !important;
+        padding-bottom: 6px !important;
+    }
+
+    h2 {
+        font-size: 0.9rem !important;
+        gap: 10px !important;
+    }
+
+    h3 {
+        font-size: 0.78rem !important;
+        gap: 8px !important;
+    }
+
+    .cc-section-header {
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .cc-section-header h2 {
+        font-size: 14px !important;
+        letter-spacing: 2px !important;
+    }
+
+    /* ── Metric cards — tighter on mobile ────────────────────────────────── */
+    [data-testid="stMetric"] {
+        padding: 10px 12px !important;
+        border-radius: 6px !important;
+    }
+
+    [data-testid="stMetric"] [data-testid="stMetricValue"] {
+        font-size: 1.2rem !important;
+    }
+
+    .cc-kpi-card {
+        padding: 14px 16px;
+        border-radius: 8px;
+    }
+
+    .cc-kpi-value {
+        font-size: 1.4rem;
+    }
+
+    /* ── Hero strip — stack vertically on mobile ─────────────────────────── */
+    .cc-hero-strip {
+        padding: 16px;
+        gap: 12px;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .cc-hero-stat-value {
+        font-size: 20px;
+    }
+
+    .cc-hero-sep {
+        height: 28px;
+    }
+
+    /* ── Rating cards — compact ──────────────────────────────────────────── */
+    .cc-rating-card {
+        padding: 16px;
+        gap: 12px;
+        border-radius: 8px;
+    }
+
+    .cc-rank-number {
+        font-size: 36px;
+    }
+
+    .cc-rating-value {
+        font-size: 18px;
+    }
+
+    /* ── Tables — horizontal scroll with momentum ────────────────────────── */
+    [data-testid="stDataFrame"] {
+        border-radius: 8px !important;
+    }
+
+    /* Custom HTML tables (standings, box scores) */
+    div[style*="overflow-x"] {
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    /* ── Plotly charts — reduce min height ───────────────────────────────── */
+    .js-plotly-plot {
+        min-height: 280px !important;
+    }
+
+    /* Hide Plotly modebar on mobile (too cramped) */
+    .js-plotly-plot .plotly .modebar {
+        display: none !important;
+    }
+
+    /* ── Columns — let Streamlit columns stack naturally ─────────────────── */
+    [data-testid="stHorizontalBlock"]:not(.cc-top-nav + div [data-testid="stHorizontalBlock"]) {
+        flex-wrap: wrap !important;
+    }
+
+    [data-testid="stHorizontalBlock"]:not(.cc-top-nav + div [data-testid="stHorizontalBlock"]) > div {
+        min-width: 100% !important;
+    }
+
+    /* ── Game cards — smaller ────────────────────────────────────────────── */
+    .cc-game-card {
+        padding: 12px;
+    }
+
+    .cc-game-opp {
+        font-size: 11px;
+    }
+
+    .cc-game-score {
+        font-size: 14px;
+    }
+
+    /* ── Tabs — scrollable on mobile ─────────────────────────────────────── */
+    .stTabs [data-baseweb="tab-list"] {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        flex-wrap: nowrap !important;
+        scrollbar-width: none !important;
+    }
+
+    .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    .stTabs [data-baseweb="tab"] {
+        padding: 6px 12px !important;
+        font-size: 0.65rem !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* ── Selectboxes — full width ────────────────────────────────────────── */
+    [data-testid="stSelectbox"] {
+        width: 100% !important;
+    }
+
+    /* ── Hide Streamlit footer and header chrome ─────────────────────────── */
+    footer { display: none !important; }
+
+    /* ── Iframe embed (parent page) — ensure no double scroll ────────────── */
+    [data-testid="stAppViewContainer"] {
+        overflow-x: hidden !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SMALL MOBILE — < 420px (iPhone SE, older devices)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 420px) {
+
+    .cc-nav-brand-text {
+        font-size: 10px !important;
+        letter-spacing: 1px !important;
+    }
+
+    .cc-nav-season {
+        font-size: 8px !important;
+        padding: 2px 6px !important;
+    }
+
+    h1 {
+        font-size: 1.3rem !important;
+    }
+
+    .cc-hero-strip {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .cc-hero-stat-value {
+        font-size: 18px;
+    }
+
+    .cc-hero-stat-label {
+        font-size: 9px;
+    }
+
+    .cc-rank-number {
+        font-size: 28px;
+    }
+
+    .cc-rating-card {
+        padding: 12px;
+        gap: 10px;
+    }
+}
