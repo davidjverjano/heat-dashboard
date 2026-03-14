@@ -3,107 +3,149 @@
 import pathlib
 import streamlit as st
 import pandas as pd
+import numpy as np
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 from components.page_setup import setup_page
 setup_page()
 
-from utils.data_loader import load_game_log
-from utils.calculations import win_pct, last_n_record, current_streak
-from components.charts import season_radar_chart, home_away_splits_chart
+from utils.data_loader import load_game_log, load_league_averages
+from utils.calculations import season_splits
+from components.tables import comparison_table
+from components.charts import radar_chart, scatter_plot, bar_chart
+from components.theme import COLORS, apply_plotly_theme
+import plotly.graph_objects as go
 
 st.markdown("# SEASON VIEW")
 
-# ── Load Data ────────────────────────────────────────────────────────────────
+# ── Load Data ─────────────────────────────────────────────────────────────────
 game_log = load_game_log()
+league_avg = load_league_averages()
 
-# ── Season Averages ───────────────────────────────────────────────────────────
-total_w = int((game_log["result"] == "W").sum())
-total_l = int((game_log["result"] == "L").sum())
-wp = win_pct(total_w, total_l)
-avg_ortg = game_log["ortg"].mean()
-avg_drtg = game_log["drtg"].mean()
-avg_pace = game_log["pace"].mean()
-avg_pm = game_log["plus_minus"].mean()
-net_rtg = avg_ortg - avg_drtg
+# ── Team Season Averages ───────────────────────────────────────────────────────
+heat = {
+    "ORtg": round(game_log["ortg"].mean(), 1),
+    "DRtg": round(game_log["drtg"].mean(), 1),
+    "Pace": round(game_log["pace"].mean(), 1),
+    "TS%": round(game_log["ts_pct"].mean(), 3),
+    "eFG%": round(game_log["efg_pct"].mean(), 3),
+    "TOV%": round(game_log["tov_pct"].mean(), 1),
+    "OREB%": round(game_log["oreb_pct"].mean(), 1),
+    "FT Rate": round(game_log["ft_rate"].mean(), 3),
+    "FG%": round(game_log["fg_pct"].mean(), 3),
+    "3P%": round(game_log["fg3_pct"].mean(), 3),
+    "FT%": round(game_log["ft_pct"].mean(), 3),
+    "PPG": round(game_log["team_score"].mean(), 1),
+    "RPG": round(game_log["reb"].mean(), 1),
+    "APG": round(game_log["ast"].mean(), 1),
+}
 
-st.markdown(
-    '<div class="cc-section-header"><h2>Season Averages</h2><div class="cc-section-line"></div></div>',
-    unsafe_allow_html=True,
-)
-col1, col2, col3, col4, col5 = st.columns(5)
+league = league_avg["league"]
+east = league_avg["eastern_conference"]
+
+league_mapped = {
+    "ORtg": league["ortg"], "DRtg": league["drtg"], "Pace": league["pace"],
+    "TS%": league["ts_pct"], "eFG%": league["efg_pct"], "TOV%": league["tov_pct"],
+    "OREB%": league["oreb_pct"], "FT Rate": league["ft_rate"],
+    "FG%": league["fg_pct"], "3P%": league["fg3_pct"], "FT%": league["ft_pct"],
+    "PPG": league["ppg"], "RPG": league["rpg"], "APG": league["apg"],
+}
+
+east_mapped = {
+    "ORtg": east["ortg"], "DRtg": east["drtg"], "Pace": east["pace"],
+    "TS%": east["ts_pct"], "eFG%": east["efg_pct"], "TOV%": east["tov_pct"],
+    "OREB%": east["oreb_pct"], "FT Rate": east["ft_rate"],
+    "FG%": east["fg_pct"], "3P%": east["fg3_pct"], "FT%": east["ft_pct"],
+    "PPG": east["ppg"], "RPG": east["rpg"], "APG": east["apg"],
+}
+
+metrics = ["ORtg", "DRtg", "Pace", "TS%", "eFG%", "FG%", "3P%", "FT%", "PPG", "RPG", "APG"]
+
+st.markdown("### Team Metrics Comparison")
+comparison_table(heat, league_mapped, east_mapped, metrics)
+
+st.markdown("---")
+
+# ── Radar Chart & Scatter ──────────────────────────────────────────────────────
+col1, col2 = st.columns(2)
+
 with col1:
-    st.metric("Record", f"{total_w}-{total_l}")
+    st.markdown("### Team Profile")
+    radar_cats = ["ORtg", "eFG%", "FT Rate", "OREB%", "Pace", "AST", "DRtg"]
+    # Normalize to 0-100 scale for radar
+    def normalize(val, metric):
+        ranges = {
+            "ORtg": (105, 120), "eFG%": (0.48, 0.58), "FT Rate": (0.18, 0.32),
+            "OREB%": (20, 32), "Pace": (95, 105), "AST": (22, 30), "DRtg": (105, 120),
+        }
+        lo, hi = ranges.get(metric, (0, 1))
+        raw = heat.get(metric, game_log["ast"].mean() if metric == "AST" else 0)
+        # For DRtg, lower is better — invert
+        if metric == "DRtg":
+            return round(100 - (raw - lo) / (hi - lo) * 100, 1)
+        return round(clamp((raw - lo) / (hi - lo) * 100, 0, 100), 1)
+
+    def clamp(v, lo, hi):
+        return max(lo, min(hi, v))
+
+    radar_vals = [normalize(None, c) for c in radar_cats]
+    st.plotly_chart(radar_chart(radar_cats, radar_vals, title=""), use_container_width=True)
+
 with col2:
-    st.metric("Win%", f"{wp:.3f}")
-with col3:
-    st.metric("Net Rtg", f"{net_rtg:+.1f}")
-with col4:
-    st.metric("Avg ORtg", f"{avg_ortg:.1f}")
-with col5:
-    st.metric("Avg DRtg", f"{avg_drtg:.1f}")
-
-# ── Radar Chart ───────────────────────────────────────────────────────────────
-st.markdown(
-    '<div class="cc-section-header"><h2>Team Profile Radar</h2><div class="cc-section-line"></div></div>',
-    unsafe_allow_html=True,
-)
-radar_cols = ["ortg", "drtg", "pace", "efg_pct", "tov_pct", "orb_pct"]
-if all(c in game_log.columns for c in radar_cols):
-    st.plotly_chart(season_radar_chart(game_log), use_container_width=True)
-else:
-    st.info("Radar chart requires ortg, drtg, pace, efg_pct, tov_pct, orb_pct columns.")
-
-# ── Home / Away Splits ────────────────────────────────────────────────────────
-st.markdown(
-    '<div class="cc-section-header"><h2>Home / Away Splits</h2><div class="cc-section-line"></div></div>',
-    unsafe_allow_html=True,
-)
-if "home_away" in game_log.columns:
-    home = game_log[game_log["home_away"] == "H"]
-    away = game_log[game_log["home_away"] == "A"]
-
-    col_h, col_a = st.columns(2)
-    with col_h:
-        hw = int((home["result"] == "W").sum())
-        hl = int((home["result"] == "L").sum())
-        st.metric("Home Record", f"{hw}-{hl}")
-        st.metric("Home Net Rtg", f"{(home['ortg'].mean() - home['drtg'].mean()):+.1f}")
-    with col_a:
-        aw = int((away["result"] == "W").sum())
-        al = int((away["result"] == "L").sum())
-        st.metric("Away Record", f"{aw}-{al}")
-        st.metric("Away Net Rtg", f"{(away['ortg'].mean() - away['drtg'].mean()):+.1f}")
-
-    st.plotly_chart(home_away_splits_chart(game_log), use_container_width=True)
-
-# ── Monthly Splits ────────────────────────────────────────────────────────────
-if "game_date" in game_log.columns:
-    st.markdown(
-        '<div class="cc-section-header"><h2>Monthly Splits</h2><div class="cc-section-line"></div></div>',
-        unsafe_allow_html=True,
+    st.markdown("### ORtg vs DRtg")
+    # Generate fake league data for context scatter
+    np.random.seed(99)
+    n_teams = 30
+    fake_teams = pd.DataFrame({
+        "ortg": np.random.normal(114, 3.5, n_teams),
+        "drtg": np.random.normal(114, 3.5, n_teams),
+        "team": [f"Team {i}" for i in range(n_teams)],
+    })
+    # Replace one entry with Heat
+    heat_idx = 0
+    fake_teams.loc[heat_idx, "ortg"] = heat["ORtg"]
+    fake_teams.loc[heat_idx, "drtg"] = heat["DRtg"]
+    fake_teams.loc[heat_idx, "team"] = "MIA"
+    st.plotly_chart(
+        scatter_plot(fake_teams, "ortg", "drtg", text_col="team", title="", highlight_idx=heat_idx),
+        use_container_width=True,
     )
-    monthly = game_log.copy()
-    monthly["month"] = monthly["game_date"].dt.strftime("%b %Y")
-    agg = monthly.groupby("month").agg(
-        W=("result", lambda x: (x == "W").sum()),
-        L=("result", lambda x: (x == "L").sum()),
-        ORtg=("ortg", "mean"),
-        DRtg=("drtg", "mean"),
-        Pace=("pace", "mean"),
-    ).reset_index()
-    agg["Net"] = (agg["ORtg"] - agg["DRtg"]).round(1)
-    agg["ORtg"] = agg["ORtg"].round(1)
-    agg["DRtg"] = agg["DRtg"].round(1)
-    agg["Pace"] = agg["Pace"].round(1)
-    st.dataframe(agg, use_container_width=True, hide_index=True)
 
-# ── Full Season Game Log ──────────────────────────────────────────────────────
-with st.expander("Full Season Game Log"):
-    log_cols = ["game_date", "home_away", "opponent", "result", "pts_for", "pts_against",
-                "plus_minus", "ortg", "drtg", "pace"]
-    avail = [c for c in log_cols if c in game_log.columns]
-    display = game_log[avail].copy()
-    if "game_date" in display.columns:
-        display["game_date"] = display["game_date"].dt.strftime("%b %d")
-    st.dataframe(display, use_container_width=True, hide_index=True)
+st.markdown("---")
+
+# ── Category Rankings ──────────────────────────────────────────────────────────
+st.markdown("### Category Rankings")
+rank_cats = ["PPG", "RPG", "APG", "FG%", "3P%"]
+col_list = st.columns(len(rank_cats))
+for col, cat in zip(col_list, rank_cats):
+    with col:
+        heat_val = heat[cat]
+        league_val = league_mapped[cat]
+        diff = heat_val - league_val
+        st.metric(cat, f"{heat_val}", delta=f"{diff:+.1f} vs Lg Avg")
+
+# ── Season Splits ──────────────────────────────────────────────────────────────
+st.markdown("---")
+st.markdown("### Season Splits")
+
+splits = season_splits(game_log)
+
+col_h, col_a = st.columns(2)
+with col_h:
+    st.markdown("**Home**")
+    st.markdown(f"### {splits['home']['wins']}-{splits['home']['losses']}")
+with col_a:
+    st.markdown("**Away**")
+    st.markdown(f"### {splits['away']['wins']}-{splits['away']['losses']}")
+
+st.markdown("#### Monthly Breakdown")
+months = list(splits["monthly"].keys())
+m_wins = [splits["monthly"][m]["wins"] for m in months]
+m_losses = [splits["monthly"][m]["losses"] for m in months]
+
+fig = go.Figure()
+fig.add_trace(go.Bar(name="Wins", x=months, y=m_wins, marker_color=COLORS["win_green"]))
+fig.add_trace(go.Bar(name="Losses", x=months, y=m_losses, marker_color=COLORS["loss_red"]))
+fig.update_layout(barmode="stack", height=300, title="", xaxis_title="", yaxis_title="Games")
+apply_plotly_theme(fig)
+st.plotly_chart(fig, use_container_width=True)

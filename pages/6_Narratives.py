@@ -1,122 +1,148 @@
-"""Page 6 — Narratives: Auto-generated text insights and analysis report."""
+"""Page 6 — Narratives: AI-style story cards, trends, and game notes."""
 
 import pathlib
 import streamlit as st
 import pandas as pd
+from datetime import timedelta
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 from components.page_setup import setup_page
 setup_page()
 
-from utils.data_loader import load_game_log, load_player_stats
-from utils.calculations import win_pct, current_streak, last_n_record
+from utils.data_loader import load_game_log, load_player_game_log, load_player_season_stats, load_schedule
+from utils.calculations import last_n_record, current_streak, win_pct, four_factors, opponent_four_factors
+from components.metrics import kpi_row
+from components.theme import COLORS
 
 st.markdown("# NARRATIVES")
 
-# ── Load Data ────────────────────────────────────────────────────────────────
+# ── Load Data ─────────────────────────────────────────────────────────────────
 game_log = load_game_log()
-player_stats = load_player_stats()
+player_gl = load_player_game_log()
+player_season = load_player_season_stats()
+schedule = load_schedule()
 
-# ── Season Storyline ──────────────────────────────────────────────────────────
-st.markdown(
-    '<div class="cc-section-header"><h2>Season Storyline</h2><div class="cc-section-line"></div></div>',
-    unsafe_allow_html=True,
-)
+# ── Story Cards ────────────────────────────────────────────────────────────────
+def story_card(title: str, body: str, color: str = COLORS["accent_primary"], icon: str = "▸"):
+    st.markdown(
+        f"""
+        <div style="
+            background:#1e1d1b;
+            border-left: 4px solid {color};
+            border-radius: 0 12px 12px 0;
+            padding: 18px 22px;
+            margin-bottom: 18px;
+        ">
+            <div style="color:{color}; font-family:'Hyperspace Wide','Hyperspace',sans-serif; font-size:10px; letter-spacing:3px; text-transform:uppercase; margin-bottom:6px;">
+                {icon} {title}
+            </div>
+            <div style="color:#FFFCF2; font-family:-apple-system,system-ui,sans-serif; font-size:0.95rem; line-height:1.6;">
+                {body}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
+
+# ── Season Arc ─────────────────────────────────────────────────────────────────
 total_w = int((game_log["result"] == "W").sum())
 total_l = int((game_log["result"] == "L").sum())
 wp = win_pct(total_w, total_l)
 l10_w, l10_l = last_n_record(game_log, 10)
 s_type, s_count = current_streak(game_log)
-avg_pm = game_log["plus_minus"].mean()
-net_rtg = game_log["ortg"].mean() - game_log["drtg"].mean()
 
-streak_word = "winning" if s_type == "W" else "losing"
-coverage = "above" if wp >= 0.500 else "below"
+if wp >= 0.600:
+    arc_tone = "contender"
+elif wp >= 0.500:
+    arc_tone = "bubble team"
+else:
+    arc_tone = "rebuilding squad"
 
-story = f"""
-The Heat are currently **{total_w}-{total_l}** ({wp:.3f}) on the season, sitting {coverage} .500.
-They are on a **{s_count}-game {streak_word} streak** and have gone **{l10_w}-{l10_l}** over the last 10 games.
-
-Offensively, the team averages a **{game_log['ortg'].mean():.1f} offensive rating** and defensively a **{game_log['drtg'].mean():.1f} defensive rating**,
-for a net rating of **{net_rtg:+.1f}**. Their average scoring margin per game is **{avg_pm:+.1f} points**.
-"""
-st.markdown(story)
-
-# ── Trend Analysis ────────────────────────────────────────────────────────────
-st.markdown(
-    '<div class="cc-section-header"><h2>Trend Analysis</h2><div class="cc-section-line"></div></div>',
-    unsafe_allow_html=True,
+story_card(
+    "Season Arc",
+    f"At {total_w}-{total_l} ({wp:.3f}), the Heat project as a <strong>{arc_tone}</strong> this season. "
+    f"Their last-10 record of {l10_w}-{l10_l} hints at {'rising momentum' if l10_w > l10_l else 'a recent struggle'}. "
+    f"Current streak: <strong>{s_type}{s_count}</strong>.",
+    color=COLORS["accent_primary"],
 )
 
-# Split first half vs second half
-half = len(game_log) // 2
-first_half = game_log.iloc[:half]
-second_half = game_log.iloc[half:]
+# ── Offensive Identity ─────────────────────────────────────────────────────────
+avg_ortg = round(game_log["ortg"].mean(), 1)
+avg_pace = round(game_log["pace"].mean(), 1)
+avg_ts = round(game_log["ts_pct"].mean(), 3)
+avg_tov = round(game_log["tov_pct"].mean(), 1)
 
-if len(first_half) > 0 and len(second_half) > 0:
-    fh_net = first_half["ortg"].mean() - first_half["drtg"].mean()
-    sh_net = second_half["ortg"].mean() - second_half["drtg"].mean()
-    fh_w = int((first_half["result"] == "W").sum())
-    fh_l = int((first_half["result"] == "L").sum())
-    sh_w = int((second_half["result"] == "W").sum())
-    sh_l = int((second_half["result"] == "L").sum())
+pace_desc = "up-tempo" if avg_pace > 100 else "methodical"
+ts_desc = "efficient" if avg_ts > 0.575 else "league-average"
+tov_desc = "careless" if avg_tov > 14 else "disciplined"
 
-    direction = "improving" if sh_net > fh_net else "declining"
-    delta = abs(sh_net - fh_net)
+story_card(
+    "Offensive Identity",
+    f"Miami plays a <strong>{pace_desc}</strong> style (pace {avg_pace}) with <strong>{ts_desc}</strong> scoring (TS% {avg_ts:.1%}). "
+    f"Ball security has been <strong>{tov_desc}</strong> with a {avg_tov:.1f}% turnover rate. "
+    f"Offensive rating: <strong>{avg_ortg}</strong>.",
+    color=COLORS["heat_red"],
+)
 
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown("**First Half of Season**")
-        st.metric("Record", f"{fh_w}-{fh_l}")
-        st.metric("Net Rating", f"{fh_net:+.1f}")
-    with col2:
-        st.markdown("**Second Half of Season**")
-        st.metric("Record", f"{sh_w}-{sh_l}")
-        st.metric("Net Rating", f"{sh_net:+.1f}")
+# ── Defensive Narrative ────────────────────────────────────────────────────────
+avg_drtg = round(game_log["drtg"].mean(), 1)
+avg_opp_efg = round(game_log["opp_efg_pct"].mean(), 3)
 
-    st.markdown(
-        f"The team's net rating is **{direction}** from the first half to the second half, "
-        f"shifting by **{delta:.1f} points** ({fh_net:+.1f} → {sh_net:+.1f})."
+def_grade = "elite" if avg_drtg < 110 else ("solid" if avg_drtg < 114 else "below-average")
+
+story_card(
+    "Defensive Stand",
+    f"Miami's defense grades as <strong>{def_grade}</strong> with a {avg_drtg} DRtg. "
+    f"Opponents are shooting {avg_opp_efg:.1%} eFG%, "
+    f"{'well below' if avg_opp_efg < 0.52 else 'near'} league average.",
+    color="#5B8DD9",
+)
+
+# ── Hot Player ─────────────────────────────────────────────────────────────────
+recent_games = game_log.sort_values("game_date", ascending=False).head(5)
+recent_ids = recent_games["game_id"].tolist()
+recent_player_gl = player_gl[player_gl["game_id"].isin(recent_ids)]
+
+if not recent_player_gl.empty:
+    player_avg = recent_player_gl.groupby("player_name")["pts"].mean()
+    hot_player = player_avg.idxmax()
+    hot_ppg = round(player_avg.max(), 1)
+    story_card(
+        "Hot Hand",
+        f"<strong>{hot_player}</strong> has been the standout performer over the last 5 games, "
+        f"averaging <strong>{hot_ppg} PPG</strong> in that stretch.",
+        color=COLORS["win_green"],
+        icon="🔥",
     )
 
-# ── Key Players ───────────────────────────────────────────────────────────────
-if not player_stats.empty and "player" in player_stats.columns and "pts" in player_stats.columns:
-    st.markdown(
-        '<div class="cc-section-header"><h2>Key Players</h2><div class="cc-section-line"></div></div>',
-        unsafe_allow_html=True,
+# ── Schedule Outlook ───────────────────────────────────────────────────────────
+st.markdown("---")
+st.markdown("### Schedule Outlook")
+
+upcoming = schedule.head(7).copy()
+if not upcoming.empty:
+    upcoming["game_date"] = upcoming["game_date"].dt.strftime("%b %d")
+    upcoming["H/A"] = upcoming["home_away"].apply(lambda x: "🏠" if x == "Home" else "✈")
+    display = upcoming[["game_date", "H/A", "opponent", "game_time"]].rename(
+        columns={"game_date": "Date", "opponent": "Opponent", "game_time": "Time"}
     )
+    st.dataframe(display, use_container_width=True, hide_index=True)
 
-    agg = player_stats.groupby("player").agg(
-        pts=("pts", "mean"),
-        reb=("reb", "mean") if "reb" in player_stats.columns else ("pts", "mean"),
-        ast=("ast", "mean") if "ast" in player_stats.columns else ("pts", "mean"),
-    ).round(1).reset_index()
+# ── Game Notes ─────────────────────────────────────────────────────────────────
+st.markdown("---")
+st.markdown("### Recent Game Notes")
 
-    top3 = agg.nlargest(3, "pts")
-    cols = st.columns(3)
-    for i, (_, row) in enumerate(top3.iterrows()):
-        with cols[i]:
-            st.markdown(
-                f"""
-                <div class="cc-kpi-card">
-                    <div class="cc-kpi-label">Top Scorer</div>
-                    <div class="cc-kpi-value">{row['player']}</div>
-                    <div class="cc-kpi-delta">{row['pts']} PPG · {row.get('reb', '—')} RPG · {row.get('ast', '—')} APG</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
-# ── Notebook / Notes ──────────────────────────────────────────────────────────
-st.markdown(
-    '<div class="cc-section-header"><h2>Analyst Notes</h2><div class="cc-section-line"></div></div>',
-    unsafe_allow_html=True,
-)
-notes = st.text_area(
-    "Add your own observations:",
-    placeholder="e.g. Butler has been inconsistent in the 4th quarter...",
-    height=120,
-)
-if notes:
-    st.markdown(f"> {notes}")
+recent_5 = game_log.sort_values("game_date", ascending=False).head(5)
+for _, row in recent_5.iterrows():
+    result_color = COLORS["win_green"] if row.result == "W" else COLORS["loss_red"]
+    margin = abs(row.plus_minus)
+    margin_desc = "blowout" if margin > 15 else ("comfortable" if margin > 7 else "close")
+    ha = "vs" if row.home_away == "Home" else "@"
+    story_card(
+        f"{row.game_date.strftime('%b %d')} — {ha} {row.opponent}",
+        f"<span style='color:{result_color}; font-weight:700;'>{row.result} {row.team_score}-{row.opponent_score}</span> "
+        f"| {margin_desc} {margin}-point {'win' if row.result == 'W' else 'loss'}. "
+        f"ORtg {row.ortg:.1f} / DRtg {row.drtg:.1f} / Pace {row.pace:.1f}.",
+        color=result_color,
+    )

@@ -8,104 +8,103 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 from components.page_setup import setup_page
 setup_page()
 
-from utils.data_loader import load_game_log, load_player_stats
-from utils.calculations import win_pct
-from components.metrics import hero_stats_strip
-from components.charts import shot_zone_chart, player_comparison_radar
+from utils.data_loader import load_game_log, load_player_game_log
+from components.metrics import kpi_row
+from components.tables import box_score_table
+from components.charts import four_factors_bar
+from components.theme import COLORS
 
 st.markdown("# LAST GAME")
 
-# ── Load Data ────────────────────────────────────────────────────────────────
+# ── Load Data ─────────────────────────────────────────────────────────────────
 game_log = load_game_log()
-player_stats = load_player_stats()
+player_gl = load_player_game_log()
 
-# Most recent game
-last = game_log.iloc[-1]
+# Game selector
+game_dates = game_log.sort_values("game_date", ascending=False)["game_date"]
+game_options = {
+    f"{row.game_date.strftime('%b %d')} — {'vs' if row.home_away == 'Home' else '@'} {row.opponent} ({row.result} {row.team_score}-{row.opponent_score})": row.game_id
+    for _, row in game_log.sort_values("game_date", ascending=False).iterrows()
+}
+selected_label = st.selectbox("Select Game", list(game_options.keys()))
+selected_id = game_options[selected_label]
 
-# ── Hero Strip ────────────────────────────────────────────────────────────────
-result_color = "#3fb950" if last["result"] == "W" else "#F25C54"
-opp_label = f"{'vs' if last['home_away'] == 'H' else '@'} {last['opponent']}"
+game = game_log[game_log["game_id"] == selected_id].iloc[0]
+players = player_gl[player_gl["game_id"] == selected_id]
 
-hero_stats_strip([
-    {"label": "Result", "value": last["result"]},
-    {"label": "Opponent", "value": opp_label},
-    {"label": "Score", "value": f"{last['pts_for']}-{last['pts_against']}"},
-    {"label": "+/-", "value": f"{last['plus_minus']:+d}"},
-    {"label": "ORtg", "value": f"{last['ortg']:.1f}"},
-    {"label": "DRtg", "value": f"{last['drtg']:.1f}"},
-    {"label": "Pace", "value": f"{last['pace']:.1f}"},
+# ── Header ────────────────────────────────────────────────────────────────────
+prefix = "vs" if game.home_away == "Home" else "@"
+badge_color = COLORS["win_green"] if game.result == "W" else COLORS["loss_red"]
+
+st.markdown(
+    f"""
+    <div style="display:flex; align-items:center; gap:20px; margin-bottom:20px;">
+        <span style="background:{badge_color}; color:#fff; padding:8px 20px; border-radius:24px; font-size:1.3rem; font-weight:700;">
+            {game.result}
+        </span>
+        <div>
+            <span style="font-size:1.5rem; font-weight:800; color:#FFFCF2; font-family:-apple-system,system-ui,sans-serif; font-variant-numeric:tabular-nums;">
+                Miami Heat {game.team_score} — {game.opponent_score} {game.opponent}
+            </span><br>
+            <span style="color:#b0ada6; font-size:0.9rem;">{game.game_date.strftime('%B %d, %Y')} &nbsp;|&nbsp; {game.home_away}</span>
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# ── Team Advanced Stats ────────────────────────────────────────────────────────
+kpi_row([
+    {"label": "Off Rating", "value": f"{game.ortg:.1f}"},
+    {"label": "Def Rating", "value": f"{game.drtg:.1f}"},
+    {"label": "Pace", "value": f"{game.pace:.1f}"},
+    {"label": "TS%", "value": f"{game.ts_pct:.1%}"},
+    {"label": "eFG%", "value": f"{game.efg_pct:.1%}"},
 ])
 
+st.markdown("---")
+
 # ── Box Score ─────────────────────────────────────────────────────────────────
-st.markdown(
-    '<div class="cc-section-header"><h2>Box Score</h2><div class="cc-section-line"></div></div>',
-    unsafe_allow_html=True,
-)
+st.markdown("### Box Score")
+box_score_table(players)
 
-# Filter player stats for last game date
-last_date = last["game_date"]
-game_players = player_stats[player_stats["game_date"] == last_date].copy()
+# ── Top Performer ─────────────────────────────────────────────────────────────
+st.markdown("---")
+col1, col2 = st.columns([1, 1])
 
-if game_players.empty:
-    st.info("No player data available for this game.")
-else:
-    display_cols = ["player", "min", "pts", "reb", "ast", "stl", "blk", "to", "fg_pct", "fg3_pct", "plus_minus"]
-    available = [c for c in display_cols if c in game_players.columns]
-    box = game_players[available].sort_values("pts", ascending=False)
-    st.dataframe(box, use_container_width=True, hide_index=True)
-
-# ── Advanced Stats ────────────────────────────────────────────────────────────
-st.markdown(
-    '<div class="cc-section-header"><h2>Advanced Stats</h2><div class="cc-section-line"></div></div>',
-    unsafe_allow_html=True,
-)
-
-col1, col2, col3, col4 = st.columns(4)
 with col1:
-    st.metric("Off Rating", f"{last['ortg']:.1f}")
-with col2:
-    st.metric("Def Rating", f"{last['drtg']:.1f}")
-with col3:
-    st.metric("Net Rating", f"{last['ortg'] - last['drtg']:.1f}")
-with col4:
-    st.metric("Pace", f"{last['pace']:.1f}")
-
-# ── Four Factors ─────────────────────────────────────────────────────────────
-if all(c in last.index for c in ["efg_pct", "tov_pct", "orb_pct", "ft_rate"]):
-    st.markdown(
-        '<div class="cc-section-header"><h2>Four Factors</h2><div class="cc-section-line"></div></div>',
-        unsafe_allow_html=True,
-    )
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.metric("eFG%", f"{last['efg_pct']:.3f}")
-    with col2:
-        st.metric("TOV%", f"{last['tov_pct']:.1f}")
-    with col3:
-        st.metric("ORB%", f"{last['orb_pct']:.1f}")
-    with col4:
-        st.metric("FT Rate", f"{last['ft_rate']:.3f}")
-
-# ── Top Performers ─────────────────────────────────────────────────────────────
-if not game_players.empty and "pts" in game_players.columns:
-    st.markdown(
-        '<div class="cc-section-header"><h2>Top Performers</h2><div class="cc-section-line"></div></div>',
-        unsafe_allow_html=True,
-    )
-    top3 = game_players.nlargest(3, "pts")
-    cols = st.columns(3)
-    for i, (_, row) in enumerate(top3.iterrows()):
-        with cols[i]:
-            pts = int(row.get("pts", 0))
-            reb = int(row.get("reb", 0))
-            ast = int(row.get("ast", 0))
-            st.markdown(
-                f"""
-                <div class="cc-kpi-card">
-                    <div class="cc-kpi-label">{row.get('player', 'Player')}</div>
-                    <div class="cc-kpi-value">{pts} PTS</div>
-                    <div class="cc-kpi-delta">{reb} REB · {ast} AST</div>
+    st.markdown("### Top Performer")
+    if not players.empty:
+        top = players.loc[players["game_score"].idxmax()]
+        st.markdown(
+            f"""
+            <div class="cc-kpi-card">
+                <div style="font-size:1.3rem; font-weight:700; color:#F7B267; font-family:'Hyperspace','Barlow Condensed',sans-serif;">{top.player_name}</div>
+                <div style="color:#FFFCF2; font-size:1.1rem; margin-top:8px; font-family:-apple-system,system-ui,sans-serif; font-variant-numeric:tabular-nums;">
+                    {int(top.pts)} PTS &nbsp;|&nbsp; {int(top.reb)} REB &nbsp;|&nbsp; {int(top.ast)} AST
                 </div>
-                """,
-                unsafe_allow_html=True,
-            )
+                <div style="color:#b0ada6; margin-top:4px; font-family:-apple-system,system-ui,sans-serif; font-variant-numeric:tabular-nums;">
+                    {top.fg}/{top.fga} FG &nbsp;|&nbsp; {top.fg3}/{top.fg3a} 3P &nbsp;|&nbsp;
+                    Game Score: {top.game_score:.1f}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+# ── Four Factors ──────────────────────────────────────────────────────────────
+with col2:
+    st.markdown("### Four Factors")
+    team_ff = {
+        "eFG%": round(game.efg_pct * 100, 1),
+        "TOV%": round(game.tov_pct, 1),
+        "OREB%": round(game.oreb_pct, 1),
+        "FT Rate": round(game.ft_rate, 3),
+    }
+    opp_ff = {
+        "eFG%": round(game.opp_efg_pct * 100, 1),
+        "TOV%": round(game.opp_tov_pct, 1),
+        "OREB%": round(game.opp_oreb_pct, 1),
+        "FT Rate": round(game.opp_ft_rate, 3),
+    }
+    st.plotly_chart(four_factors_bar(team_ff, opp_ff, title=""), use_container_width=True)
