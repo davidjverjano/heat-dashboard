@@ -1,1 +1,34 @@
-{"league": {"ppg": 113.5, "oppg": 113.5, "pace": 99.2, "efg_pct": 0.535, "tov_pct": 13.2, "orb_pct": 27.1, "ft_rate": 0.198, "oefg_pct": 0.535, "otov_pct": 13.2, "odrb_pct": 72.9, "oft_rate": 0.198}, "eastern": {"ppg": 112.8, "oppg": 112.1, "pace": 98.8, "efg_pct": 0.532, "tov_pct": 13.4, "orb_pct": 26.8, "ft_rate": 0.195}}
+{
+  "league": {
+    "ortg": 114.5,
+    "drtg": 114.5,
+    "pace": 100.2,
+    "ts_pct": 0.58,
+    "efg_pct": 0.543,
+    "tov_pct": 10.0,
+    "oreb_pct": 30.0,
+    "ft_rate": 0.266,
+    "ppg": 115.3,
+    "rpg": 43.9,
+    "apg": 26.6,
+    "fg_pct": 0.469,
+    "fg3_pct": 0.358,
+    "ft_pct": 0.783
+  },
+  "eastern_conference": {
+    "ortg": 114.2,
+    "drtg": 114.3,
+    "pace": 100.1,
+    "ts_pct": 0.577,
+    "efg_pct": 0.542,
+    "tov_pct": 10.0,
+    "oreb_pct": 30.0,
+    "ft_rate": 0.256,
+    "ppg": 114.9,
+    "rpg": 44.0,
+    "apg": 27.0,
+    "fg_pct": 0.466,
+    "fg3_pct": 0.359,
+    "ft_pct": 0.782
+  }
+}
