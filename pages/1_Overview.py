@@ -5,9 +5,8 @@ import streamlit as st
 import pandas as pd
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-css_file = ROOT / "assets" / "style.css"
-if css_file.exists():
-    st.markdown(f"<style>{css_file.read_text()}</style>", unsafe_allow_html=True)
+from components.page_setup import setup_page
+setup_page()
 
 from utils.data_loader import load_game_log, load_schedule, load_team_info
 from utils.calculations import last_n_record, current_streak, win_pct
@@ -16,7 +15,7 @@ from components.charts import win_loss_timeline, point_diff_trend
 
 st.markdown("# OVERVIEW")
 
-# ── Load Data ─────────────────────────────────────────────────────────────────────
+# ── Load Data ────────────────────────────────────────────────────────────────
 game_log = load_game_log()
 schedule = load_schedule()
 team_info = load_team_info()
@@ -37,7 +36,7 @@ elif wp >= 0.520:
 else:
     east_rank = "9th"
 
-# ── Hero Stats Strip ─────────────────────────────────────────────────────────────
+# ── Hero Stats Strip ─────────────────────────────────────────────────────────
 l10_w, l10_l = last_n_record(game_log, 10)
 s_type, s_count = current_streak(game_log)
 
@@ -51,14 +50,14 @@ hero_stats_strip([
     {"label": "East Rank", "value": east_rank},
 ])
 
-# ── Win/Loss Timeline ────────────────────────────────────────────────────────────
+# ── Win/Loss Timeline ─────────────────────────────────────────────────────────
 st.markdown(
     '<div class="cc-section-header"><h2>Season Timeline</h2><div class="cc-section-line"></div></div>',
     unsafe_allow_html=True,
 )
 st.plotly_chart(win_loss_timeline(game_log), use_container_width=True)
 
-# ── Layout: Upcoming + Point Diff ─────────────────────────────────────────────────────
+# ── Layout: Upcoming + Point Diff ─────────────────────────────────────────────
 col_a, col_b = st.columns([1, 1])
 
 with col_a:

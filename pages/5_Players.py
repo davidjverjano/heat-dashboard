@@ -5,110 +5,77 @@ import streamlit as st
 import pandas as pd
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-css_file = ROOT / "assets" / "style.css"
-if css_file.exists():
-    st.markdown(f"<style>{css_file.read_text()}</style>", unsafe_allow_html=True)
+from components.page_setup import setup_page
+setup_page()
 
-from utils.data_loader import load_player_season_stats, load_player_game_log
-from components.tables import styled_table
-from components.charts import usage_ts_scatter, bar_chart, plus_minus_distribution, rolling_line_chart
-from components.theme import COLORS
+from utils.data_loader import load_player_stats
+from components.charts import usage_efficiency_scatter, player_comparison_radar
 
 st.markdown("# PLAYERS")
 
-# ── Load Data ─────────────────────────────────────────────────────────────────────
-season_stats = load_player_season_stats()
-player_gl = load_player_game_log()
+# ── Load Data ────────────────────────────────────────────────────────────────
+player_stats = load_player_stats()
 
-# ── Sortable Season Stats Table ───────────────────────────────────────────────────────
-st.markdown("### Season Averages")
-display_cols = ["player_name", "gp", "mpg", "ppg", "rpg", "apg", "spg", "bpg", "topg",
-                "fg_pct", "fg3_pct", "ft_pct", "ts_pct", "usage_pct", "per", "bpm", "net_rtg"]
-available = [c for c in display_cols if c in season_stats.columns]
-display = season_stats[available].copy()
-rename = {
-    "player_name": "Player", "gp": "GP", "mpg": "MPG", "ppg": "PPG", "rpg": "RPG",
-    "apg": "APG", "spg": "SPG", "bpg": "BPG", "topg": "TOPG",
-    "fg_pct": "FG%", "fg3_pct": "3P%", "ft_pct": "FT%", "ts_pct": "TS%",
-    "usage_pct": "USG%", "per": "PER", "bpm": "BPM", "net_rtg": "NET",
-}
-display.rename(columns={k: v for k, v in rename.items() if k in display.columns}, inplace=True)
-styled_table(display, height=450)
+if player_stats.empty:
+    st.warning("No player data available.")
+    st.stop()
 
-st.markdown("---")
+# ── Season Averages Table ─────────────────────────────────────────────────────
+st.markdown(
+    '<div class="cc-section-header"><h2>Season Averages</h2><div class="cc-section-line"></div></div>',
+    unsafe_allow_html=True,
+)
 
-# ── Charts Row ──────────────────────────────────────────────────────────────────────
-col1, col2 = st.columns(2)
+# Aggregate per player
+agg_cols = {"pts": "mean", "reb": "mean", "ast": "mean", "stl": "mean",
+            "blk": "mean", "to": "mean", "min": "mean"}
+avail_agg = {k: v for k, v in agg_cols.items() if k in player_stats.columns}
 
-with col1:
-    st.markdown("### Usage% vs TS%")
-    st.plotly_chart(usage_ts_scatter(season_stats), use_container_width=True)
+if "player" in player_stats.columns and avail_agg:
+    season_avgs = player_stats.groupby("player").agg(avail_agg).round(1).reset_index()
+    season_avgs = season_avgs.sort_values("pts", ascending=False)
+    st.dataframe(season_avgs, use_container_width=True, hide_index=True)
+else:
+    st.dataframe(player_stats.head(20), use_container_width=True, hide_index=True)
 
-with col2:
-    st.markdown("### PPG Leaders")
-    top_scorers = season_stats.head(10)
-    st.plotly_chart(
-        bar_chart(
-            top_scorers["player_name"].tolist(),
-            top_scorers["ppg"].tolist(),
-            title="",
-            highlight_label=top_scorers.iloc[0]["player_name"],
-            horizontal=True,
-            height=350,
-        ),
-        use_container_width=True,
-    )
-
-st.markdown("---")
-
-# ── Player Deep Dive ──────────────────────────────────────────────────────────────────
-st.markdown("### Player Deep Dive")
-players = season_stats["player_name"].tolist()
-selected_player = st.selectbox("Select Player", players)
-
-if selected_player:
-    p_stats = season_stats[season_stats["player_name"] == selected_player].iloc[0]
-    p_games = player_gl[player_gl["player_name"] == selected_player].copy()
-
-    # Player Summary
-    col_a, col_b, col_c, col_d, col_e = st.columns(5)
-    col_a.metric("PPG", f"{p_stats.ppg:.1f}")
-    col_b.metric("RPG", f"{p_stats.rpg:.1f}")
-    col_c.metric("APG", f"{p_stats.apg:.1f}")
-    col_d.metric("TS%", f"{p_stats.ts_pct:.1%}")
-    col_e.metric("Net Rtg", f"{p_stats.net_rtg:+.1f}")
-
-    # On/Off Net Rating
-    st.markdown("#### On/Off Court Impact")
-    on_off = p_stats.get("on_off_net", 0)
-    on_color = COLORS["win_green"] if on_off >= 0 else COLORS["loss_red"]
+# ── Usage / Efficiency Scatter ────────────────────────────────────────────────
+if all(c in player_stats.columns for c in ["player", "usg_pct", "ts_pct"]):
     st.markdown(
-        f"""
-        <div style="background:#2a2926; border:1px solid rgba(247,178,103,0.1); border-radius:12px; padding:12px 20px; display:inline-block;">
-            <span style="color:#6e6b64; font-family:'Hyperspace Wide','Hyperspace',sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase;">On/Off Net: </span>
-            <span style="color:{on_color}; font-weight:800; font-size:1.3rem; font-family:-apple-system,system-ui,sans-serif; font-variant-numeric:tabular-nums;">{on_off:+.1f}</span>
-        </div>
-        """,
+        '<div class="cc-section-header"><h2>Usage vs Efficiency</h2><div class="cc-section-line"></div></div>',
         unsafe_allow_html=True,
     )
+    st.plotly_chart(usage_efficiency_scatter(player_stats), use_container_width=True)
 
-    # Charts
-    col_x, col_y = st.columns(2)
+# ── Player Deep Dive ──────────────────────────────────────────────────────────
+st.markdown(
+    '<div class="cc-section-header"><h2>Player Deep Dive</h2><div class="cc-section-line"></div></div>',
+    unsafe_allow_html=True,
+)
 
-    with col_x:
-        st.markdown("#### +/- Distribution")
-        st.plotly_chart(plus_minus_distribution(player_gl, selected_player), use_container_width=True)
+if "player" in player_stats.columns:
+    players = sorted(player_stats["player"].unique().tolist())
+    selected = st.selectbox("Select Player", players)
 
-    with col_y:
-        st.markdown("#### Rolling Stats")
-        if not p_games.empty:
-            st.plotly_chart(
-                rolling_line_chart(
-                    p_games, ["pts", "reb", "ast"],
-                    labels=["Points", "Rebounds", "Assists"],
-                    title="5-Game Rolling Average",
-                    window=5,
-                    height=300,
-                ),
-                use_container_width=True,
-            )
+    p_data = player_stats[player_stats["player"] == selected].copy()
+
+    # Per-game trend
+    if "game_date" in p_data.columns and "pts" in p_data.columns:
+        p_data = p_data.sort_values("game_date")
+        st.markdown("**Points per Game**")
+        st.line_chart(p_data.set_index("game_date")["pts"])
+
+    # Season stat line
+    stat_cols = ["pts", "reb", "ast", "stl", "blk", "to", "fg_pct", "fg3_pct", "ft_pct", "min"]
+    avail_stat = [c for c in stat_cols if c in p_data.columns]
+    if avail_stat:
+        avg_row = p_data[avail_stat].mean().round(2).to_frame(name="Season Avg").T
+        st.dataframe(avg_row, use_container_width=True)
+
+    # Radar comparison
+    radar_stats = ["pts", "reb", "ast", "stl", "blk"]
+    if all(c in player_stats.columns for c in radar_stats) and len(players) >= 2:
+        compare_player = st.selectbox("Compare Against", [p for p in players if p != selected])
+        st.plotly_chart(
+            player_comparison_radar(player_stats, selected, compare_player),
+            use_container_width=True,
+        )
