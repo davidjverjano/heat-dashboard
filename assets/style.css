@@ -182,8 +182,17 @@ section[data-testid="stMain"] {
     flex-shrink: 0;
 }
 
+/* Hide the marker div (zero-height) */
+.cc-nav-links-row {
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
 /* Style the st.page_link row as a horizontal nav */
-.cc-top-nav + div [data-testid="stHorizontalBlock"] {
+.cc-top-nav + div [data-testid="stHorizontalBlock"],
+[data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) {
     gap: 2px !important;
     background: var(--bg-secondary) !important;
     margin: -1.5rem -1rem 1.5rem -1rem !important;
@@ -746,7 +755,9 @@ a {
     }
 
     /* ── Nav links row — horizontal scroll with touch momentum ────────── */
-    .cc-top-nav + div [data-testid="stHorizontalBlock"] {
+    /* Target the stHorizontalBlock that contains page links specifically */
+    .cc-top-nav + div [data-testid="stHorizontalBlock"],
+    [data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) {
         overflow-x: auto !important;
         -webkit-overflow-scrolling: touch !important;
         flex-wrap: nowrap !important;
@@ -756,7 +767,8 @@ a {
         scrollbar-width: none !important;
     }
 
-    .cc-top-nav + div [data-testid="stHorizontalBlock"]::-webkit-scrollbar {
+    .cc-top-nav + div [data-testid="stHorizontalBlock"]::-webkit-scrollbar,
+    [data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"])::-webkit-scrollbar {
         display: none !important;
     }
 
@@ -777,7 +789,8 @@ a {
     }
 
     /* Force nav children to not shrink (enable scroll) */
-    .cc-top-nav + div [data-testid="stHorizontalBlock"] > div {
+    .cc-top-nav + div [data-testid="stHorizontalBlock"] > div,
+    [data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) > div {
         flex-shrink: 0 !important;
         min-width: auto !important;
     }
@@ -918,13 +931,13 @@ a {
         display: none !important;
     }
 
-    /* ── Columns — force all Streamlit columns to stack ──────────────────── */
-    [data-testid="stHorizontalBlock"]:not(.cc-top-nav + div [data-testid="stHorizontalBlock"]) {
+    /* ── Columns — force all Streamlit columns to stack (except nav row) ── */
+    [data-testid="stHorizontalBlock"]:not(:has([data-testid="stPageLink"])) {
         flex-wrap: wrap !important;
         gap: 8px !important;
     }
 
-    [data-testid="stHorizontalBlock"]:not(.cc-top-nav + div [data-testid="stHorizontalBlock"]) > div {
+    [data-testid="stHorizontalBlock"]:not(:has([data-testid="stPageLink"])) > div {
         min-width: 100% !important;
         flex-basis: 100% !important;
     }
