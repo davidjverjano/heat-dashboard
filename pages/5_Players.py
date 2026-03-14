@@ -19,7 +19,7 @@ st.markdown("# PLAYERS")
 season_stats = load_player_season_stats()
 player_gl = load_player_game_log()
 
-# ── Sortable Season Stats Table ────────────────────────────────────────────────
+# ── Sortable Season Stats Table ───────────────────────────────────────────────
 st.markdown("### Season Averages")
 display_cols = ["player_name", "gp", "mpg", "ppg", "rpg", "apg", "spg", "bpg", "topg",
                 "fg_pct", "fg3_pct", "ft_pct", "ts_pct", "usage_pct", "per", "bpm", "net_rtg"]
@@ -36,7 +36,7 @@ styled_table(display, height=450)
 
 st.markdown("---")
 
-# ── Charts Row ─────────────────────────────────────────────────────────────────
+# ── Charts Row ────────────────────────────────────────────────────────────────
 col1, col2 = st.columns(2)
 
 with col1:
@@ -60,7 +60,7 @@ with col2:
 
 st.markdown("---")
 
-# ── Player Deep Dive ───────────────────────────────────────────────────────────
+# ── Player Deep Dive ──────────────────────────────────────────────────────────
 st.markdown("### Player Deep Dive")
 players = season_stats["player_name"].tolist()
 selected_player = st.selectbox("Select Player", players)
@@ -69,13 +69,21 @@ if selected_player:
     p_stats = season_stats[season_stats["player_name"] == selected_player].iloc[0]
     p_games = player_gl[player_gl["player_name"] == selected_player].copy()
 
-    # Player Summary
+    # Player Summary — Row 1: Counting stats
     col_a, col_b, col_c, col_d, col_e = st.columns(5)
     col_a.metric("PPG", f"{p_stats.ppg:.1f}")
     col_b.metric("RPG", f"{p_stats.rpg:.1f}")
     col_c.metric("APG", f"{p_stats.apg:.1f}")
-    col_d.metric("TS%", f"{p_stats.ts_pct:.1%}")
-    col_e.metric("Net Rtg", f"{p_stats.net_rtg:+.1f}")
+    col_d.metric("SPG", f"{p_stats.spg:.1f}")
+    col_e.metric("BPG", f"{p_stats.bpg:.1f}")
+
+    # Row 2: Efficiency + advanced
+    col_f, col_g, col_h, col_i, col_j = st.columns(5)
+    col_f.metric("TOPG", f"{p_stats.topg:.1f}")
+    col_g.metric("FG%", f"{p_stats.fg_pct:.1%}")
+    col_h.metric("3P%", f"{p_stats.fg3_pct:.1%}")
+    col_i.metric("TS%", f"{p_stats.ts_pct:.1%}")
+    col_j.metric("Net Rtg", f"{p_stats.net_rtg:+.1f}")
 
     # On/Off Net Rating
     st.markdown("#### On/Off Court Impact")
@@ -103,10 +111,9 @@ if selected_player:
         if not p_games.empty:
             st.plotly_chart(
                 rolling_line_chart(
-                    p_games.sort_values("game_date"),
-                    ["pts", "reb", "ast"],
-                    labels=["PTS", "REB", "AST"],
-                    title="",
+                    p_games, ["pts", "reb", "ast"],
+                    labels=["Points", "Rebounds", "Assists"],
+                    title="5-Game Rolling Average",
                     window=5,
                     height=300,
                 ),
