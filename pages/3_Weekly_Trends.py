@@ -12,8 +12,9 @@ setup_page()
 from utils.data_loader import load_game_log, load_league_averages
 from utils.calculations import four_factors, opponent_four_factors
 from components.metrics import kpi_row
-from components.charts import rolling_line_chart, win_loss_timeline, sparkline, four_factors_bar
-from components.theme import COLORS
+import plotly.graph_objects as go
+from components.charts import rolling_line_chart, win_loss_timeline, four_factors_bar
+from components.theme import COLORS, apply_plotly_theme
 
 st.markdown("# WEEKLY TRENDS")
 
@@ -21,7 +22,7 @@ st.markdown("# WEEKLY TRENDS")
 game_log = load_game_log()
 league_avg = load_league_averages()
 
-# ── Date Range Selector ────────────────────────────────────────────────────────
+# ── Date Range Selector ──────────────────────────────────────────────────────
 min_date = game_log["game_date"].min().date()
 max_date = game_log["game_date"].max().date()
 default_start = max_date - timedelta(days=14)
@@ -39,7 +40,7 @@ if period.empty:
     st.warning("No games found in this date range.")
     st.stop()
 
-# ── Period Record ──────────────────────────────────────────────────────────────
+# ── Period Record ─────────────────────────────────────────────────────────────
 pw = int((period["result"] == "W").sum())
 pl = int((period["result"] == "L").sum())
 avg_ortg = round(period["ortg"].mean(), 1)
@@ -56,7 +57,7 @@ kpi_row([
 
 st.markdown("---")
 
-# ── Rolling Charts ─────────────────────────────────────────────────────────────
+# ── Rolling Charts ────────────────────────────────────────────────────────────
 st.plotly_chart(
     rolling_line_chart(
         game_log, ["ortg", "drtg"],
@@ -81,20 +82,53 @@ with col_a:
 with col_b:
     st.plotly_chart(win_loss_timeline(period), use_container_width=True)
 
-# ── Four Factors Breakdown ─────────────────────────────────────────────────────
+# ── Four Factors Breakdown ────────────────────────────────────────────────────
 st.markdown("---")
 st.markdown("### Four Factors — Selected Period")
 
 team_ff = four_factors(period)
 opp_ff = opponent_four_factors(period)
 
-col1, col2 = st.columns(2)
-with col1:
-    st.plotly_chart(four_factors_bar(team_ff, opp_ff, title="Team vs Opponent"), use_container_width=True)
+st.plotly_chart(four_factors_bar(team_ff, opp_ff, title="Team vs Opponent"), use_container_width=True)
 
-with col2:
-    st.markdown("#### Sparklines")
-    for label, col_name in [("eFG%", "efg_pct"), ("TOV%", "tov_pct"), ("OREB%", "oreb_pct"), ("FT Rate", "ft_rate")]:
-        vals = game_log.sort_values("game_date")[col_name].tolist()
-        st.markdown(f"**{label}**")
-        st.plotly_chart(sparkline(vals[-20:], color=COLORS["accent_primary"]), use_container_width=True)
+# ── Four Factors Rolling Trends ──────────────────────────────────────────────
+st.markdown("### Four Factors — Rolling Trends")
+
+gl_sorted = game_log.sort_values("game_date")
+factor_defs = [
+    ("eFG%", "efg_pct", 100),
+    ("TOV%", "tov_pct", 1),
+    ("OREB%", "oreb_pct", 1),
+    ("FT Rate", "ft_rate", 1),
+]
+
+for label, col_name, multiplier in factor_defs:
+    current_val = gl_sorted[col_name].iloc[-5:].mean() * multiplier
+    season_avg = gl_sorted[col_name].mean() * multiplier
+    delta = current_val - season_avg
+    delta_good = (delta > 0) if col_name != "tov_pct" else (delta < 0)
+
+    col_stat, col_chart = st.columns([1, 3])
+    with col_stat:
+        fmt = f"{current_val:.1f}{'%' if multiplier == 100 else ''}"
+        delta_fmt = f"{delta:+.1f}"
+        st.metric(label, fmt, delta_fmt, delta_color="normal" if delta_good else "inverse")
+    with col_chart:
+        rolling = gl_sorted[col_name].rolling(5, min_periods=1).mean() * multiplier
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(
+            x=gl_sorted["game_date"], y=rolling,
+            mode="lines", line=dict(color=COLORS["accent_primary"], width=2.5),
+            fill="tozeroy",
+            fillcolor="rgba(247,178,103,0.08)",
+            hovertemplate=f"{label}: " + "%{y:.1f}<extra></extra>",
+        ))
+        fig.add_hline(y=season_avg, line_dash="dot", line_color=COLORS["text_muted"], opacity=0.4)
+        fig.update_layout(
+            height=120, margin=dict(l=0, r=0, t=8, b=0),
+            xaxis=dict(visible=False), yaxis=dict(visible=False),
+            showlegend=False,
+        )
+        apply_plotly_theme(fig)
+        fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
+        st.plotly_chart(fig, use_container_width=True)
