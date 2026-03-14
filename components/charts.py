@@ -1,4 +1,4 @@
-"""Reusable Plotly chart functions for the Heat dashboard."""
+"""Reusable Plotly chart functions — Courtside Cre8ives design system."""
 
 import plotly.graph_objects as go
 import plotly.express as px
@@ -46,12 +46,12 @@ def point_diff_trend(game_log: pd.DataFrame, window: int = 7) -> go.Figure:
             x=df["game_date"],
             y=df["rolling_diff"],
             mode="lines",
-            line=dict(color=COLORS["yellow_flame"], width=3),
+            line=dict(color=COLORS["accent_primary"], width=3),
             name=f"{window}-Game Rolling Avg",
             hovertemplate="%{x|%b %d}: %{y:+.1f}<extra></extra>",
         )
     )
-    fig.add_hline(y=0, line_dash="dash", line_color=COLORS["warm_grey"], opacity=0.5)
+    fig.add_hline(y=0, line_dash="dash", line_color=COLORS["text_muted"], opacity=0.5)
     fig.update_layout(
         title=f"Point Differential ({window}-Game Rolling)",
         xaxis_title="",
@@ -93,10 +93,10 @@ def rolling_line_chart(
             fig.add_hline(
                 y=val,
                 line_dash="dot",
-                line_color=COLORS["warm_grey"],
+                line_color=COLORS["text_muted"],
                 opacity=0.5,
                 annotation_text=label,
-                annotation_font_color=COLORS["warm_grey"],
+                annotation_font_color=COLORS["text_secondary"],
             )
     fig.update_layout(title=title, xaxis_title="", yaxis_title="", height=height)
     apply_plotly_theme(fig)
@@ -109,8 +109,8 @@ def four_factors_bar(team_vals: dict, opp_vals: dict, title: str = "Four Factors
     team_v = [team_vals.get(f, 0) for f in factors]
     opp_v = [opp_vals.get(f, 0) for f in factors]
     fig = go.Figure()
-    fig.add_trace(go.Bar(name="Heat", x=factors, y=team_v, marker_color=COLORS["rich_red"]))
-    fig.add_trace(go.Bar(name="Opponent", x=factors, y=opp_v, marker_color=COLORS["warm_grey"]))
+    fig.add_trace(go.Bar(name="Heat", x=factors, y=team_v, marker_color=COLORS["accent_primary"]))
+    fig.add_trace(go.Bar(name="Opponent", x=factors, y=opp_v, marker_color=COLORS["text_muted"]))
     fig.update_layout(
         title=title, barmode="group", height=350, yaxis_title="", legend=dict(orientation="h", y=1.12)
     )
@@ -127,16 +127,22 @@ def radar_chart(categories: list, values: list, title: str = "Team Profile") -> 
             r=vals,
             theta=cats,
             fill="toself",
-            fillcolor="rgba(199,81,70,0.25)",
-            line=dict(color=COLORS["rich_red"], width=2),
-            marker=dict(color=COLORS["yellow_flame"], size=6),
+            fillcolor="rgba(247,178,103,0.15)",
+            line=dict(color=COLORS["accent_primary"], width=2),
+            marker=dict(color=COLORS["rich_red"], size=6),
         )
     )
     fig.update_layout(
         polar=dict(
-            bgcolor="#252422",
-            radialaxis=dict(gridcolor="rgba(204,197,185,0.15)", tickfont=dict(color="#CCC5B9", size=10)),
-            angularaxis=dict(gridcolor="rgba(204,197,185,0.15)", tickfont=dict(color="#FFFCF2", size=12)),
+            bgcolor=COLORS["bg_deepest"],
+            radialaxis=dict(
+                gridcolor="rgba(255,252,242,0.06)",
+                tickfont=dict(color=COLORS["text_muted"], size=10),
+            ),
+            angularaxis=dict(
+                gridcolor="rgba(255,252,242,0.06)",
+                tickfont=dict(color=COLORS["text_primary"], size=12),
+            ),
         ),
         title=title,
         height=420,
@@ -164,8 +170,8 @@ def scatter_plot(
             mode="markers+text" if text_col else "markers",
             text=df[text_col] if text_col else None,
             textposition="top center",
-            textfont=dict(size=10, color=COLORS["warm_grey"]),
-            marker=dict(color=COLORS["warm_grey"], size=8, opacity=0.6),
+            textfont=dict(size=10, color=COLORS["text_secondary"]),
+            marker=dict(color=COLORS["text_muted"], size=8, opacity=0.6),
             hovertemplate=f"{x}: " + "%{x:.1f}<br>" + f"{y}: " + "%{y:.1f}<extra></extra>",
         )
     )
@@ -178,8 +184,12 @@ def scatter_plot(
                 mode="markers+text",
                 text=["MIA"],
                 textposition="top center",
-                textfont=dict(size=13, color=COLORS["yellow_flame"]),
-                marker=dict(color=COLORS["rich_red"], size=14, line=dict(width=2, color=COLORS["yellow_flame"])),
+                textfont=dict(size=13, color=COLORS["accent_primary"]),
+                marker=dict(
+                    color=COLORS["rich_red"],
+                    size=14,
+                    line=dict(width=2, color=COLORS["accent_primary"]),
+                ),
                 showlegend=False,
             )
         )
@@ -198,7 +208,7 @@ def bar_chart(
 ) -> go.Figure:
     """Simple bar chart with optional highlighted bar."""
     colors = [
-        COLORS["rich_red"] if l == highlight_label else COLORS["warm_grey"]
+        COLORS["accent_primary"] if l == highlight_label else COLORS["text_muted"]
         for l in labels
     ]
     if horizontal:
@@ -210,7 +220,7 @@ def bar_chart(
     return fig
 
 
-def sparkline(values: list | pd.Series, color: str = COLORS["yellow_flame"], height: int = 80) -> go.Figure:
+def sparkline(values: list | pd.Series, color: str = COLORS["accent_primary"], height: int = 80) -> go.Figure:
     """Minimal sparkline chart."""
     fig = go.Figure(
         go.Scatter(
@@ -218,7 +228,7 @@ def sparkline(values: list | pd.Series, color: str = COLORS["yellow_flame"], hei
             mode="lines",
             line=dict(color=color, width=2),
             fill="tozeroy",
-            fillcolor=color.replace(")", ",0.1)").replace("rgb", "rgba") if "rgb" in color else f"rgba({int(color[1:3],16)},{int(color[3:5],16)},{int(color[5:7],16)},0.1)",
+            fillcolor=f"rgba({int(color[1:3],16)},{int(color[3:5],16)},{int(color[5:7],16)},0.1)",
         )
     )
     fig.update_layout(
@@ -242,11 +252,11 @@ def usage_ts_scatter(player_stats: pd.DataFrame) -> go.Figure:
             mode="markers+text",
             text=player_stats["player_name"].apply(lambda n: n.split()[-1]),
             textposition="top center",
-            textfont=dict(size=10, color=COLORS["off_white"]),
+            textfont=dict(size=10, color=COLORS["text_primary"]),
             marker=dict(
                 size=player_stats["ppg"] * 1.2 + 4,
                 color=COLORS["rich_red"],
-                line=dict(width=1, color=COLORS["yellow_flame"]),
+                line=dict(width=1, color=COLORS["accent_primary"]),
             ),
             hovertemplate=(
                 "<b>%{text}</b><br>"
@@ -270,16 +280,15 @@ def usage_ts_scatter(player_stats: pd.DataFrame) -> go.Figure:
 def plus_minus_distribution(player_game_log: pd.DataFrame, player_name: str) -> go.Figure:
     """Histogram of a player's +/- values."""
     df = player_game_log[player_game_log["player_name"] == player_name]
-    colors = [COLORS["win_green"] if v >= 0 else COLORS["loss_red"] for v in df["plus_minus"]]
     fig = go.Figure(
         go.Histogram(
             x=df["plus_minus"],
-            marker_color=COLORS["rich_red"],
+            marker_color=COLORS["accent_primary"],
             nbinsx=20,
             hovertemplate="+/-: %{x}<br>Count: %{y}<extra></extra>",
         )
     )
-    fig.add_vline(x=0, line_dash="dash", line_color=COLORS["warm_grey"])
+    fig.add_vline(x=0, line_dash="dash", line_color=COLORS["text_muted"])
     fig.update_layout(
         title=f"{player_name} — +/- Distribution",
         xaxis_title="+/-",
