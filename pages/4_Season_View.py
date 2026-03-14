@@ -162,19 +162,20 @@ def _standings_table_html(standings: list) -> str:
     '''
 
 
-st.markdown(_standings_table_html(east_standings), unsafe_allow_html=True)
+def _strip_indent(html: str) -> str:
+    """Remove leading whitespace from each line so Markdown doesn't treat it as code."""
+    return "\n".join(line.lstrip() for line in html.splitlines())
 
-# Legend
-st.markdown(
-    '<div style="font-size:11px;color:#6e6b64;margin-top:8px;font-family:var(--font-data);">'
-    '<span style="color:#3fb950;">■</span> Playoff &nbsp;&nbsp;'
-    '<span style="color:#F7B267;">■</span> Play-In &nbsp;&nbsp;'
-    '<span style="color:#6e6b64;">■</span> Out &nbsp;&nbsp;'
-    '<span style="color:#3fb950;">★</span> Clinched Playoff &nbsp;&nbsp;'
-    '<span style="color:#F25C54;">✗</span> Eliminated'
-    '</div>',
-    unsafe_allow_html=True,
-)
+_standings_with_legend = _standings_table_html(east_standings) + '''
+<div style="font-size:11px;color:#6e6b64;margin-top:8px;font-family:var(--font-data);">
+<span style="color:#3fb950;">■</span> Playoff &nbsp;&nbsp;
+<span style="color:#F7B267;">■</span> Play-In &nbsp;&nbsp;
+<span style="color:#6e6b64;">■</span> Out &nbsp;&nbsp;
+<span style="color:#3fb950;">★</span> Clinched Playoff &nbsp;&nbsp;
+<span style="color:#F25C54;">✗</span> Eliminated
+</div>
+'''
+st.markdown(_strip_indent(_standings_with_legend), unsafe_allow_html=True)
 
 st.markdown("---")
 
@@ -295,7 +296,7 @@ def _bracket_html(standings: list) -> str:
     </div>'''
 
 
-st.markdown(_bracket_html(east_standings), unsafe_allow_html=True)
+st.markdown(_strip_indent(_bracket_html(east_standings)), unsafe_allow_html=True)
 
 st.markdown("---")
 
