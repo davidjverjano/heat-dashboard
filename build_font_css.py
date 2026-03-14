@@ -1,11 +1,14 @@
-"""Generate @font-face CSS with base64-embedded font data.
+"""Load @font-face CSS with base64-embedded font data.
 
-Run once or at app startup to produce a <style> block that works
-inside Streamlit's st.markdown() without needing static file serving.
+Uses a pre-built CSS file (assets/fonts_base64.css) for deployment.
+Falls back to generating from font files at runtime if the pre-built
+file is missing (local development with font files present).
 """
 import base64, pathlib
 
-FONT_DIR = pathlib.Path(__file__).resolve().parent / "assets" / "fonts"
+_ROOT = pathlib.Path(__file__).resolve().parent
+_PREBUILT = _ROOT / "assets" / "fonts_base64.css"
+FONT_DIR = _ROOT / "assets" / "fonts"
 
 FONTS = [
     {
@@ -42,7 +45,17 @@ FONTS = [
 
 
 def build_font_css() -> str:
-    """Return a CSS string with all @font-face rules using data-URIs."""
+    """Return CSS with @font-face rules.
+
+    1. Try pre-built file (works on Streamlit Cloud where font binaries
+       are not present).
+    2. Fall back to generating from raw font files (local dev).
+    """
+    # \u2500\u2500 1. Pre-built file (preferred for deployment) \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+    if _PREBUILT.exists():
+        return _PREBUILT.read_text()
+
+    # \u2500\u2500 2. Generate from font binaries (local development) \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
     blocks = []
     for f in FONTS:
         path = FONT_DIR / f["file"]
@@ -63,5 +76,7 @@ def build_font_css() -> str:
 
 
 if __name__ == "__main__":
-    print(build_font_css()[:500], "...")
-    print(f"\nTotal length: {len(build_font_css())} chars")
+    css = build_font_css()
+    print(css[:500], "...")
+    print(f"\nTotal length: {len(css)} chars")
+    print(f"Source: {'pre-built file' if _PREBUILT.exists() else 'generated from font files'}")
