@@ -111,7 +111,13 @@ html, body, [data-testid="stAppViewContainer"] {
 [data-testid="stSidebar"] {
     display: none !important;
 }
-[data-testid="stSidebarCollapsedControl"] {
+[data-testid="stSidebarCollapsedControl"],
+button[kind="headerNoPadding"] {
+    display: none !important;
+}
+/* Also hide the sidebar toggle arrow in header */
+[data-testid="stHeader"] button[kind="header"],
+[data-testid="collapsedControl"] {
     display: none !important;
 }
 /* Push main content full-width */
@@ -124,20 +130,17 @@ section[data-testid="stMain"] {
 
 /* ── Top Navigation Bar ─────────────────────────────────────────────────── */
 .cc-top-nav {
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    background: var(--bg-secondary);
-    border-bottom: 1px solid rgba(247, 178, 103, 0.12);
-    margin: -2rem -1rem 1.5rem -1rem;
-    padding: 0 1rem;
+    background: #201f1d !important;
+    border-bottom: 1px solid rgba(247, 178, 103, 0.12) !important;
+    padding: 0 16px !important;
+    margin-bottom: 12px !important;
 }
 
 .cc-nav-inner {
     max-width: 1440px;
     margin: 0 auto;
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    align-items: center !important;
     height: 56px;
     gap: 24px;
 }
