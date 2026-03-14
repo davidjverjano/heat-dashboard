@@ -49,6 +49,8 @@ def render_top_nav():
     )
 
     # Page links row using Streamlit's native page_link (ensures routing works)
+    # Marker div so CSS can identify the nav row vs content columns
+    st.markdown('<div class="cc-nav-links-row"></div>', unsafe_allow_html=True)
     cols = st.columns(len(PAGES))
     for i, (label, path) in enumerate(PAGES):
         with cols[i]:
