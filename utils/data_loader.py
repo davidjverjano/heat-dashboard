@@ -61,3 +61,9 @@ def load_league_team_ratings() -> pd.DataFrame:
 def load_team_rankings() -> dict:
     with open(DATA_DIR / "team_rankings.json") as f:
         return json.load(f)
+
+
+@st.cache_data(ttl=300)
+def load_east_standings() -> list:
+    with open(DATA_DIR / "east_standings.json") as f:
+        return json.load(f)
