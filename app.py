@@ -1,60 +1,32 @@
 """Courtside Cre8ives — Heat Analytics Dashboard."""
 
 import pathlib
-import base64
 import streamlit as st
 
 ROOT = pathlib.Path(__file__).resolve().parent
 
-# ── Page Config (must be first Streamlit call) ────────────────────────────────────────────
+# ── Page Config (must be first Streamlit call) ────────────────────────────────
 st.set_page_config(
     page_title="Courtside Cre8ives — Heat Analytics",
     page_icon=str(ROOT / "assets" / "CC-Icon-Black-4x-4.jpg") if (ROOT / "assets" / "CC-Icon-Black-4x-4.jpg").exists() else "🔥",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
-# ── Load Custom CSS ───────────────────────────────────────────────────────────────
+# ── Load Fonts (base64 data URIs) + Custom CSS ───────────────────────────────
+from build_font_css import build_font_css
+
+font_css = build_font_css()
 css_file = ROOT / "assets" / "style.css"
-if css_file.exists():
-    st.markdown(f"<style>{css_file.read_text()}</style>", unsafe_allow_html=True)
+main_css = css_file.read_text() if css_file.exists() else ""
 
-# ── Sidebar Branding ─────────────────────────────────────────────────────────────
-# Read CC icon SVG and render with white fill
-def _load_cc_icon_b64():
-    icon_path = ROOT / "assets" / "cc-icon.svg"
-    if not icon_path.exists():
-        return None
-    svg_text = icon_path.read_text()
-    # Force white fill for dark sidebar
-    svg_text = svg_text.replace('<svg ', '<svg fill="#FFFCF2" ', 1)
-    return base64.b64encode(svg_text.encode()).decode()
+st.markdown(f"<style>{font_css}\n{main_css}</style>", unsafe_allow_html=True)
 
-with st.sidebar:
-    icon_b64 = _load_cc_icon_b64()
-    if icon_b64:
-        st.markdown(
-            f'''<div style="display:flex; align-items:center; gap:12px; padding:14px 10px 8px;">
-                <img src="data:image/svg+xml;base64,{icon_b64}" style="width:36px; height:auto;"/>
-                <span style="
-                    font-family:'Hyperspace Wide','Hyperspace','Barlow Condensed',sans-serif;
-                    font-weight:700; font-size:14px; letter-spacing:2px; color:#FFFCF2;
-                ">COURTSIDE<span style="color:#F7B267; margin-left:4px;">CRE8IVES</span></span>
-            </div>''',
-            unsafe_allow_html=True,
-        )
-    st.markdown("---")
-    st.markdown(
-        '''<div style="text-align:center; opacity:0.6; font-size:0.75rem; margin-top:4px;
-                font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
-            MIAMI HEAT ANALYTICS<br>
-            <span style="color:#F7B267; font-weight:700; letter-spacing:2px;">2025-26 SEASON</span>
-        </div>''',
-        unsafe_allow_html=True,
-    )
-    st.markdown("---")
+# ── Top Navigation Bar ───────────────────────────────────────────────────
+from components.nav import render_top_nav
+render_top_nav()
 
-# ── Main Content ──────────────────────────────────────────────────────────────────
+# ── Main Content ──────────────────────────────────────────────────────────
 st.markdown("# COURTSIDE CRE8IVES")
 st.markdown(
     '<p style="color:#b0ada6; font-size:1rem; letter-spacing:0.5px;">'
