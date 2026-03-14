@@ -1,8 +1,16 @@
-date,opponent,home_away,time
-2026-03-14,Charlotte Hornets,Home,7:30 PM
-2026-03-16,Indiana Pacers,Away,7:00 PM
-2026-03-18,Cleveland Cavaliers,Away,7:00 PM
-2026-03-20,Detroit Pistons,Home,7:30 PM
-2026-03-22,Orlando Magic,Home,6:00 PM
-2026-03-24,New York Knicks,Away,7:30 PM
-2026-03-27,Philadelphia 76ers,Home,7:30 PM
+game_date,home_away,opponent,opponent_abbr,game_time
+2026-03-14,Home,Orlando Magic,ORL,08:00 PM ET
+2026-03-17,Away,Charlotte Hornets,CHA,07:00 PM ET
+2026-03-19,Home,Los Angeles Lakers,LAL,08:00 PM ET
+2026-03-21,Away,Houston Rockets,HOU,08:00 PM ET
+2026-03-23,Home,San Antonio Spurs,SAS,07:00 PM ET
+2026-03-25,Away,Cleveland Cavaliers,CLE,07:30 PM ET
+2026-03-27,Away,Cleveland Cavaliers,CLE,07:30 PM ET
+2026-03-29,Away,Indiana Pacers,IND,05:00 PM ET
+2026-03-30,Home,Philadelphia 76ers,PHI,07:00 PM ET
+2026-04-01,Home,Boston Celtics,BOS,07:30 PM ET
+2026-04-04,Home,Washington Wizards,WAS,03:00 PM ET
+2026-04-07,Away,Toronto Raptors,TOR,07:30 PM ET
+2026-04-09,Away,Toronto Raptors,TOR,07:00 PM ET
+2026-04-10,Away,Washington Wizards,WAS,07:00 PM ET
+2026-04-12,Home,Atlanta Hawks,ATL,06:00 PM ET
