@@ -31,10 +31,19 @@ def render_top_nav():
         if icon_b64 else ""
     )
 
-    # Brand + season badge as pure HTML (non-interactive)
+    # Brand bar with hamburger toggle for mobile.
+    # Uses a small inline script to toggle a body class that controls
+    # the visibility of the Streamlit page-link row below.
     st.markdown(
         f'''<div class="cc-top-nav">
             <div class="cc-nav-inner">
+                <button class="cc-hamburger-btn" onclick="document.body.classList.toggle('cc-menu-open')" aria-label="Menu">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <rect class="cc-ham-line cc-ham-1" y="3" width="20" height="2" rx="1" fill="#FFFCF2"/>
+                        <rect class="cc-ham-line cc-ham-2" y="9" width="20" height="2" rx="1" fill="#FFFCF2"/>
+                        <rect class="cc-ham-line cc-ham-3" y="15" width="20" height="2" rx="1" fill="#FFFCF2"/>
+                    </svg>
+                </button>
                 <div class="cc-nav-brand">
                     {icon_html}
                     <span class="cc-nav-brand-text">
@@ -49,8 +58,6 @@ def render_top_nav():
     )
 
     # Page links row using Streamlit's native page_link (ensures routing works)
-    # Marker div so CSS can identify the nav row vs content columns
-    st.markdown('<div class="cc-nav-links-row"></div>', unsafe_allow_html=True)
     cols = st.columns(len(PAGES))
     for i, (label, path) in enumerate(PAGES):
         with cols[i]:
