@@ -766,10 +766,9 @@ def refresh_team_rankings():
 
     rankings = {}
     for label, (col, ascending) in categories.items():
-        ranked = base_df[col].rank(ascending=ascending, method="min")
+        # ascending=False → rank 1 = highest value (best for PPG, RPG, etc.)
+        ranked = base_df[col].rank(ascending=False, method="min")
         heat_rank = int(ranked[heat.index[0]])
-        # rank() gives highest=30 by default; we want rank 1 = best
-        heat_rank = 31 - heat_rank
         rankings[label] = {
             "value": round(float(heat_row[col]), 3 if "PCT" in col else 1),
             "rank": heat_rank,
