@@ -31,6 +31,16 @@ nav_fix_css = """
 .cc-topbar {
     z-index: 999995 !important;
 }
+.cc-hamburger {
+    display: flex !important;
+}
+.cc-page-links {
+    display: none !important;
+}
+body.cc-menu-open .cc-page-links {
+    display: flex !important;
+    flex-direction: column !important;
+}
 """
 st.markdown(f"<style>{font_css}\n{main_css}\n{nav_fix_css}</style>", unsafe_allow_html=True)
 
