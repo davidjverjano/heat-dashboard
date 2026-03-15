@@ -143,9 +143,9 @@ section[data-testid="stMain"] {
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   TOP BAR — Databallr-style single-row navigation
-   Row 1 (HTML): Brand logo  |  (spacer)  |  Social icons + Season badge
-   Row 2 (st.page_link): Page links — styled via CSS to sit directly below
+   TOP BAR — Unified hamburger navigation (all screen sizes)
+   Bar:  [☰ Hamburger]  [Logo]  (spacer)  [Social Icons]  [Season Badge]
+   Menu: Slide-down panel with page links — toggled via body.cc-menu-open
    ══════════════════════════════════════════════════════════════════════════ */
 
 /* ── Brand bar ─────────────────────────────────────────────────────────── */
@@ -161,23 +161,46 @@ section[data-testid="stMain"] {
     margin: 0 auto;
     display: flex !important;
     align-items: center !important;
-    height: 44px;
+    height: 48px;
     gap: 16px;
 }
 
-/* Hamburger — hidden on desktop */
+/* Hamburger — ALWAYS visible */
 .cc-hamburger {
-    display: none;
+    display: flex !important;
+    align-items: center;
     background: none;
     border: none;
     cursor: pointer;
     padding: 8px;
-    margin: -8px;
+    margin: -8px 0 -8px -8px;
     -webkit-tap-highlight-color: transparent;
     flex-shrink: 0;
     position: relative;
     z-index: 1001;
     pointer-events: auto !important;
+    border-radius: 6px;
+    transition: background 150ms ease;
+}
+
+.cc-hamburger:hover {
+    background: rgba(255, 252, 242, 0.06);
+}
+
+/* Animated hamburger → X */
+.cc-ham-line {
+    transition: all 250ms ease;
+    transform-origin: center;
+}
+
+body.cc-menu-open .cc-ham-1 {
+    transform: translateY(6px) rotate(45deg);
+}
+body.cc-menu-open .cc-ham-2 {
+    opacity: 0;
+}
+body.cc-menu-open .cc-ham-3 {
+    transform: translateY(-6px) rotate(-45deg);
 }
 
 /* Brand link */
@@ -248,14 +271,27 @@ section[data-testid="stMain"] {
     border: 1px solid rgba(247, 178, 103, 0.18) !important;
 }
 
-/* ── Page-link row (st.page_link via st.columns) ──────────────────────── */
+/* ── Page-link dropdown (hidden by default, shown on menu open) ───────── */
 [data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) {
-    gap: 0 !important;
+    display: none !important;
+    flex-direction: column !important;
     background: var(--bg-secondary) !important;
-    margin: -1rem -1rem 1rem -1rem !important;
-    padding: 0 24px 0 24px !important;
+    margin: 0 -1rem 0.5rem -1rem !important;
+    padding: 4px 24px 8px 24px !important;
     border-bottom: 1px solid rgba(247, 178, 103, 0.10);
     max-width: none !important;
+    gap: 0 !important;
+}
+
+/* Show dropdown when menu is open */
+body.cc-menu-open [data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) {
+    display: flex !important;
+}
+
+/* Each link fills full width in dropdown */
+[data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) > div {
+    min-width: 100% !important;
+    flex-basis: 100% !important;
 }
 
 /* Individual page links */
@@ -272,20 +308,22 @@ section[data-testid="stMain"] {
 }
 
 [data-testid="stPageLink"] a {
-    padding: 10px 6px !important;
-    border-radius: 0 !important;
-    transition: color 150ms ease !important;
+    padding: 12px 16px !important;
+    border-radius: 6px !important;
+    transition: color 150ms ease, background 150ms ease !important;
     white-space: nowrap !important;
-    display: inline-block !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
     background: transparent !important;
     border: none !important;
-    border-bottom: 2px solid transparent !important;
+    min-height: 44px !important;
 }
 
 [data-testid="stPageLink"] a:hover,
 [data-testid="stPageLink"] a:hover * {
     color: #FFFCF2 !important;
-    background: transparent !important;
+    background: rgba(255, 252, 242, 0.04) !important;
 }
 
 [data-testid="stPageLink"] a[aria-current="page"],
@@ -294,7 +332,8 @@ section[data-testid="stMain"] {
 }
 
 [data-testid="stPageLink"] a[aria-current="page"] {
-    border-bottom: 2px solid #F7B267 !important;
+    background: rgba(247, 178, 103, 0.06) !important;
+    border-left: 2px solid #F7B267 !important;
 }
 
 /* ── Headers — Brand fonts ──────────────────────────────────────────────── */
@@ -813,57 +852,10 @@ a {
         display: none !important;
     }
 
-    /* ── Hamburger — visible on mobile ─────────────────────────────────── */
-    .cc-hamburger {
-        display: flex !important;
-        align-items: center;
-    }
-
-    .cc-ham-line {
-        transition: all 250ms ease;
-        transform-origin: center;
-    }
-
-    body.cc-menu-open .cc-ham-1 {
-        transform: translateY(6px) rotate(45deg);
-    }
-    body.cc-menu-open .cc-ham-2 {
-        opacity: 0;
-    }
-    body.cc-menu-open .cc-ham-3 {
-        transform: translateY(-6px) rotate(-45deg);
-    }
-
-    /* Nav links — hidden by default, slide-down on toggle */
+    /* Narrower dropdown padding on mobile */
     [data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) {
-        display: none !important;
-        flex-direction: column !important;
-        background: var(--bg-secondary) !important;
+        padding: 4px 12px 8px 12px !important;
         margin: 0 -12px 8px -12px !important;
-        padding: 8px 16px !important;
-        gap: 0 !important;
-        border-bottom: 1px solid rgba(247, 178, 103, 0.12) !important;
-    }
-
-    body.cc-menu-open [data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) {
-        display: flex !important;
-    }
-
-    /* Full-width touch rows */
-    [data-testid="stPageLink"] a {
-        padding: 14px 16px !important;
-        font-size: 11px !important;
-        min-height: 48px !important;
-        display: flex !important;
-        align-items: center !important;
-        width: 100% !important;
-        border-radius: 6px !important;
-        border-bottom: none !important;
-    }
-
-    [data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) > div {
-        min-width: 100% !important;
-        flex-basis: 100% !important;
     }
 
     /* ── Headers ──────────────────────────────────────────────────────────── */
