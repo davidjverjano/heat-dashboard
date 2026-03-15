@@ -22,6 +22,9 @@ def setup_page():
         '[data-testid="stHeader"]{background:transparent!important;'
         'backdrop-filter:none!important;-webkit-backdrop-filter:none!important}'
         '.cc-topbar{z-index:999995!important}'
+        '.cc-hamburger{display:flex!important}'
+        '.cc-page-links{display:none!important}'
+        'body.cc-menu-open .cc-page-links{display:flex!important;flex-direction:column!important}'
     )
     st.markdown(f"<style>{font_css}\n{main_css}\n{nav_fix}</style>", unsafe_allow_html=True)
 
