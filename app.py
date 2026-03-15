@@ -21,7 +21,18 @@ font_css = build_font_css()
 css_file = ROOT / "assets" / "style.css"
 main_css = css_file.read_text() if css_file.exists() else ""
 
-st.markdown(f"<style>{font_css}\n{main_css}</style>", unsafe_allow_html=True)
+# Critical nav fixes that must override Streamlit's emotion CSS
+nav_fix_css = """
+[data-testid="stHeader"] {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+.cc-topbar {
+    z-index: 999995 !important;
+}
+"""
+st.markdown(f"<style>{font_css}\n{main_css}\n{nav_fix_css}</style>", unsafe_allow_html=True)
 
 # ── Top Navigation Bar ───────────────────────────────────────────────────
 from components.nav import render_top_nav
