@@ -128,9 +128,12 @@ section[data-testid="stMain"] {
     margin-left: 0 !important;
 }
 
-/* ── Streamlit header — disable pointer-events so our nav is clickable ─── */
+/* ── Streamlit header — transparent + non-blocking so our topbar shows ── */
 [data-testid="stHeader"] {
     pointer-events: none !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 /* Re-enable pointer-events on any actual interactive children inside header */
 [data-testid="stHeader"] button,
@@ -150,7 +153,7 @@ section[data-testid="stMain"] {
     background: var(--bg-secondary) !important;
     padding: 0 24px !important;
     position: relative;
-    z-index: 999;
+    z-index: 999995;
 }
 
 .cc-topbar-inner {
