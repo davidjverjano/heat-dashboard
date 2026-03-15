@@ -5,7 +5,7 @@ echo   Courtside Cre8ives - Data Refresh
 echo  ====================================
 echo.
 
-cd %USERPROFILE%\heat-dashboard
+cd /d %USERPROFILE%\heat-dashboard
 
 echo  Pulling latest code...
 git pull
