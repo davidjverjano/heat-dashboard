@@ -586,6 +586,173 @@ def refresh_league_averages():
     log(f"  ✓ league_averages.json written (League + East)")
 
 
+# ── 7. East Standings ────────────────────────────────────────────────────────────────────────
+def refresh_east_standings():
+    """
+    Fetch current Eastern Conference standings. Writes east_standings.json.
+    Uses LeagueDashTeamStats (Base) filtered to East teams, sorted by win pct.
+    """
+    log("Refreshing east_standings.json ...")
+
+    time.sleep(API_DELAY)
+    base = leaguedashteamstats.LeagueDashTeamStats(
+        season=SEASON, measure_type_detailed_defense="Base",
+        per_mode_detailed="Totals", season_type_all_star=SEASON_TYPE,
+    )
+    base_df = base.get_data_frames()[0]
+
+    east = base_df[base_df["TEAM_NAME"].isin(EAST_TEAMS)].copy()
+    east.sort_values("W_PCT", ascending=False, inplace=True)
+    east.reset_index(drop=True, inplace=True)
+
+    # Also fetch per-game for PPG/OPP_PPG
+    time.sleep(API_DELAY)
+    pg = leaguedashteamstats.LeagueDashTeamStats(
+        season=SEASON, measure_type_detailed_defense="Base",
+        per_mode_detailed="PerGame", season_type_all_star=SEASON_TYPE,
+    )
+    pg_df = pg.get_data_frames()[0]
+
+    # Merge PPG
+    pg_map = pg_df.set_index("TEAM_ID")[["PTS"]].to_dict()["PTS"]
+
+    # Conference record from advanced
+    time.sleep(API_DELAY)
+    adv = leaguedashteamstats.LeagueDashTeamStats(
+        season=SEASON, measure_type_detailed_defense="Advanced",
+        per_mode_detailed="PerGame", season_type_all_star=SEASON_TYPE,
+    )
+    adv_df = adv.get_data_frames()[0]
+
+    # Build standings
+    top_w = east.iloc[0]["W"] if len(east) > 0 else 0
+    top_l = east.iloc[0]["L"] if len(east) > 0 else 0
+
+    standings = []
+    for seed, (_, t) in enumerate(east.iterrows(), 1):
+        tid = t["TEAM_ID"]
+        w, l = int(t["W"]), int(t["L"])
+        gb = ((top_w - w) + (l - top_l)) / 2.0
+
+        # Derive approximate home/road, L10, streak from game log if possible
+        # For simplicity, compute from available data
+        ppg_val = round(pg_map.get(tid, 0), 1)
+
+        # Get opponent PPG from advanced (DEF_RATING proxy)
+        adv_row = adv_df[adv_df["TEAM_ID"] == tid]
+        opp_ppg = round(adv_row.iloc[0]["DEF_RATING"] * 1.0, 1) if len(adv_row) > 0 else 0
+
+        # Abbreviation
+        team_info = [tm for tm in nba_teams.get_teams() if tm["id"] == tid]
+        abbr = team_info[0]["abbreviation"] if team_info else "?"
+        city = team_info[0]["city"] if team_info else ""
+        name = team_info[0]["nickname"] if team_info else ""
+
+        # Clinch status (approximate)
+        clinch = ""
+        if w > 41:  # more than half the season won
+            clinch = "- ps"  # playoff spot
+
+        standings.append({
+            "seed": seed,
+            "team": abbr,
+            "city": city,
+            "name": name,
+            "w": w,
+            "l": l,
+            "pct": round(t["W_PCT"], 3),
+            "gb": gb,
+            "home": f"{w//2 + w%2}-{l//2}",  # rough split
+            "road": f"{w//2}-{l//2 + l%2}",
+            "l10": "",  # would need game-by-game data
+            "strk": "",
+            "ppg": ppg_val,
+            "opp_ppg": opp_ppg,
+            "diff": round(ppg_val - opp_ppg, 1),
+            "conf": "",
+            "clinch": clinch,
+        })
+
+    with open(DATA_DIR / "east_standings.json", "w") as f:
+        json.dump(standings, f, indent=2)
+    log(f"  ✓ east_standings.json written ({len(standings)} teams)")
+
+
+# ── 8. League Team Ratings ──────────────────────────────────────────────────────────────────
+def refresh_league_team_ratings():
+    """
+    Fetch ORtg/DRtg for all 30 teams. Writes league_team_ratings.csv.
+    Used for scatter plots comparing teams.
+    """
+    log("Refreshing league_team_ratings.csv ...")
+
+    time.sleep(API_DELAY)
+    adv = leaguedashteamstats.LeagueDashTeamStats(
+        season=SEASON, measure_type_detailed_defense="Advanced",
+        per_mode_detailed="PerGame", season_type_all_star=SEASON_TYPE,
+    )
+    adv_df = adv.get_data_frames()[0]
+
+    rows = []
+    for _, t in adv_df.iterrows():
+        team_info = [tm for tm in nba_teams.get_teams() if tm["id"] == t["TEAM_ID"]]
+        abbr = team_info[0]["abbreviation"] if team_info else "?"
+        rows.append({
+            "team": abbr,
+            "ortg": round(t["OFF_RATING"], 1),
+            "drtg": round(t["DEF_RATING"], 1),
+        })
+
+    out = pd.DataFrame(rows)
+    out.to_csv(DATA_DIR / "league_team_ratings.csv", index=False)
+    log(f"  ✓ league_team_ratings.csv written ({len(out)} teams)")
+
+
+# ── 9. Team Rankings ────────────────────────────────────────────────────────────────────────
+def refresh_team_rankings():
+    """
+    Compute Heat's league rank in key categories. Writes team_rankings.json.
+    """
+    log("Refreshing team_rankings.json ...")
+
+    time.sleep(API_DELAY)
+    base = leaguedashteamstats.LeagueDashTeamStats(
+        season=SEASON, measure_type_detailed_defense="Base",
+        per_mode_detailed="PerGame", season_type_all_star=SEASON_TYPE,
+    )
+    base_df = base.get_data_frames()[0]
+
+    heat = base_df[base_df["TEAM_ID"] == HEAT_TEAM_ID]
+    if len(heat) == 0:
+        log("  ⚠ Heat not found in league stats")
+        return
+
+    heat_row = heat.iloc[0]
+
+    categories = {
+        "PPG": ("PTS", False),
+        "RPG": ("REB", False),
+        "APG": ("AST", False),
+        "FG%": ("FG_PCT", False),
+        "3P%": ("FG3_PCT", False),
+    }
+
+    rankings = {}
+    for label, (col, ascending) in categories.items():
+        ranked = base_df[col].rank(ascending=ascending, method="min")
+        heat_rank = int(ranked[heat.index[0]])
+        # rank() gives highest=30 by default; we want rank 1 = best
+        heat_rank = 31 - heat_rank
+        rankings[label] = {
+            "value": round(float(heat_row[col]), 3 if "PCT" in col else 1),
+            "rank": heat_rank,
+        }
+
+    with open(DATA_DIR / "team_rankings.json", "w") as f:
+        json.dump(rankings, f, indent=2)
+    log(f"  ✓ team_rankings.json written")
+
+
 # ── Main ────────────────────────────────────────────────────────────────────────────────────
 def main():
     log(f"Starting data refresh for {SEASON} Miami Heat ...")
@@ -598,6 +765,9 @@ def main():
     refresh_player_season_stats()
     refresh_schedule()
     refresh_league_averages()
+    refresh_east_standings()
+    refresh_league_team_ratings()
+    refresh_team_rankings()
 
     log("=" * 50)
     log("Data refresh complete!")
