@@ -139,33 +139,37 @@ section[data-testid="stMain"] {
     pointer-events: auto !important;
 }
 
-/* ── Top Navigation Bar ─────────────────────────────────────────────────── */
-.cc-top-nav {
-    background: #201f1d !important;
-    border-bottom: 1px solid rgba(247, 178, 103, 0.12) !important;
-    padding: 0 16px !important;
-    margin-bottom: 12px !important;
+/* ══════════════════════════════════════════════════════════════════════════
+   TOP BAR — Databallr-style single-row navigation
+   Row 1 (HTML): Brand logo  |  (spacer)  |  Social icons + Season badge
+   Row 2 (st.page_link): Page links — styled via CSS to sit directly below
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Brand bar ─────────────────────────────────────────────────────────── */
+.cc-topbar {
+    background: var(--bg-secondary) !important;
+    padding: 0 24px !important;
     position: relative;
     z-index: 999;
 }
 
-.cc-nav-inner {
+.cc-topbar-inner {
     max-width: 1440px;
     margin: 0 auto;
     display: flex !important;
     align-items: center !important;
-    height: 56px;
-    gap: 24px;
+    height: 44px;
+    gap: 16px;
 }
 
-/* Hamburger button — hidden on desktop */
-.cc-hamburger-btn {
+/* Hamburger — hidden on desktop */
+.cc-hamburger {
     display: none;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 10px;
-    margin: -10px;
+    padding: 8px;
+    margin: -8px;
     -webkit-tap-highlight-color: transparent;
     flex-shrink: 0;
     position: relative;
@@ -173,14 +177,22 @@ section[data-testid="stMain"] {
     pointer-events: auto !important;
 }
 
-.cc-nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+/* Brand link */
+.cc-topbar-brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px;
+    text-decoration: none !important;
     flex-shrink: 0;
 }
 
-.cc-nav-brand-text {
+.cc-nav-logo {
+    width: 24px;
+    height: auto;
+    display: block;
+}
+
+.cc-topbar-brand-text {
     font-family: 'Hyperspace Wide', 'Hyperspace', 'Barlow Condensed', sans-serif !important;
     font-weight: 700 !important;
     font-size: 13px !important;
@@ -188,65 +200,89 @@ section[data-testid="stMain"] {
     color: #FFFCF2 !important;
 }
 
-.cc-nav-brand-accent {
+.cc-topbar-accent {
     color: #F7B267 !important;
-    margin-left: 4px;
+    margin-left: 3px;
 }
 
-.cc-nav-spacer {
-    flex: 1;
-}
-
-.cc-nav-season {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important;
-    font-size: 11px !important;
-    font-weight: 700 !important;
-    letter-spacing: 2px !important;
-    color: #F7B267 !important;
-    background: rgba(247, 178, 103, 0.1) !important;
-    padding: 4px 12px !important;
-    border-radius: 4px !important;
-    border: 1px solid rgba(247, 178, 103, 0.2) !important;
+/* Right-side cluster: social + badge */
+.cc-topbar-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
     flex-shrink: 0;
 }
 
-/* Style the st.page_link row as a horizontal nav */
-.cc-top-nav + div [data-testid="stHorizontalBlock"],
-[data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) {
-    gap: 2px !important;
-    background: var(--bg-secondary) !important;
-    margin: -1.5rem -1rem 1.5rem -1rem !important;
-    padding: 0 1rem 8px 1rem !important;
-    border-bottom: 1px solid rgba(247, 178, 103, 0.08);
+.cc-nav-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    transition: background 150ms ease;
+    text-decoration: none !important;
 }
 
-/* Style individual page_link buttons — use explicit fonts, not CSS vars */
+.cc-nav-social:hover {
+    background: rgba(255, 252, 242, 0.08) !important;
+}
+
+.cc-nav-social:hover svg {
+    fill: #FFFCF2 !important;
+}
+
+.cc-topbar-season {
+    font-family: var(--font-data) !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: 2px !important;
+    color: #F7B267 !important;
+    background: rgba(247, 178, 103, 0.08) !important;
+    padding: 3px 10px !important;
+    border-radius: 4px !important;
+    border: 1px solid rgba(247, 178, 103, 0.18) !important;
+}
+
+/* ── Page-link row (st.page_link via st.columns) ──────────────────────── */
+[data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) {
+    gap: 0 !important;
+    background: var(--bg-secondary) !important;
+    margin: -1rem -1rem 1rem -1rem !important;
+    padding: 0 24px 0 24px !important;
+    border-bottom: 1px solid rgba(247, 178, 103, 0.10);
+    max-width: none !important;
+}
+
+/* Individual page links */
 [data-testid="stPageLink"],
 [data-testid="stPageLink"] a,
 [data-testid="stPageLink"] a * {
-    font-family: 'Hyperspace Wide', 'Hyperspace', 'Barlow Condensed', sans-serif !important;
+    font-family: var(--font-data) !important;
     font-size: 11px !important;
-    font-weight: 700 !important;
-    letter-spacing: 1.5px !important;
+    font-weight: 600 !important;
+    letter-spacing: 1px !important;
     text-transform: uppercase !important;
-    color: #b0ada6 !important;
+    color: #8a877f !important;
     text-decoration: none !important;
 }
 
 [data-testid="stPageLink"] a {
-    padding: 6px 14px !important;
-    border-radius: 4px !important;
-    transition: all 150ms ease !important;
+    padding: 10px 6px !important;
+    border-radius: 0 !important;
+    transition: color 150ms ease !important;
     white-space: nowrap !important;
     display: inline-block !important;
     background: transparent !important;
     border: none !important;
+    border-bottom: 2px solid transparent !important;
 }
 
 [data-testid="stPageLink"] a:hover,
 [data-testid="stPageLink"] a:hover * {
     color: #FFFCF2 !important;
-    background: rgba(255, 252, 242, 0.05) !important;
+    background: transparent !important;
 }
 
 [data-testid="stPageLink"] a[aria-current="page"],
@@ -256,7 +292,6 @@ section[data-testid="stMain"] {
 
 [data-testid="stPageLink"] a[aria-current="page"] {
     border-bottom: 2px solid #F7B267 !important;
-    border-radius: 4px 4px 0 0 !important;
 }
 
 /* ── Headers — Brand fonts ──────────────────────────────────────────────── */
@@ -746,41 +781,41 @@ a {
         padding-top: 0.5rem !important;
     }
 
-    /* ── Nav bar — compact ───────────────────────────────────────────────── */
-    .cc-top-nav {
-        padding: 0 8px !important;
-        margin-bottom: 6px !important;
+    /* ── Top bar — compact on mobile ──────────────────────────────────────── */
+    .cc-topbar {
+        padding: 0 10px !important;
     }
 
-    .cc-nav-inner {
-        height: 44px;
+    .cc-topbar-inner {
+        height: 40px;
         gap: 8px;
-        padding: 0 4px;
     }
 
-    .cc-nav-brand svg,
-    .cc-nav-brand img {
-        width: 24px !important;
-        height: 24px !important;
+    .cc-nav-logo {
+        width: 20px !important;
     }
 
-    .cc-nav-brand-text {
+    .cc-topbar-brand-text {
         font-size: 10px !important;
         letter-spacing: 1px !important;
     }
 
-    .cc-nav-season {
-        font-size: 9px !important;
-        padding: 3px 8px !important;
+    .cc-topbar-season {
+        font-size: 8px !important;
+        padding: 2px 6px !important;
     }
 
-    /* ── Hamburger menu — visible on mobile ───────────────────────────── */
-    .cc-hamburger-btn {
+    /* Hide social icons on mobile */
+    .cc-nav-social {
+        display: none !important;
+    }
+
+    /* ── Hamburger — visible on mobile ─────────────────────────────────── */
+    .cc-hamburger {
         display: flex !important;
         align-items: center;
     }
 
-    /* Animate hamburger lines */
     .cc-ham-line {
         transition: all 250ms ease;
         transform-origin: center;
@@ -796,25 +831,22 @@ a {
         transform: translateY(-6px) rotate(-45deg);
     }
 
-    /* Nav links row — hidden by default on mobile */
-    .cc-top-nav + div [data-testid="stHorizontalBlock"],
+    /* Nav links — hidden by default, slide-down on toggle */
     [data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) {
         display: none !important;
         flex-direction: column !important;
         background: var(--bg-secondary) !important;
         margin: 0 -12px 8px -12px !important;
         padding: 8px 16px !important;
-        gap: 0px !important;
+        gap: 0 !important;
         border-bottom: 1px solid rgba(247, 178, 103, 0.12) !important;
     }
 
-    /* When menu is open — show nav links as slide-down */
-    body.cc-menu-open .cc-top-nav + div [data-testid="stHorizontalBlock"],
     body.cc-menu-open [data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) {
         display: flex !important;
     }
 
-    /* Each nav link in mobile menu — full-width rows */
+    /* Full-width touch rows */
     [data-testid="stPageLink"] a {
         padding: 14px 16px !important;
         font-size: 11px !important;
@@ -823,17 +855,9 @@ a {
         align-items: center !important;
         width: 100% !important;
         border-radius: 6px !important;
+        border-bottom: none !important;
     }
 
-    [data-testid="stPageLink"],
-    [data-testid="stPageLink"] a,
-    [data-testid="stPageLink"] a * {
-        font-size: 11px !important;
-        letter-spacing: 1.5px !important;
-    }
-
-    /* Nav children stack vertically */
-    .cc-top-nav + div [data-testid="stHorizontalBlock"] > div,
     [data-testid="stHorizontalBlock"]:has([data-testid="stPageLink"]) > div {
         min-width: 100% !important;
         flex-basis: 100% !important;
@@ -1096,12 +1120,12 @@ a {
         padding-right: 8px !important;
     }
 
-    .cc-nav-brand-text {
+    .cc-topbar-brand-text {
         font-size: 9px !important;
         letter-spacing: 0.5px !important;
     }
 
-    .cc-nav-season {
+    .cc-topbar-season {
         font-size: 8px !important;
         padding: 2px 6px !important;
     }
