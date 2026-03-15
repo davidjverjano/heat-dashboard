@@ -43,7 +43,9 @@ HEAT_TEAM_ID = 1610612748
 SEASON = "2025-26"
 SEASON_TYPE = "Regular Season"
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-API_DELAY = 0.8  # seconds between API calls to avoid rate limiting
+API_DELAY = 1.2  # seconds between API calls to avoid rate limiting
+API_TIMEOUT = 60  # seconds per request (NBA API can be slow)
+API_MAX_RETRIES = 3  # retry count on timeout / connection error
 
 # Eastern Conference team names for filtering
 EAST_TEAMS = {
@@ -56,6 +58,28 @@ EAST_TEAMS = {
 
 def log(msg: str):
     print(f"[{datetime.now().strftime('%H:%M:%S')}] {msg}")
+
+
+def call_nba_api(endpoint_cls, **kwargs):
+    """Call an nba_api endpoint with retry logic and extended timeout.
+
+    Returns the endpoint object on success; raises on final failure.
+    """
+    kwargs.setdefault("timeout", API_TIMEOUT)
+    last_err = None
+    for attempt in range(1, API_MAX_RETRIES + 1):
+        try:
+            time.sleep(API_DELAY)
+            result = endpoint_cls(**kwargs)
+            return result
+        except Exception as e:
+            last_err = e
+            wait = API_DELAY * (2 ** attempt)  # exponential backoff
+            log(f"  ⚠ Attempt {attempt}/{API_MAX_RETRIES} failed: {e}")
+            if attempt < API_MAX_RETRIES:
+                log(f"    Retrying in {wait:.0f}s ...")
+                time.sleep(wait)
+    raise last_err
 
 
 # ── 1. Team Info ────────────────────────────────────────────────────────────────────────────────
@@ -88,13 +112,12 @@ def refresh_team_game_log():
     log("Refreshing team_game_log.csv ...")
 
     # Basic game log
-    gl = teamgamelog.TeamGameLog(
+    gl = call_nba_api(teamgamelog.TeamGameLog,
         team_id=HEAT_TEAM_ID, season=SEASON,
         season_type_all_star=SEASON_TYPE,
     )
     df = gl.get_data_frames()[0]
     log(f"  Found {len(df)} games")
-    time.sleep(API_DELAY)
 
     # Advanced team stats per-game are not available per-game directly,
     # so we compute approximations from the box score data.
@@ -209,10 +232,9 @@ def refresh_team_game_log():
     # Simplest accurate method: fetch LeagueGameLog for Heat
     try:
         from nba_api.stats.endpoints import leaguegamelog
-        time.sleep(API_DELAY)
-        lg = leaguegamelog.LeagueGameLog(
+        lg = call_nba_api(leaguegamelog.LeagueGameLog,
             season=SEASON, season_type_all_star=SEASON_TYPE,
-            player_or_team_abbreviation='T'
+            player_or_team_abbreviation='T',
         )
         all_games = lg.get_data_frames()[0]
         log(f"  League game log: {len(all_games)} entries")
@@ -273,9 +295,8 @@ def refresh_player_game_log():
     log("Refreshing player_game_log.csv ...")
 
     # Get roster
-    time.sleep(API_DELAY)
-    roster = commonteamroster.CommonTeamRoster(
-        team_id=HEAT_TEAM_ID, season=SEASON
+    roster = call_nba_api(commonteamroster.CommonTeamRoster,
+        team_id=HEAT_TEAM_ID, season=SEASON,
     )
     roster_df = roster.get_data_frames()[0]
     log(f"  Roster: {len(roster_df)} players")
@@ -285,8 +306,7 @@ def refresh_player_game_log():
         pid = player["PLAYER_ID"]
         pname = player["PLAYER"]
         try:
-            time.sleep(API_DELAY)
-            pgl = playergamelog.PlayerGameLog(player_id=pid, season=SEASON)
+            pgl = call_nba_api(playergamelog.PlayerGameLog, player_id=pid, season=SEASON)
             pdf = pgl.get_data_frames()[0]
             if len(pdf) == 0:
                 continue
@@ -362,16 +382,14 @@ def refresh_player_season_stats():
     log("Refreshing player_season_stats.csv ...")
 
     # Base stats
-    time.sleep(API_DELAY)
-    base = leaguedashplayerstats.LeagueDashPlayerStats(
+    base = call_nba_api(leaguedashplayerstats.LeagueDashPlayerStats,
         season=SEASON, team_id_nullable=HEAT_TEAM_ID,
         per_mode_detailed="PerGame", season_type_all_star=SEASON_TYPE,
     )
     base_df = base.get_data_frames()[0]
 
     # Advanced stats
-    time.sleep(API_DELAY)
-    adv = leaguedashplayerstats.LeagueDashPlayerStats(
+    adv = call_nba_api(leaguedashplayerstats.LeagueDashPlayerStats,
         season=SEASON, team_id_nullable=HEAT_TEAM_ID,
         measure_type_detailed_defense="Advanced",
         per_mode_detailed="PerGame", season_type_all_star=SEASON_TYPE,
@@ -441,8 +459,7 @@ def refresh_schedule():
     """
     log("Refreshing schedule.csv ...")
     try:
-        time.sleep(API_DELAY)
-        sched = scheduleleaguev2.ScheduleLeagueV2(season=SEASON)
+        sched = call_nba_api(scheduleleaguev2.ScheduleLeagueV2, season=SEASON)
         sched_df = sched.get_data_frames()[0]
         log(f"  Full schedule: {len(sched_df)} rows")
         log(f"  Columns: {list(sched_df.columns[:20])}")
@@ -520,24 +537,21 @@ def refresh_league_averages():
     log("Refreshing league_averages.json ...")
 
     # Base stats
-    time.sleep(API_DELAY)
-    base = leaguedashteamstats.LeagueDashTeamStats(
+    base = call_nba_api(leaguedashteamstats.LeagueDashTeamStats,
         season=SEASON, measure_type_detailed_defense="Base",
         per_mode_detailed="PerGame", season_type_all_star=SEASON_TYPE,
     )
     base_df = base.get_data_frames()[0]
 
     # Advanced stats
-    time.sleep(API_DELAY)
-    adv = leaguedashteamstats.LeagueDashTeamStats(
+    adv = call_nba_api(leaguedashteamstats.LeagueDashTeamStats,
         season=SEASON, measure_type_detailed_defense="Advanced",
         per_mode_detailed="PerGame", season_type_all_star=SEASON_TYPE,
     )
     adv_df = adv.get_data_frames()[0]
 
     # Four Factors
-    time.sleep(API_DELAY)
-    ff = leaguedashteamstats.LeagueDashTeamStats(
+    ff = call_nba_api(leaguedashteamstats.LeagueDashTeamStats,
         season=SEASON, measure_type_detailed_defense="Four Factors",
         per_mode_detailed="PerGame", season_type_all_star=SEASON_TYPE,
     )
@@ -594,8 +608,7 @@ def refresh_east_standings():
     """
     log("Refreshing east_standings.json ...")
 
-    time.sleep(API_DELAY)
-    base = leaguedashteamstats.LeagueDashTeamStats(
+    base = call_nba_api(leaguedashteamstats.LeagueDashTeamStats,
         season=SEASON, measure_type_detailed_defense="Base",
         per_mode_detailed="Totals", season_type_all_star=SEASON_TYPE,
     )
@@ -606,8 +619,7 @@ def refresh_east_standings():
     east.reset_index(drop=True, inplace=True)
 
     # Also fetch per-game for PPG/OPP_PPG
-    time.sleep(API_DELAY)
-    pg = leaguedashteamstats.LeagueDashTeamStats(
+    pg = call_nba_api(leaguedashteamstats.LeagueDashTeamStats,
         season=SEASON, measure_type_detailed_defense="Base",
         per_mode_detailed="PerGame", season_type_all_star=SEASON_TYPE,
     )
@@ -617,8 +629,7 @@ def refresh_east_standings():
     pg_map = pg_df.set_index("TEAM_ID")[["PTS"]].to_dict()["PTS"]
 
     # Conference record from advanced
-    time.sleep(API_DELAY)
-    adv = leaguedashteamstats.LeagueDashTeamStats(
+    adv = call_nba_api(leaguedashteamstats.LeagueDashTeamStats,
         season=SEASON, measure_type_detailed_defense="Advanced",
         per_mode_detailed="PerGame", season_type_all_star=SEASON_TYPE,
     )
@@ -686,8 +697,7 @@ def refresh_league_team_ratings():
     """
     log("Refreshing league_team_ratings.csv ...")
 
-    time.sleep(API_DELAY)
-    adv = leaguedashteamstats.LeagueDashTeamStats(
+    adv = call_nba_api(leaguedashteamstats.LeagueDashTeamStats,
         season=SEASON, measure_type_detailed_defense="Advanced",
         per_mode_detailed="PerGame", season_type_all_star=SEASON_TYPE,
     )
@@ -715,8 +725,7 @@ def refresh_team_rankings():
     """
     log("Refreshing team_rankings.json ...")
 
-    time.sleep(API_DELAY)
-    base = leaguedashteamstats.LeagueDashTeamStats(
+    base = call_nba_api(leaguedashteamstats.LeagueDashTeamStats,
         season=SEASON, measure_type_detailed_defense="Base",
         per_mode_detailed="PerGame", season_type_all_star=SEASON_TYPE,
     )
@@ -759,20 +768,36 @@ def main():
     log(f"Data directory: {DATA_DIR}")
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-    refresh_team_info()
-    refresh_team_game_log()
-    refresh_player_game_log()
-    refresh_player_season_stats()
-    refresh_schedule()
-    refresh_league_averages()
-    refresh_east_standings()
-    refresh_league_team_ratings()
-    refresh_team_rankings()
+    tasks = [
+        ("team_info", refresh_team_info),
+        ("team_game_log", refresh_team_game_log),
+        ("player_game_log", refresh_player_game_log),
+        ("player_season_stats", refresh_player_season_stats),
+        ("schedule", refresh_schedule),
+        ("league_averages", refresh_league_averages),
+        ("east_standings", refresh_east_standings),
+        ("league_team_ratings", refresh_league_team_ratings),
+        ("team_rankings", refresh_team_rankings),
+    ]
+
+    failures = []
+    for name, func in tasks:
+        try:
+            func()
+        except Exception as e:
+            log(f"  ✗ {name} FAILED after retries: {e}")
+            failures.append(name)
 
     log("=" * 50)
-    log("Data refresh complete!")
+    if failures:
+        log(f"Data refresh finished with {len(failures)} failure(s): {', '.join(failures)}")
+        log("Successfully refreshed tasks still committed. Re-run to retry failures.")
+        sys.exit(1)
+    else:
+        log("Data refresh complete — all tasks succeeded!")
     log(f"Files updated in: {DATA_DIR}")
     log("Restart the dashboard or wait for cache to expire (5 min).")
+
 
 
 if __name__ == "__main__":
