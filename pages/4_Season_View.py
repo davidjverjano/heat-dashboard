@@ -27,10 +27,29 @@ game_log = load_game_log()
 league_avg = load_league_averages()
 east_standings = load_east_standings()
 
+# ── Load refresh metadata for "last updated" disclaimer ─────────────────────
+import json
+from datetime import datetime as _dt
+_refresh_path = ROOT / "data" / "last_refresh.json"
+try:
+    with open(_refresh_path) as _f:
+        _meta = json.load(_f)
+    _ts = _dt.fromisoformat(_meta["last_refresh"])
+    _last_updated_str = _ts.strftime("%b %d, %Y at %I:%M %p ET")
+except Exception:
+    _last_updated_str = None
+
 # ══════════════════════════════════════════════════════════════════════════════
 # EASTERN CONFERENCE STANDINGS & PLAYOFF PICTURE
 # ══════════════════════════════════════════════════════════════════════════════
 st.markdown("### Eastern Conference Standings")
+if _last_updated_str:
+    st.markdown(
+        f'<p style="color:#6e6b64;font-size:11px;font-family:var(--font-data);'
+        f'letter-spacing:0.3px;margin-top:-10px;">'
+        f'Last updated: {_last_updated_str}</p>',
+        unsafe_allow_html=True,
+    )
 
 
 def _standings_table_html(standings: list) -> str:
