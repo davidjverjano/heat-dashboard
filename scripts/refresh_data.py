@@ -60,12 +60,30 @@ def log(msg: str):
     print(f"[{datetime.now().strftime('%H:%M:%S')}] {msg}")
 
 
+# Custom headers to avoid NBA API blocking cloud-provider IPs.
+# stats.nba.com rejects bare requests from AWS/Azure/GCP runners.
+NBA_HEADERS = {
+    "Host": "stats.nba.com",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                  "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Origin": "https://www.nba.com",
+    "Referer": "https://www.nba.com/",
+    "Connection": "keep-alive",
+    "x-nba-stats-origin": "stats",
+    "x-nba-stats-token": "true",
+}
+
+
 def call_nba_api(endpoint_cls, **kwargs):
-    """Call an nba_api endpoint with retry logic and extended timeout.
+    """Call an nba_api endpoint with retry logic, custom headers, and extended timeout.
 
     Returns the endpoint object on success; raises on final failure.
     """
     kwargs.setdefault("timeout", API_TIMEOUT)
+    kwargs.setdefault("headers", NBA_HEADERS)
     last_err = None
     for attempt in range(1, API_MAX_RETRIES + 1):
         try:
