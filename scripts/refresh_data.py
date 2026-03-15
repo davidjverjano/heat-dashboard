@@ -806,6 +806,16 @@ def main():
             log(f"  ✗ {name} FAILED after retries: {e}")
             failures.append(name)
 
+    # Write refresh metadata (always, even on partial failure)
+    from datetime import timezone
+    meta = {
+        "last_refresh": datetime.now().astimezone().isoformat(),
+        "failures": failures,
+    }
+    with open(DATA_DIR / "last_refresh.json", "w") as f:
+        json.dump(meta, f, indent=2)
+    log("  ✓ last_refresh.json written")
+
     log("=" * 50)
     if failures:
         log(f"Data refresh finished with {len(failures)} failure(s): {', '.join(failures)}")
