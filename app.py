@@ -1,5 +1,5 @@
 """Courtside Cre8ives — Heat Analytics Dashboard."""
-# v3.2 — nav visibility fix
+# v3.3 — nav visibility + transparent header fix
 
 import pathlib
 import streamlit as st
