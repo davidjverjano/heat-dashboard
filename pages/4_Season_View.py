@@ -413,12 +413,15 @@ for col, cat in zip(col_list, rank_cats):
         diff = heat_val - league_val
         diff_sign = "+" if diff > 0 else ""
         diff_good = diff > 0 if cat != "TOV%" else diff < 0
+        # Ordinal suffix for rank
+        _r = rank_num
+        _suf = "th" if 11 <= _r <= 13 else {1: "st", 2: "nd", 3: "rd"}.get(_r % 10, "th")
         rating_card(
             rank=rank_num,
             name=cat,
             value=f"{heat_val}",
-            compare=f"{diff_sign}{diff:.1f} vs Lg Avg",
-            compare_positive=diff_good,
+            compare=f"{_r}{_suf} in the NBA",
+            compare_positive=_r <= 10,
         )
 
 # ── Season Splits ─────────────────────────────────────────────────────────────
