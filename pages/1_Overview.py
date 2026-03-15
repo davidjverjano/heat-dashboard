@@ -66,7 +66,19 @@ with col_a:
         unsafe_allow_html=True,
     )
     upcoming = schedule.head(5).copy()
-    upcoming["game_date"] = upcoming["game_date"].dt.strftime("%b %d")
+    upcoming["game_date"] = upcoming["game_date"].dt.strftime("%b %-d")
+
+    # Parse ISO game_time into friendly ET format (e.g., "7:30 PM ET")
+    def format_game_time(raw):
+        if not raw or raw == "TBD" or str(raw) == "nan":
+            return "TBD"
+        try:
+            t = pd.to_datetime(str(raw))
+            return t.strftime("%-I:%M %p ET").replace(":00 ", " ")
+        except Exception:
+            return str(raw)
+
+    upcoming["game_time"] = upcoming["game_time"].apply(format_game_time)
     display = upcoming[["game_date", "home_away", "opponent", "game_time"]].rename(
         columns={"game_date": "Date", "home_away": "H/A", "opponent": "Opponent", "game_time": "Time"}
     )
