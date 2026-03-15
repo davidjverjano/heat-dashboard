@@ -1,0 +1,41 @@
+name: Refresh NBA Data
+
+on:
+  schedule:
+    # Run daily at 11:00 AM UTC (7:00 AM ET / 6:00 AM CT)
+    # NBA games typically end by 1 AM ET, so data is final by morning.
+    - cron: "0 11 * * *"
+  workflow_dispatch:  # Allow manual trigger from GitHub Actions UI
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Needed to push updated data files
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install nba_api pandas
+
+      - name: Run data refresh
+        run: python scripts/refresh_data.py
+
+      - name: Commit and push if data changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No data changes detected — skipping commit."
+          else
+            git commit -m "data: auto-refresh $(date -u +%Y-%m-%d)"
+            git push
+          fi
