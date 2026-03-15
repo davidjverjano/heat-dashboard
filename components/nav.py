@@ -1,7 +1,7 @@
-"""Top navigation bar — Databallr-inspired single-row layout.
+"""Top navigation bar — unified hamburger menu on all screen sizes.
 
-Desktop:  [Logo]  [Page Links ...]  [Social Icons]  [Season Badge]
-Mobile:   [Hamburger]  [Logo]  [Season Badge]   — links in slide-down menu
+Layout:  [Hamburger ☰]  [Logo COURTSIDE CRE8IVES]  (spacer)  [Social Icons]  [Season Badge]
+Menu:    Slide-down panel with page links — same on desktop and mobile.
 """
 import base64, pathlib, streamlit as st
 import streamlit.components.v1 as components
@@ -36,7 +36,7 @@ def _cc_icon_b64() -> str | None:
 
 
 def render_top_nav():
-    """Render the Databallr-style navigation bar."""
+    """Render the navigation bar with hamburger menu on all screen sizes."""
     icon_b64 = _cc_icon_b64()
     icon_html = (
         f'<img src="data:image/svg+xml;base64,{icon_b64}" '
@@ -52,36 +52,33 @@ def render_top_nav():
             f'class="cc-nav-social" title="{name}">{svg}</a>'
         )
 
-    # Single unified nav bar
+    # Single topbar with hamburger always visible
     st.markdown(
-        f'<div class="cc-topbar">'
-        f'<div class="cc-topbar-inner">'
-        # Hamburger (mobile only)
-        f'<button class="cc-hamburger" id="ccHamburger" aria-label="Menu">'
-        f'<svg width="18" height="18" viewBox="0 0 20 20" fill="none">'
-        f'<rect class="cc-ham-line cc-ham-1" y="3" width="20" height="2" rx="1" fill="#FFFCF2"/>'
-        f'<rect class="cc-ham-line cc-ham-2" y="9" width="20" height="2" rx="1" fill="#FFFCF2"/>'
-        f'<rect class="cc-ham-line cc-ham-3" y="15" width="20" height="2" rx="1" fill="#FFFCF2"/>'
-        f'</svg>'
-        f'</button>'
-        # Brand
-        f'<a class="cc-topbar-brand" href="/" target="_self">'
-        f'{icon_html}'
-        f'<span class="cc-topbar-brand-text">'
-        f'COURTSIDE<span class="cc-topbar-accent">CRE8IVES</span>'
-        f'</span>'
-        f'</a>'
-        # Right side: social + season badge
-        f'<div class="cc-topbar-right">'
-        f'{social_html}'
-        f'<span class="cc-topbar-season">2025-26</span>'
-        f'</div>'
-        f'</div>'
-        f'</div>',
+f'<div class="cc-topbar">'
+f'<div class="cc-topbar-inner">'
+f'<button class="cc-hamburger" id="ccHamburger" aria-label="Menu">'
+f'<svg width="18" height="18" viewBox="0 0 20 20" fill="none">'
+f'<rect class="cc-ham-line cc-ham-1" y="3" width="20" height="2" rx="1" fill="#FFFCF2"/>'
+f'<rect class="cc-ham-line cc-ham-2" y="9" width="20" height="2" rx="1" fill="#FFFCF2"/>'
+f'<rect class="cc-ham-line cc-ham-3" y="15" width="20" height="2" rx="1" fill="#FFFCF2"/>'
+f'</svg>'
+f'</button>'
+f'<a class="cc-topbar-brand" href="/" target="_self">'
+f'{icon_html}'
+f'<span class="cc-topbar-brand-text">'
+f'COURTSIDE<span class="cc-topbar-accent">CRE8IVES</span>'
+f'</span>'
+f'</a>'
+f'<div class="cc-topbar-right">'
+f'{social_html}'
+f'<span class="cc-topbar-season">2025-26</span>'
+f'</div>'
+f'</div>'
+f'</div>',
         unsafe_allow_html=True,
     )
 
-    # Inject JS for hamburger toggle via components.html (reaches parent doc)
+    # Inject JS for hamburger toggle via components.html
     components.html(
         """<script>
 (function(){
@@ -92,6 +89,13 @@ def render_top_nav():
     btn.dataset.wired = '1';
     btn.addEventListener('click', function(){
       doc.body.classList.toggle('cc-menu-open');
+    });
+    // Close menu when a page link is clicked
+    var links = doc.querySelectorAll('[data-testid="stPageLink"] a');
+    links.forEach(function(a){
+      a.addEventListener('click', function(){
+        doc.body.classList.remove('cc-menu-open');
+      });
     });
   }
   wire();
@@ -105,7 +109,7 @@ def render_top_nav():
         scrolling=False,
     )
 
-    # Page links — Streamlit native for routing
+    # Page links — rendered by Streamlit for routing, hidden by default, shown on menu open
     cols = st.columns(len(PAGES))
     for i, (label, path) in enumerate(PAGES):
         with cols[i]:
