@@ -75,7 +75,7 @@ with col1:
         st.markdown(
             f"""
             <div class="cc-kpi-card">
-                <div style="font-size:1.3rem; font-weight:700; color:#F7B267; font-family:'Hyperspace','Barlow Condensed',sans-serif;">{top.player_name}</div>
+                <div style="font-size:1.3rem; font-weight:700; color:#F7B267; font-family:'Orbitron','Barlow Condensed',sans-serif;">{top.player_name}</div>
                 <div style="color:#FFFCF2; font-size:1.1rem; margin-top:8px; font-family:-apple-system,system-ui,sans-serif; font-variant-numeric:tabular-nums;">
                     {int(top.pts)} PTS &nbsp;|&nbsp; {int(top.reb)} REB &nbsp;|&nbsp; {int(top.ast)} AST
                 </div>
