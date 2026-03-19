@@ -61,7 +61,7 @@ kpi_row([
 st.markdown("---")
 
 # ── Box Score ─────────────────────────────────────────────────────────────────
-st.markdown("### Box Score")
+st.markdown('<div class="cc-section-heading">BOX SCORE</div>', unsafe_allow_html=True)
 box_score_table(players)
 
 # ── Top Performer ─────────────────────────────────────────────────────────────
