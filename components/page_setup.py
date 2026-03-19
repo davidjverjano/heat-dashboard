@@ -4,12 +4,10 @@ import streamlit as st
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
-# Google Fonts <link> for Orbitron (loaded separately for reliability)
-_ORBITRON_LINK = (
-    '<link rel="preconnect" href="https://fonts.googleapis.com">'
-    '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-    '<link href="https://fonts.googleapis.com/css2?'
-    'family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">'
+# Google Fonts @import for Orbitron — must be first line inside <style>
+_ORBITRON_IMPORT = (
+    "@import url('https://fonts.googleapis.com/css2?"
+    "family=Orbitron:wght@400;500;600;700;800;900&display=swap');"
 )
 
 
@@ -32,7 +30,10 @@ def setup_page():
         '.cc-page-links{display:none!important}'
         'body.cc-menu-open .cc-page-links{display:flex!important;flex-direction:column!important}'
     )
-    # Load Orbitron font via <link>, then inject CSS in <style>
-    st.markdown(f"{_ORBITRON_LINK}\n<style>{main_css}\n{nav_fix}</style>", unsafe_allow_html=True)
+    # @import MUST be first inside <style> for browser compliance
+    st.markdown(
+        f"<style>{_ORBITRON_IMPORT}\n{main_css}\n{nav_fix}</style>",
+        unsafe_allow_html=True,
+    )
 
     render_top_nav()
