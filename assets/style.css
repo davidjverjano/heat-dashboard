@@ -1176,3 +1176,173 @@ a {
         font-size: 9px !important;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BOX SCORE TABLE — Branded Courtside Cre8ives Style
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.cc-box-score-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 10px;
+    border: 1px solid rgba(247, 178, 103, 0.12);
+    background: var(--bg-card);
+}
+
+.cc-box-score {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: var(--font-data);
+    font-size: 0.82rem;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.cc-box-score thead tr {
+    background: linear-gradient(
+        180deg,
+        rgba(247, 178, 103, 0.12) 0%,
+        rgba(247, 178, 103, 0.04) 100%
+    );
+}
+
+.cc-box-score thead th {
+    padding: 10px 10px;
+    font-family: var(--font-brand-wide);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    border-bottom: 1px solid rgba(247, 178, 103, 0.18);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.cc-box-score thead th:first-child {
+    padding-left: 16px;
+    min-width: 140px;
+}
+
+/* ── Body rows ───────────────────────────────────────────────────────────── */
+.cc-box-row {
+    transition: background 120ms ease;
+}
+
+.cc-box-row.even {
+    background: rgba(255, 252, 242, 0.02);
+}
+
+.cc-box-row.odd {
+    background: transparent;
+}
+
+.cc-box-row:hover {
+    background: rgba(247, 178, 103, 0.06) !important;
+}
+
+.cc-box-score td {
+    padding: 9px 10px;
+    border-bottom: 1px solid rgba(255, 252, 242, 0.04);
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.cc-box-score td:first-child {
+    padding-left: 16px;
+}
+
+/* Last row — no bottom border */
+.cc-box-row:last-child td {
+    border-bottom: none;
+}
+
+/* ── Cell content ────────────────────────────────────────────────────────── */
+.cc-box-player {
+    font-family: var(--font-brand);
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.5px;
+    color: var(--text-primary);
+}
+
+.cc-box-num {
+    font-family: var(--font-data);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+}
+
+.cc-box-pts {
+    font-weight: 700;
+    color: var(--accent-primary);
+}
+
+.cc-box-plus {
+    color: var(--positive);
+    font-weight: 600;
+}
+
+.cc-box-minus {
+    color: var(--negative);
+    font-weight: 600;
+}
+
+.cc-box-zero {
+    color: var(--text-muted);
+}
+
+/* ── Section heading override for box score ───────────────────────────────── */
+.cc-section-heading {
+    font-family: var(--font-brand-wide);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent-primary);
+    display: inline-block;
+}
+
+/* ── Mobile adjustments ──────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .cc-box-score {
+        font-size: 0.72rem;
+    }
+    .cc-box-score thead th {
+        font-size: 0.55rem;
+        padding: 8px 6px;
+        letter-spacing: 1.2px;
+    }
+    .cc-box-score td {
+        padding: 7px 6px;
+    }
+    .cc-box-player {
+        font-size: 0.72rem;
+    }
+    .cc-box-score thead th:first-child,
+    .cc-box-score td:first-child {
+        padding-left: 10px;
+        min-width: 110px;
+        position: sticky;
+        left: 0;
+        z-index: 2;
+        background: inherit;
+    }
+    .cc-box-row.even td:first-child {
+        background: #2c2a27;
+    }
+    .cc-box-row.odd td:first-child {
+        background: var(--bg-card);
+    }
+    .cc-box-score thead th:first-child {
+        background: var(--bg-card);
+    }
+}
