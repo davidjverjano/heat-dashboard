@@ -55,6 +55,23 @@ def _html(raw: str):
     st.markdown(clean, unsafe_allow_html=True)
 
 
+import re as _re
+
+_DEMO_CHARS = _re.compile(r'[\d\-\u2013\u2014./:()\[\]+]+')  # consecutive runs of digits, hyphens, en/em dashes, punctuation
+
+def _safe_brand(text: str) -> str:
+    """Wrap characters that Hyperspace DEMO font can't render in a system-font span.
+
+    The DEMO build of Hyperspace replaces certain glyphs (digits, hyphens, etc.)
+    with a placeholder.  This function wraps consecutive runs of those characters
+    in <span style="font-family:var(--font-data)"> so they fall back to the
+    system data font while the surrounding letters stay in Hyperspace.
+    """
+    def _repl(m):
+        return f'<span style="font-family:var(--font-data);letter-spacing:normal">{m.group()}</span>'
+    return _DEMO_CHARS.sub(_repl, text)
+
+
 def section_header(title, subtitle=None):
     sub_html = ""
     if subtitle:
@@ -106,7 +123,7 @@ if facts:
         for f in chunk:
             accent = _cat_colors.get(f.get("category", ""), "#F7B267")
             icon = f.get("icon", "")
-            title = f.get("title", "")
+            title = _safe_brand(f.get("title", ""))
             body = f.get("body", "")
             cat = f.get("category", "").replace("_", " ").upper()
 
@@ -169,7 +186,7 @@ if news:
                 f'<div style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:9px;'
                 f'letter-spacing:2px;color:#F7B267;margin-bottom:8px;">{featured.get("source","ESPN")} &middot; {pub_str}</div>'
                 f'<div style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:15px;'
-                f'letter-spacing:0.5px;color:#FFFCF2;line-height:1.4;margin-bottom:10px;">{featured.get("headline","")}</div>'
+                f'letter-spacing:0.5px;color:#FFFCF2;line-height:1.4;margin-bottom:10px;">{_safe_brand(featured.get("headline",""))}</div>'
                 f'<div style="font-family:var(--font-data);font-size:13px;color:#b0ada6;line-height:1.5;">'
                 f'{featured.get("description","")[:220]}</div></div></div></a>'
             )
@@ -199,7 +216,7 @@ if news:
                     f'<span style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:8px;'
                     f'letter-spacing:1px;color:{type_color};">{ntype}</span></div>'
                     f'<div style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:12px;'
-                    f'letter-spacing:0.3px;color:#FFFCF2;line-height:1.35;">{headline}</div>'
+                    f'letter-spacing:0.3px;color:#FFFCF2;line-height:1.35;">{_safe_brand(headline)}</div>'
                     f'</div></a>'
                 )
 
@@ -266,7 +283,7 @@ def narrative_card(title: str, body: str, accent_color: str = COLORS["accent_pri
         f'border-left:3px solid {accent_color};border-radius:12px;padding:20px 24px;margin-bottom:16px;">'
         f'<h3 style="color:#F7B267;margin:0 0 12px 0;border:none !important;padding:0 !important;'
         f'font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:14px;'
-        f'letter-spacing:2px;text-transform:uppercase;">{title}</h3>'
+        f'letter-spacing:2px;text-transform:uppercase;">{_safe_brand(title)}</h3>'
         f'<div style="color:#FFFCF2;line-height:1.7;font-size:0.95rem;'
         f'font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',system-ui,sans-serif;">{body}</div></div>'
     )
