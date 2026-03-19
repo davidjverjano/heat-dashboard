@@ -1,15 +1,14 @@
 game_date,home_away,opponent,opponent_abbr,game_time
-2026-03-17,Away,Charlotte Hornets,CHA,1900-01-01T19:00:00Z
-2026-03-19,Home,Los Angeles Lakers,LAL,1900-01-01T20:00:00Z
-2026-03-21,Away,Houston Rockets,HOU,1900-01-01T20:00:00Z
-2026-03-23,Home,San Antonio Spurs,SAS,1900-01-01T19:00:00Z
-2026-03-25,Away,Cleveland Cavaliers,CLE,1900-01-01T19:30:00Z
-2026-03-27,Away,Cleveland Cavaliers,CLE,1900-01-01T19:30:00Z
-2026-03-29,Away,Indiana Pacers,IND,1900-01-01T17:00:00Z
-2026-03-30,Home,Philadelphia 76ers,PHI,1900-01-01T19:00:00Z
-2026-04-01,Home,Boston Celtics,BOS,1900-01-01T19:30:00Z
-2026-04-04,Home,Washington Wizards,WAS,1900-01-01T15:00:00Z
-2026-04-07,Away,Toronto Raptors,TOR,1900-01-01T19:30:00Z
-2026-04-09,Away,Toronto Raptors,TOR,1900-01-01T19:00:00Z
-2026-04-10,Away,Washington Wizards,WAS,1900-01-01T19:00:00Z
-2026-04-12,Home,Atlanta Hawks,ATL,1900-01-01T18:00:00Z
+2026-03-20,Home,Los Angeles,LAL,"Thu, March 19th at 8:00 PM EDT"
+2026-03-22,Away,Houston,HOU,"Sat, March 21st at 8:00 PM EDT"
+2026-03-23,Home,San Antonio,SAS,"Mon, March 23rd at 7:00 PM EDT"
+2026-03-25,Away,Cleveland,CLE,"Wed, March 25th at 7:30 PM EDT"
+2026-03-27,Away,Cleveland,CLE,"Fri, March 27th at 7:30 PM EDT"
+2026-03-29,Away,Indiana,IND,"Sun, March 29th at 5:00 PM EDT"
+2026-03-30,Home,Philadelphia,PHI,"Mon, March 30th at 7:00 PM EDT"
+2026-04-01,Home,Boston,BOS,"Wed, April 1st at 7:30 PM EDT"
+2026-04-04,Home,Washington,WAS,"Sat, April 4th at 3:00 PM EDT"
+2026-04-07,Away,Toronto,TOR,"Tue, April 7th at 7:30 PM EDT"
+2026-04-09,Away,Toronto,TOR,"Thu, April 9th at 7:00 PM EDT"
+2026-04-10,Away,Washington,WAS,"Fri, April 10th at 7:00 PM EDT"
+2026-04-12,Home,Atlanta,ATL,"Sun, April 12th at 6:00 PM EDT"
