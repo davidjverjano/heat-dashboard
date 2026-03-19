@@ -95,7 +95,7 @@ _html(f"""
 </div>
 <div style="background:#2a2926;border:1px solid rgba(247,178,103,0.12);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:12px;flex:1;min-width:200px;">
 <div style="font-family:var(--font-data);font-size:28px;font-weight:800;color:{l14_color};font-variant-numeric:tabular-nums;">{l14.get('w',0)}-{l14.get('l',0)}</div>
-<div style="font-family:'Hyperspace Wide','Hyperspace',sans-serif;font-size:10px;letter-spacing:2px;color:#6e6b64;text-transform:uppercase;">Last 14 Days</div>
+<div style="font-family:'Hyperspace Wide','Hyperspace',sans-serif;font-size:10px;letter-spacing:2px;color:#6e6b64;text-transform:uppercase;">Last <span style="font-family:var(--font-data);">14</span> Days</div>
 </div>
 </div>
 """)
