@@ -12,6 +12,7 @@ from utils.data_loader import load_game_log, load_schedule, load_team_info
 from utils.calculations import last_n_record, current_streak, win_pct
 from components.metrics import hero_stats_strip, kpi_row, streak_badge
 from components.charts import win_loss_timeline, point_diff_trend
+from components.tables import schedule_table
 
 st.markdown("# OVERVIEW")
 
@@ -82,7 +83,7 @@ with col_a:
     display = upcoming[["game_date", "home_away", "opponent", "game_time"]].rename(
         columns={"game_date": "Date", "home_away": "H/A", "opponent": "Opponent", "game_time": "Time"}
     )
-    st.dataframe(display, use_container_width=True, hide_index=True)
+    schedule_table(display)
 
 with col_b:
     st.markdown(
