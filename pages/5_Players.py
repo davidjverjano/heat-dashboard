@@ -92,7 +92,7 @@ if selected_player:
     st.markdown(
         f"""
         <div style="background:#2a2926; border:1px solid rgba(247,178,103,0.1); border-radius:12px; padding:12px 20px; display:inline-block;">
-            <span style="color:#6e6b64; font-family:'Hyperspace Wide','Hyperspace',sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase;">On/Off Net: </span>
+            <span style="color:#6e6b64; font-family:'Orbitron',sans-serif; font-size:10px; letter-spacing:2px; text-transform:uppercase;">On/Off Net: </span>
             <span style="color:{on_color}; font-weight:800; font-size:1.3rem; font-family:-apple-system,system-ui,sans-serif; font-variant-numeric:tabular-nums;">{on_off:+.1f}</span>
         </div>
         """,
