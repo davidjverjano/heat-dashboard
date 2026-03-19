@@ -1,7 +1,8 @@
-"""Load @font-face / @import CSS for Orbitron (Google Fonts).
+"""Load @font-face / @import CSS for hybrid font stack.
 
-Previously loaded Hyperspace Race Capsule DEMO via base64 data URIs.
-Replaced with Orbitron — a free, full-glyph geometric display font.
+Hyperspace Race Capsule — primary headlines, brand text (base64 embedded).
+Orbitron — subheaders, labels, UI text (Google Fonts CDN).
+System font stack — all numeric data (no DEMO glyph issues).
 """
 import pathlib
 
@@ -10,10 +11,10 @@ _PREBUILT = _ROOT / "assets" / "fonts_base64.css"
 
 
 def build_font_css() -> str:
-    """Return CSS that loads Orbitron from Google Fonts CDN.
+    """Return CSS that loads both Hyperspace (base64) and Orbitron (CDN).
 
-    1. Try pre-built file first (for consistency).
-    2. Fall back to inline @import rule.
+    1. Try pre-built file first (has both @font-face and @import).
+    2. Fall back to Orbitron-only @import rule.
     """
     if _PREBUILT.exists():
         return _PREBUILT.read_text()
