@@ -55,21 +55,6 @@ def _html(raw: str):
     st.markdown(clean, unsafe_allow_html=True)
 
 
-import re as _re
-
-_DEMO_CHARS = _re.compile(r'[\d\-\u2013\u2014./:()\[\]+]+')  # consecutive runs of digits, hyphens, en/em dashes, punctuation
-
-def _safe_brand(text: str) -> str:
-    """Wrap characters that Hyperspace DEMO font can't render in a system-font span.
-
-    The DEMO build of Hyperspace replaces certain glyphs (digits, hyphens, etc.)
-    with a placeholder.  This function wraps consecutive runs of those characters
-    in <span style="font-family:var(--font-data)"> so they fall back to the
-    system data font while the surrounding letters stay in Hyperspace.
-    """
-    def _repl(m):
-        return f'<span style="font-family:var(--font-data);letter-spacing:normal">{m.group()}</span>'
-    return _DEMO_CHARS.sub(_repl, text)
 
 
 def section_header(title, subtitle=None):
@@ -91,11 +76,11 @@ _html(f"""
 <div style="display:flex;gap:16px;margin:12px 0 24px 0;flex-wrap:wrap;">
 <div style="background:#2a2926;border:1px solid rgba(247,178,103,0.12);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:12px;flex:1;min-width:200px;">
 <div style="font-family:var(--font-data);font-size:28px;font-weight:800;color:#FFFCF2;font-variant-numeric:tabular-nums;">{hr.get('w',0)}-{hr.get('l',0)}</div>
-<div style="font-family:'Hyperspace Wide','Hyperspace',sans-serif;font-size:10px;letter-spacing:2px;color:#6e6b64;text-transform:uppercase;">Season Record</div>
+<div style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:#6e6b64;text-transform:uppercase;">Season Record</div>
 </div>
 <div style="background:#2a2926;border:1px solid rgba(247,178,103,0.12);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:12px;flex:1;min-width:200px;">
 <div style="font-family:var(--font-data);font-size:28px;font-weight:800;color:{l14_color};font-variant-numeric:tabular-nums;">{l14.get('w',0)}-{l14.get('l',0)}</div>
-<div style="font-family:'Hyperspace Wide','Hyperspace',sans-serif;font-size:10px;letter-spacing:2px;color:#6e6b64;text-transform:uppercase;">Last <span style="font-family:var(--font-data);">14</span> Days</div>
+<div style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:#6e6b64;text-transform:uppercase;">Last 14 Days</div>
 </div>
 </div>
 """)
@@ -123,7 +108,7 @@ if facts:
         for f in chunk:
             accent = _cat_colors.get(f.get("category", ""), "#F7B267")
             icon = f.get("icon", "")
-            title = _safe_brand(f.get("title", ""))
+            title = f.get("title", "")
             body = f.get("body", "")
             cat = f.get("category", "").replace("_", " ").upper()
 
@@ -133,10 +118,10 @@ if facts:
                 f'min-width:280px;flex:1 1 300px;max-width:400px;">'
                 f'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">'
                 f'<span style="font-size:20px;">{icon}</span>'
-                f'<span style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:9px;'
+                f'<span style="font-family:\'Orbitron\',sans-serif;font-size:9px;'
                 f'letter-spacing:1.5px;color:{accent};opacity:0.7;">{cat}</span>'
                 f'</div>'
-                f'<div style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:13px;'
+                f'<div style="font-family:\'Orbitron\',sans-serif;font-size:13px;'
                 f'letter-spacing:1px;color:#FFFCF2;margin-bottom:6px;">{title}</div>'
                 f'<div style="font-family:var(--font-data);font-size:13px;color:#b0ada6;line-height:1.5;">'
                 f'{body}</div></div>'
@@ -183,10 +168,10 @@ if news:
                 f'<img src="{featured.get("image_url","")}" style="width:100%;height:100%;object-fit:cover;display:block;"'
                 f' onerror="this.parentElement.style.display=\'none\'" /></div>'
                 f'<div style="padding:16px 20px;">'
-                f'<div style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:9px;'
+                f'<div style="font-family:\'Orbitron\',sans-serif;font-size:9px;'
                 f'letter-spacing:2px;color:#F7B267;margin-bottom:8px;">{featured.get("source","ESPN")} &middot; {pub_str}</div>'
-                f'<div style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:15px;'
-                f'letter-spacing:0.5px;color:#FFFCF2;line-height:1.4;margin-bottom:10px;">{_safe_brand(featured.get("headline",""))}</div>'
+                f'<div style="font-family:\'Orbitron\',sans-serif;font-size:15px;'
+                f'letter-spacing:0.5px;color:#FFFCF2;line-height:1.4;margin-bottom:10px;">{featured.get("headline","")}</div>'
                 f'<div style="font-family:var(--font-data);font-size:13px;color:#b0ada6;line-height:1.5;">'
                 f'{featured.get("description","")[:220]}</div></div></div></a>'
             )
@@ -213,10 +198,10 @@ if news:
                     f'border-bottom:1px solid rgba(255,252,242,0.04);transition:background 0.15s;">'
                     f'<div style="flex-shrink:0;min-width:44px;">'
                     f'<span style="font-family:var(--font-data);font-size:10px;color:#6e6b64;">{pub_str}</span><br>'
-                    f'<span style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:8px;'
+                    f'<span style="font-family:\'Orbitron\',sans-serif;font-size:8px;'
                     f'letter-spacing:1px;color:{type_color};">{ntype}</span></div>'
-                    f'<div style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:12px;'
-                    f'letter-spacing:0.3px;color:#FFFCF2;line-height:1.35;">{_safe_brand(headline)}</div>'
+                    f'<div style="font-family:\'Orbitron\',sans-serif;font-size:12px;'
+                    f'letter-spacing:0.3px;color:#FFFCF2;line-height:1.35;">{headline}</div>'
                     f'</div></a>'
                 )
 
@@ -259,7 +244,7 @@ if writers:
                 f'<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>'
                 f'</svg></div>'
                 f'<div>'
-                f'<div style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:11px;'
+                f'<div style="font-family:\'Orbitron\',sans-serif;font-size:11px;'
                 f'letter-spacing:0.5px;color:#FFFCF2;">{name}</div>'
                 f'<div style="font-family:var(--font-data);font-size:11px;color:#F7B267;">{handle}</div>'
                 f'<div style="font-family:var(--font-data);font-size:10px;color:#6e6b64;margin-top:2px;">'
@@ -282,8 +267,8 @@ def narrative_card(title: str, body: str, accent_color: str = COLORS["accent_pri
         f'<div style="background:#2a2926;border:1px solid rgba(255,252,242,0.06);'
         f'border-left:3px solid {accent_color};border-radius:12px;padding:20px 24px;margin-bottom:16px;">'
         f'<h3 style="color:#F7B267;margin:0 0 12px 0;border:none !important;padding:0 !important;'
-        f'font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:14px;'
-        f'letter-spacing:2px;text-transform:uppercase;">{_safe_brand(title)}</h3>'
+        f'font-family:\'Orbitron\',sans-serif;font-size:14px;'
+        f'letter-spacing:2px;text-transform:uppercase;">{title}</h3>'
         f'<div style="color:#FFFCF2;line-height:1.7;font-size:0.95rem;'
         f'font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',system-ui,sans-serif;">{body}</div></div>'
     )
