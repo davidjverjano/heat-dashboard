@@ -20,7 +20,7 @@ season_stats = load_player_season_stats()
 player_gl = load_player_game_log()
 
 # ── Sortable Season Stats Table ───────────────────────────────────────────────
-st.markdown("### Season Averages")
+st.markdown('<div class="cc-section-heading">SEASON AVERAGES</div>', unsafe_allow_html=True)
 display_cols = ["player_name", "gp", "mpg", "ppg", "rpg", "apg", "spg", "bpg", "topg",
                 "fg_pct", "fg3_pct", "ft_pct", "ts_pct", "usage_pct", "per", "bpm", "net_rtg"]
 available = [c for c in display_cols if c in season_stats.columns]
