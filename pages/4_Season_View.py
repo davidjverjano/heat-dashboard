@@ -113,7 +113,7 @@ def _standings_table_html(standings: list) -> str:
                         font-family:var(--font-data);">{seed}</span>
                 </td>
                 <td style="text-align:left;font-weight:{name_weight};color:{name_color};
-                    font-family:'Hyperspace Wide','Hyperspace',sans-serif;font-size:12px;
+                    font-family:'Orbitron',sans-serif;font-size:12px;
                     letter-spacing:1px;">
                     {t["city"]} {t["name"]}{clinch_html}
                 </td>
@@ -140,7 +140,7 @@ def _standings_table_html(standings: list) -> str:
                 <tr style="background:transparent;height:4px;">
                     <td colspan="11" style="padding:0;border-bottom:1px dashed rgba(247,178,103,0.2);
                         font-size:9px;color:#6e6b64;letter-spacing:2px;text-align:left;padding-left:38px;
-                        font-family:'Hyperspace Wide','Hyperspace',sans-serif;">{label}</td>
+                        font-family:'Orbitron',sans-serif;">{label}</td>
                 </tr>''')
 
     return f'''
@@ -150,27 +150,27 @@ def _standings_table_html(standings: list) -> str:
         <thead>
             <tr style="background:#201f1d;border-bottom:2px solid rgba(247,178,103,0.15);">
                 <th style="padding:10px 6px;text-align:center;font-size:10px;letter-spacing:1.5px;
-                    color:#6e6b64;font-family:'Hyperspace Wide','Hyperspace',sans-serif;"></th>
+                    color:#6e6b64;font-family:'Orbitron',sans-serif;"></th>
                 <th style="padding:10px 8px;text-align:left;font-size:10px;letter-spacing:1.5px;
-                    color:#6e6b64;font-family:'Hyperspace Wide','Hyperspace',sans-serif;">TEAM</th>
+                    color:#6e6b64;font-family:'Orbitron',sans-serif;">TEAM</th>
                 <th style="padding:10px 8px;font-size:10px;letter-spacing:1.5px;
-                    color:#6e6b64;font-family:'Hyperspace Wide','Hyperspace',sans-serif;">W</th>
+                    color:#6e6b64;font-family:'Orbitron',sans-serif;">W</th>
                 <th style="padding:10px 8px;font-size:10px;letter-spacing:1.5px;
-                    color:#6e6b64;font-family:'Hyperspace Wide','Hyperspace',sans-serif;">L</th>
+                    color:#6e6b64;font-family:'Orbitron',sans-serif;">L</th>
                 <th style="padding:10px 8px;font-size:10px;letter-spacing:1.5px;
-                    color:#6e6b64;font-family:'Hyperspace Wide','Hyperspace',sans-serif;">PCT</th>
+                    color:#6e6b64;font-family:'Orbitron',sans-serif;">PCT</th>
                 <th style="padding:10px 8px;font-size:10px;letter-spacing:1.5px;
-                    color:#6e6b64;font-family:'Hyperspace Wide','Hyperspace',sans-serif;">GB</th>
+                    color:#6e6b64;font-family:'Orbitron',sans-serif;">GB</th>
                 <th style="padding:10px 8px;font-size:10px;letter-spacing:1.5px;
-                    color:#6e6b64;font-family:'Hyperspace Wide','Hyperspace',sans-serif;">HOME</th>
+                    color:#6e6b64;font-family:'Orbitron',sans-serif;">HOME</th>
                 <th style="padding:10px 8px;font-size:10px;letter-spacing:1.5px;
-                    color:#6e6b64;font-family:'Hyperspace Wide','Hyperspace',sans-serif;">ROAD</th>
+                    color:#6e6b64;font-family:'Orbitron',sans-serif;">ROAD</th>
                 <th style="padding:10px 8px;font-size:10px;letter-spacing:1.5px;
-                    color:#6e6b64;font-family:'Hyperspace Wide','Hyperspace',sans-serif;">L10</th>
+                    color:#6e6b64;font-family:'Orbitron',sans-serif;">L10</th>
                 <th style="padding:10px 8px;font-size:10px;letter-spacing:1.5px;
-                    color:#6e6b64;font-family:'Hyperspace Wide','Hyperspace',sans-serif;">STRK</th>
+                    color:#6e6b64;font-family:'Orbitron',sans-serif;">STRK</th>
                 <th style="padding:10px 8px;font-size:10px;letter-spacing:1.5px;
-                    color:#6e6b64;font-family:'Hyperspace Wide','Hyperspace',sans-serif;">DIFF</th>
+                    color:#6e6b64;font-family:'Orbitron',sans-serif;">DIFF</th>
             </tr>
         </thead>
         <tbody>
@@ -226,7 +226,7 @@ def _bracket_html(standings: list) -> str:
                     font-size:11px;width:20px;height:20px;border-radius:3px;
                     display:inline-flex;align-items:center;justify-content:center;
                     font-family:var(--font-data);flex-shrink:0;">{seed}</span>
-                <span style="font-family:'Hyperspace Wide','Hyperspace',sans-serif;
+                <span style="font-family:'Orbitron',sans-serif;
                     font-size:11px;letter-spacing:1px;color:{name_color};
                     font-weight:700;flex:1;white-space:nowrap;">{t["name"]}</span>
                 <span style="font-family:var(--font-data);font-size:12px;
@@ -241,14 +241,14 @@ def _bracket_html(standings: list) -> str:
         return f'''
             <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;
                 background:#201f1d;border:1px dashed rgba(255,252,242,0.08);border-radius:6px;min-width:200px;">
-                <span style="font-family:'Hyperspace Wide','Hyperspace',sans-serif;
+                <span style="font-family:'Orbitron',sans-serif;
                     font-size:11px;letter-spacing:1px;color:#6e6b64;
                     font-weight:700;">{label}</span>
             </div>'''
 
     def _section_label(text):
         return f'''
-            <div style="font-family:'Hyperspace Wide','Hyperspace',sans-serif;
+            <div style="font-family:'Orbitron',sans-serif;
                 font-size:10px;letter-spacing:2px;color:#6e6b64;text-align:center;
                 padding:8px 0 12px 0;text-transform:uppercase;">{text}</div>'''
 
@@ -284,7 +284,7 @@ def _bracket_html(standings: list) -> str:
             {_section_label("Play-In Tournament")}
             <div style="display:flex;flex-direction:column;gap:4px;">
                 <div style="font-size:10px;color:#F7B267;letter-spacing:1px;
-                    font-family:'Hyperspace Wide','Hyperspace',sans-serif;
+                    font-family:'Orbitron',sans-serif;
                     padding-bottom:4px;">7/8 GAME → 7 SEED</div>
                 {_team_row(7, None)}
                 {_vs_label()}
@@ -292,7 +292,7 @@ def _bracket_html(standings: list) -> str:
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;">
                 <div style="font-size:10px;color:#F7B267;letter-spacing:1px;
-                    font-family:'Hyperspace Wide','Hyperspace',sans-serif;
+                    font-family:'Orbitron',sans-serif;
                     padding-bottom:4px;">9/10 GAME</div>
                 {_team_row(9, None)}
                 {_vs_label()}
@@ -300,7 +300,7 @@ def _bracket_html(standings: list) -> str:
             </div>
             <div style="display:flex;flex-direction:column;gap:4px;">
                 <div style="font-size:10px;color:#6e6b64;letter-spacing:1px;
-                    font-family:'Hyperspace Wide','Hyperspace',sans-serif;
+                    font-family:'Orbitron',sans-serif;
                     padding-bottom:4px;">LOSER 7/8 vs WINNER 9/10 → 8 SEED</div>
                 {_tbd_row("Loser 7/8")}
                 {_vs_label()}
