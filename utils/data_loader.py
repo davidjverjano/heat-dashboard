@@ -1,3 +1,4 @@
+# Data refresh: 2026-03-19 via ESPN cloud refresh
 """Load and cache data from local CSV/JSON files."""
 
 import json
