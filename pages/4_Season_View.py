@@ -358,7 +358,7 @@ east_mapped = {
 
 metrics = ["ORtg", "DRtg", "Pace", "TS%", "eFG%", "FG%", "3P%", "FT%", "PPG", "RPG", "APG"]
 
-st.markdown("### Team Metrics Comparison")
+st.markdown('<div class="cc-section-heading">TEAM METRICS COMPARISON</div>', unsafe_allow_html=True)
 comparison_table(heat, league_mapped, east_mapped, metrics)
 
 st.markdown("---")
