@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    COURTSIDE CRE8IVES — Heat Analytics Dashboard
-   Design: Asphalt Black + Hyperspace Race Capsule + Databallr/Ringer fusion
+   Design: Asphalt Black + Orbitron + Databallr/Ringer fusion
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ── Font Loading ───────────────────────────────────────────────────────── */
@@ -48,8 +48,8 @@
   --negative: #F25C54;
 
   /* Fonts */
-  --font-brand: 'Hyperspace', 'Barlow Condensed', 'Oswald', sans-serif;
-  --font-brand-wide: 'Hyperspace Wide', 'Hyperspace', 'Barlow Condensed', sans-serif;
+  --font-brand: 'Orbitron', 'Barlow Condensed', sans-serif;
+  --font-brand-wide: 'Orbitron', 'Barlow Condensed', sans-serif;
   --font-data: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 }
 
@@ -95,7 +95,7 @@ html, body, [data-testid="stAppViewContainer"] {
     border-color: rgba(247, 178, 103, 0.15) !important;
 }
 
-/* Sidebar nav links — Hyperspace Wide for page names */
+/* Sidebar nav links — Orbitron for page names */
 [data-testid="stSidebar"] [data-testid="stSidebarNavItems"] a span {
     font-family: var(--font-brand-wide) !important;
     font-size: 12px !important;
@@ -219,7 +219,7 @@ body.cc-menu-open .cc-ham-3 {
 }
 
 .cc-topbar-brand-text {
-    font-family: 'Hyperspace Wide', 'Hyperspace', 'Barlow Condensed', sans-serif !important;
+    font-family: 'Orbitron', 'Barlow Condensed', sans-serif !important;
     font-weight: 700 !important;
     font-size: 13px !important;
     letter-spacing: 2px !important;
