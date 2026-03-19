@@ -3,10 +3,7 @@
 import json
 import pathlib
 from datetime import datetime, timedelta
-from textwrap import dedent
-
 import streamlit as st
-import streamlit.components.v1 as components
 import pandas as pd
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -134,13 +131,13 @@ if facts:
 st.markdown("---")
 
 # ═════════════════════════════════════════════════════════════════════════════
-# 3. LATEST NEWS — ESPN Headlines
+# 3. LATEST NEWS — ESPN Headlines (2-column: featured left, list right)
 # ═════════════════════════════════════════════════════════════════════════════
 section_header("LATEST NEWS", "via ESPN")
 
 news = narr.get("news", [])
 if news:
-    # Featured article (first one with an image)
+    # Split: featured article (first with image) vs rest
     featured = None
     rest = []
     for n in news:
@@ -149,61 +146,67 @@ if news:
         else:
             rest.append(n)
 
-    if featured:
-        pub = featured.get("published", "")[:10]
-        try:
-            pub_dt = datetime.fromisoformat(pub)
-            pub_str = pub_dt.strftime("%b %d")
-        except Exception:
-            pub_str = pub
+    col_feat, col_list = st.columns([5, 4])
 
-        _html(
-            f'<a href="{featured.get("link", "#")}" target="_blank" style="text-decoration:none;">'
-            f'<div style="background:#2a2926;border:1px solid rgba(255,252,242,0.06);border-radius:12px;'
-            f'overflow:hidden;margin-bottom:16px;">'
-            f'<div style="width:100%;height:200px;overflow:hidden;">'
-            f'<img src="{featured.get("image_url","")}" style="width:100%;height:100%;object-fit:cover;"'
-            f' onerror="this.parentElement.style.display=\'none\'" /></div>'
-            f'<div style="padding:16px 20px;">'
-            f'<div style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:9px;'
-            f'letter-spacing:2px;color:#F7B267;margin-bottom:6px;">{featured.get("source","ESPN")} &middot; {pub_str}</div>'
-            f'<div style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:15px;'
-            f'letter-spacing:0.5px;color:#FFFCF2;line-height:1.4;margin-bottom:8px;">{featured.get("headline","")}</div>'
-            f'<div style="font-family:var(--font-data);font-size:13px;color:#b0ada6;line-height:1.5;">'
-            f'{featured.get("description","")[:200]}</div></div></div></a>'
-        )
-
-    # Remaining headlines — render one at a time to avoid HTML size limits
-    if rest:
-        items = ""
-        for n in rest[:8]:
-            pub = n.get("published", "")[:10]
+    # ── Left column: Featured Story Card ─────────────────────────────────
+    with col_feat:
+        if featured:
+            pub = featured.get("published", "")[:10]
             try:
                 pub_dt = datetime.fromisoformat(pub)
                 pub_str = pub_dt.strftime("%b %d")
             except Exception:
                 pub_str = pub
-            link = n.get("link", "#")
-            headline = n.get("headline", "")
-            desc = n.get("description", "")[:120]
 
-            items += (
-                f'<a href="{link}" target="_blank" style="text-decoration:none;display:block;">'
-                f'<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 16px;'
-                f'border-bottom:1px solid rgba(255,252,242,0.04);">'
-                f'<div style="flex-shrink:0;width:48px;text-align:center;">'
-                f'<span style="font-family:var(--font-data);font-size:11px;color:#6e6b64;">{pub_str}</span></div>'
-                f'<div>'
-                f'<div style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:12px;'
-                f'letter-spacing:0.5px;color:#FFFCF2;line-height:1.3;margin-bottom:4px;">{headline}</div>'
-                f'<div style="font-family:var(--font-data);font-size:12px;color:#6e6b64;line-height:1.4;">{desc}</div>'
-                f'</div></div></a>'
+            _html(
+                f'<a href="{featured.get("link", "#")}" target="_blank" style="text-decoration:none;">'
+                f'<div style="background:#2a2926;border:1px solid rgba(255,252,242,0.06);border-radius:12px;'
+                f'overflow:hidden;height:100%;">'
+                f'<div style="width:100%;aspect-ratio:16/9;overflow:hidden;">'
+                f'<img src="{featured.get("image_url","")}" style="width:100%;height:100%;object-fit:cover;display:block;"'
+                f' onerror="this.parentElement.style.display=\'none\'" /></div>'
+                f'<div style="padding:16px 20px;">'
+                f'<div style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:9px;'
+                f'letter-spacing:2px;color:#F7B267;margin-bottom:8px;">{featured.get("source","ESPN")} &middot; {pub_str}</div>'
+                f'<div style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:15px;'
+                f'letter-spacing:0.5px;color:#FFFCF2;line-height:1.4;margin-bottom:10px;">{featured.get("headline","")}</div>'
+                f'<div style="font-family:var(--font-data);font-size:13px;color:#b0ada6;line-height:1.5;">'
+                f'{featured.get("description","")[:220]}</div></div></div></a>'
             )
 
-        _html(
-            f'<div style="background:#2a2926;border:1px solid rgba(255,252,242,0.06);'
-            f'border-radius:12px;overflow:hidden;margin-bottom:16px;">{items}</div>'
-        )
+    # ── Right column: Headline List ──────────────────────────────────────
+    with col_list:
+        if rest:
+            items = ""
+            for n in rest[:7]:
+                pub = n.get("published", "")[:10]
+                try:
+                    pub_dt = datetime.fromisoformat(pub)
+                    pub_str = pub_dt.strftime("%b %d")
+                except Exception:
+                    pub_str = pub
+                link = n.get("link", "#")
+                headline = n.get("headline", "")
+                ntype = n.get("type", "").upper()
+                type_color = "#F25C54" if ntype == "RECAP" else "#F7B267" if ntype == "STORY" else "#CCC5B9"
+
+                items += (
+                    f'<a href="{link}" target="_blank" style="text-decoration:none;display:block;">'
+                    f'<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;'
+                    f'border-bottom:1px solid rgba(255,252,242,0.04);transition:background 0.15s;">'
+                    f'<div style="flex-shrink:0;min-width:44px;">'
+                    f'<span style="font-family:var(--font-data);font-size:10px;color:#6e6b64;">{pub_str}</span><br>'
+                    f'<span style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:8px;'
+                    f'letter-spacing:1px;color:{type_color};">{ntype}</span></div>'
+                    f'<div style="font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;font-size:12px;'
+                    f'letter-spacing:0.3px;color:#FFFCF2;line-height:1.35;">{headline}</div>'
+                    f'</div></a>'
+                )
+
+            _html(
+                f'<div style="background:#2a2926;border:1px solid rgba(255,252,242,0.06);'
+                f'border-radius:12px;overflow:hidden;">{items}</div>'
+            )
 else:
     st.markdown('<p style="color:#6e6b64;">No recent news available.</p>', unsafe_allow_html=True)
 
@@ -248,41 +251,8 @@ if writers:
 
         _html(f'<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;">{cards}</div>')
 
-# ── Embedded X Timeline ───────────────────────────────────────────────────────
-_html('<div style="margin:16px 0 8px 0;font-family:\'Hyperspace Wide\',\'Hyperspace\',sans-serif;'
-      'font-size:11px;letter-spacing:1.5px;color:#6e6b64;">LIVE FEEDS</div>')
 
-writer_options = {w["name"]: w["handle"].replace("@", "") for w in writers}
-writer_options["Miami Heat (Official)"] = "MiamiHeat"
-writer_options["Miami Heat Beat"] = "miaheatbeat"
-
-col_sel1, col_sel2 = st.columns([1, 2])
-with col_sel1:
-    selected_feed = st.selectbox(
-        "Select Feed",
-        list(writer_options.keys()),
-        index=0,
-        label_visibility="collapsed",
-    )
-
-selected_handle = writer_options[selected_feed]
-
-timeline_html = (
-    '<!DOCTYPE html><html><head>'
-    '<style>body{margin:0;padding:0;background:transparent;overflow-x:hidden;}</style>'
-    '</head><body>'
-    f'<a class="twitter-timeline" href="https://x.com/{selected_handle}"'
-    ' data-theme="dark" data-chrome="noheader nofooter noborders transparent"'
-    ' data-tweet-limit="5" data-width="100%">'
-    f'Loading tweets from @{selected_handle}...</a>'
-    '<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
-    '</body></html>'
-)
-
-components.html(timeline_html, height=800, scrolling=True)
-
-
-st.markdown("---")
+st.markdown('---')
 
 # ═════════════════════════════════════════════════════════════════════════════
 # 5. AUTO-GENERATED NARRATIVE CARDS (from raw data)
