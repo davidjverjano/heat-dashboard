@@ -1178,10 +1178,12 @@ a {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   BOX SCORE TABLE — Branded Courtside Cre8ives Style
+   BRANDED TABLES — Unified Courtside Cre8ives Style
+   Used by: Box Score, Season Averages, Comparison Table, Schedule
    ═══════════════════════════════════════════════════════════════════════════ */
 
-.cc-box-score-wrap {
+/* ── Table wrapper ─────────────────────────────────────────────────────────── */
+.cc-branded-table-wrap {
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -1190,7 +1192,7 @@ a {
     background: var(--bg-card);
 }
 
-.cc-box-score {
+.cc-branded-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
@@ -1200,8 +1202,8 @@ a {
     line-height: 1;
 }
 
-/* ── Header ──────────────────────────────────────────────────────────────── */
-.cc-box-score thead tr {
+/* ── Header ────────────────────────────────────────────────────────────────── */
+.cc-branded-table thead tr {
     background: linear-gradient(
         180deg,
         rgba(247, 178, 103, 0.12) 0%,
@@ -1209,7 +1211,7 @@ a {
     );
 }
 
-.cc-box-score thead th {
+.cc-branded-table thead th {
     padding: 10px 10px;
     font-family: var(--font-brand-wide);
     font-size: 0.62rem;
@@ -1224,46 +1226,46 @@ a {
     z-index: 1;
 }
 
-.cc-box-score thead th:first-child {
+.cc-branded-table thead th:first-child {
     padding-left: 16px;
     min-width: 140px;
 }
 
-/* ── Body rows ───────────────────────────────────────────────────────────── */
-.cc-box-row {
+/* ── Body rows ─────────────────────────────────────────────────────────────── */
+.cc-t-row {
     transition: background 120ms ease;
 }
 
-.cc-box-row.even {
+.cc-t-row.even {
     background: rgba(255, 252, 242, 0.02);
 }
 
-.cc-box-row.odd {
+.cc-t-row.odd {
     background: transparent;
 }
 
-.cc-box-row:hover {
+.cc-t-row:hover {
     background: rgba(247, 178, 103, 0.06) !important;
 }
 
-.cc-box-score td {
+.cc-branded-table td {
     padding: 9px 10px;
     border-bottom: 1px solid rgba(255, 252, 242, 0.04);
     white-space: nowrap;
     vertical-align: middle;
 }
 
-.cc-box-score td:first-child {
+.cc-branded-table td:first-child {
     padding-left: 16px;
 }
 
 /* Last row — no bottom border */
-.cc-box-row:last-child td {
+.cc-t-row:last-child td {
     border-bottom: none;
 }
 
-/* ── Cell content ────────────────────────────────────────────────────────── */
-.cc-box-player {
+/* ── Cell content ──────────────────────────────────────────────────────────── */
+.cc-t-name {
     font-family: var(--font-brand);
     font-weight: 600;
     font-size: 0.82rem;
@@ -1271,33 +1273,33 @@ a {
     color: var(--text-primary);
 }
 
-.cc-box-num {
+.cc-t-num {
     font-family: var(--font-data);
     font-weight: 500;
     font-variant-numeric: tabular-nums;
     color: var(--text-primary);
 }
 
-.cc-box-pts {
+.cc-t-pts {
     font-weight: 700;
     color: var(--accent-primary);
 }
 
-.cc-box-plus {
+.cc-t-plus {
     color: var(--positive);
     font-weight: 600;
 }
 
-.cc-box-minus {
+.cc-t-minus {
     color: var(--negative);
     font-weight: 600;
 }
 
-.cc-box-zero {
+.cc-t-zero {
     color: var(--text-muted);
 }
 
-/* ── Section heading override for box score ───────────────────────────────── */
+/* ── Section heading ───────────────────────────────────────────────────────── */
 .cc-section-heading {
     font-family: var(--font-brand-wide);
     font-size: 0.85rem;
@@ -1311,24 +1313,24 @@ a {
     display: inline-block;
 }
 
-/* ── Mobile adjustments ──────────────────────────────────────────────────── */
+/* ── Mobile adjustments ────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-    .cc-box-score {
+    .cc-branded-table {
         font-size: 0.72rem;
     }
-    .cc-box-score thead th {
+    .cc-branded-table thead th {
         font-size: 0.55rem;
         padding: 8px 6px;
         letter-spacing: 1.2px;
     }
-    .cc-box-score td {
+    .cc-branded-table td {
         padding: 7px 6px;
     }
-    .cc-box-player {
+    .cc-t-name {
         font-size: 0.72rem;
     }
-    .cc-box-score thead th:first-child,
-    .cc-box-score td:first-child {
+    .cc-branded-table thead th:first-child,
+    .cc-branded-table td:first-child {
         padding-left: 10px;
         min-width: 110px;
         position: sticky;
@@ -1336,13 +1338,13 @@ a {
         z-index: 2;
         background: inherit;
     }
-    .cc-box-row.even td:first-child {
+    .cc-t-row.even td:first-child {
         background: #2c2a27;
     }
-    .cc-box-row.odd td:first-child {
+    .cc-t-row.odd td:first-child {
         background: var(--bg-card);
     }
-    .cc-box-score thead th:first-child {
+    .cc-branded-table thead th:first-child {
         background: var(--bg-card);
     }
 }
