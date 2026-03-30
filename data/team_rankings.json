@@ -1,22 +1,22 @@
 {
   "PPG": {
-    "value": 120.2,
+    "value": 120.3,
     "rank": 2
   },
   "RPG": {
-    "value": 47.0,
-    "rank": 2
+    "value": 46.5,
+    "rank": 0
   },
   "APG": {
-    "value": 28.6,
-    "rank": 6
+    "value": 28.7,
+    "rank": 0
   },
   "FG%": {
     "value": 0.464,
-    "rank": 20
+    "rank": 0
   },
   "3P%": {
-    "value": 0.358,
-    "rank": 15
+    "value": 0.357,
+    "rank": 0
   }
 }
