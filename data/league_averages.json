@@ -8,13 +8,13 @@
     "tov_pct": 0.1,
     "oreb_pct": 0.3,
     "ft_rate": 0.265,
-    "ppg": 115.3,
+    "ppg": 115.5,
     "rpg": 43.9,
     "apg": 26.6,
     "fg_pct": 0.469,
     "fg3_pct": 0.358,
     "ft_pct": 0.783,
-    "opp_ppg": 115.3
+    "opp_ppg": 115.4
   },
   "eastern_conference": {
     "ortg": 114.3,
@@ -25,12 +25,12 @@
     "tov_pct": 0.1,
     "oreb_pct": 0.3,
     "ft_rate": 0.256,
-    "ppg": 115.0,
+    "ppg": 115.1,
     "rpg": 44.0,
     "apg": 26.9,
     "fg_pct": 0.466,
     "fg3_pct": 0.359,
     "ft_pct": 0.782,
-    "opp_ppg": 115.1
+    "opp_ppg": 115.3
   }
 }
