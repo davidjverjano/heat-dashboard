@@ -1,10 +1,4 @@
 game_date,home_away,opponent,opponent_abbr,game_time
-2026-03-20,Home,Los Angeles,LAL,"Thu, March 19th at 8:00 PM EDT"
-2026-03-22,Away,Houston,HOU,"Sat, March 21st at 8:00 PM EDT"
-2026-03-23,Home,San Antonio,SAS,"Mon, March 23rd at 7:00 PM EDT"
-2026-03-25,Away,Cleveland,CLE,"Wed, March 25th at 7:30 PM EDT"
-2026-03-27,Away,Cleveland,CLE,"Fri, March 27th at 7:30 PM EDT"
-2026-03-29,Away,Indiana,IND,"Sun, March 29th at 5:00 PM EDT"
 2026-03-30,Home,Philadelphia,PHI,"Mon, March 30th at 7:00 PM EDT"
 2026-04-01,Home,Boston,BOS,"Wed, April 1st at 7:30 PM EDT"
 2026-04-04,Home,Washington,WAS,"Sat, April 4th at 3:00 PM EDT"
