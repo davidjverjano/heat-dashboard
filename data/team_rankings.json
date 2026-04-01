@@ -5,18 +5,34 @@
   },
   "RPG": {
     "value": 46.7,
-    "rank": 0
+    "rank": 3
   },
   "APG": {
     "value": 28.6,
-    "rank": 0
+    "rank": 7
   },
   "FG%": {
     "value": 0.464,
-    "rank": 0
+    "rank": 19
   },
   "3P%": {
     "value": 0.356,
-    "rank": 0
+    "rank": 18
+  },
+  "FT%": {
+    "value": 0.793,
+    "rank": 10
+  },
+  "SPG": {
+    "value": 8.9,
+    "rank": 9
+  },
+  "BPG": {
+    "value": 4.3,
+    "rank": 25
+  },
+  "TOPG": {
+    "value": 13.2,
+    "rank": 9
   }
 }
