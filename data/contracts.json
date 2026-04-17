@@ -1,0 +1,879 @@
+{
+  "last_updated": "2026-04-17",
+  "source": "Spotrac.com",
+  "salary_cap": 154647000,
+  "luxury_tax_threshold": 187895000,
+  "first_apron": 195945000,
+  "second_apron": 207824000,
+  "seasons": [
+    "2025-26",
+    "2026-27",
+    "2027-28",
+    "2028-29",
+    "2029-30",
+    "2030-31"
+  ],
+  "cap_summary": {
+    "cap_space": -43281516,
+    "first_apron_space": 6761334,
+    "second_apron_space": 18640334,
+    "tax_space": 893726,
+    "est_tax_bill": 0
+  },
+  "active_roster": [
+    {
+      "player": "Bam Adebayo",
+      "pos": "C",
+      "age": 28,
+      "salaries": {
+        "2025-26": {
+          "amount": 37096620,
+          "pct_cap": 24.0,
+          "status": "guaranteed"
+        },
+        "2026-27": {
+          "amount": 49500000,
+          "pct_cap": 29.8,
+          "status": "guaranteed"
+        },
+        "2027-28": {
+          "amount": 53460000,
+          "pct_cap": 30.7,
+          "status": "extension_eligible"
+        },
+        "2028-29": {
+          "amount": 57420000,
+          "pct_cap": 31.6,
+          "status": "player_option"
+        },
+        "2029-30": {
+          "amount": 66900000,
+          "pct_cap": 34.8,
+          "status": "ufa"
+        }
+      }
+    },
+    {
+      "player": "Tyler Herro",
+      "pos": "SG",
+      "age": 26,
+      "salaries": {
+        "2025-26": {
+          "amount": 31000000,
+          "pct_cap": 20.0,
+          "status": "guaranteed"
+        },
+        "2026-27": {
+          "amount": 33000000,
+          "pct_cap": 20.0,
+          "status": "extension_eligible"
+        },
+        "2027-28": {
+          "amount": 48900000,
+          "pct_cap": 28.2,
+          "status": "ufa"
+        }
+      }
+    },
+    {
+      "player": "Andrew Wiggins",
+      "pos": "SF",
+      "age": 30,
+      "salaries": {
+        "2025-26": {
+          "amount": 28223215,
+          "pct_cap": 18.3,
+          "status": "extension_eligible"
+        },
+        "2026-27": {
+          "amount": 30169644,
+          "pct_cap": 18.2,
+          "status": "player_option"
+        },
+        "2027-28": {
+          "amount": 45300000,
+          "pct_cap": 26.0,
+          "status": "ufa"
+        }
+      }
+    },
+    {
+      "player": "Norman Powell",
+      "pos": "SG",
+      "age": 32,
+      "salaries": {
+        "2025-26": {
+          "amount": 20482758,
+          "pct_cap": 13.2,
+          "status": "extension_eligible"
+        },
+        "2026-27": {
+          "amount": 30700000,
+          "pct_cap": 18.5,
+          "status": "ufa"
+        }
+      }
+    },
+    {
+      "player": "Davion Mitchell",
+      "pos": "PG",
+      "age": 27,
+      "salaries": {
+        "2025-26": {
+          "amount": 11600000,
+          "pct_cap": 7.5,
+          "status": "guaranteed"
+        },
+        "2026-27": {
+          "amount": 12400000,
+          "pct_cap": 7.5,
+          "status": "guaranteed"
+        },
+        "2027-28": {
+          "amount": 23600000,
+          "pct_cap": 13.5,
+          "status": "ufa"
+        }
+      }
+    },
+    {
+      "player": "Simone Fontecchio",
+      "pos": "SF",
+      "age": 30,
+      "salaries": {
+        "2025-26": {
+          "amount": 8307692,
+          "pct_cap": 5.4,
+          "status": "guaranteed"
+        },
+        "2026-27": {
+          "amount": 15800000,
+          "pct_cap": 9.5,
+          "status": "ufa"
+        }
+      }
+    },
+    {
+      "player": "Nikola Jovic",
+      "pos": "SF",
+      "age": 19,
+      "salaries": {
+        "2025-26": {
+          "amount": 4445417,
+          "pct_cap": 2.9,
+          "status": "guaranteed"
+        },
+        "2026-27": {
+          "amount": 16200000,
+          "pct_cap": 9.8,
+          "status": "guaranteed"
+        },
+        "2027-28": {
+          "amount": 14904000,
+          "pct_cap": 8.6,
+          "status": "guaranteed"
+        },
+        "2028-29": {
+          "amount": 15096000,
+          "pct_cap": 8.3,
+          "status": "extension_eligible"
+        },
+        "2029-30": {
+          "amount": 16200000,
+          "pct_cap": 8.4,
+          "status": "guaranteed"
+        },
+        "2030-31": {
+          "amount": 24300000,
+          "pct_cap": 12.0,
+          "status": "ufa"
+        }
+      }
+    },
+    {
+      "player": "Kel'el Ware",
+      "pos": "C",
+      "age": 21,
+      "salaries": {
+        "2025-26": {
+          "amount": 4443360,
+          "pct_cap": 2.9,
+          "status": "guaranteed"
+        },
+        "2026-27": {
+          "amount": 4654920,
+          "pct_cap": 2.8,
+          "status": "guaranteed"
+        },
+        "2027-28": {
+          "amount": 7135992,
+          "pct_cap": 4.1,
+          "status": "extension_eligible"
+        },
+        "2028-29": {
+          "amount": 21400000,
+          "pct_cap": 11.8,
+          "status": "rfa"
+        }
+      }
+    },
+    {
+      "player": "Jaime Jaquez Jr.",
+      "pos": "SF",
+      "age": 24,
+      "salaries": {
+        "2025-26": {
+          "amount": 3861600,
+          "pct_cap": 2.5,
+          "status": "guaranteed"
+        },
+        "2026-27": {
+          "amount": 5939141,
+          "pct_cap": 3.6,
+          "status": "extension_eligible"
+        },
+        "2027-28": {
+          "amount": 17800000,
+          "pct_cap": 10.2,
+          "status": "rfa"
+        }
+      }
+    },
+    {
+      "player": "Kasparas Jakucionis",
+      "pos": "PG",
+      "age": 19,
+      "salaries": {
+        "2025-26": {
+          "amount": 3658800,
+          "pct_cap": 2.4,
+          "status": "guaranteed"
+        },
+        "2026-27": {
+          "amount": 3841680,
+          "pct_cap": 2.3,
+          "status": "guaranteed"
+        },
+        "2027-28": {
+          "amount": 4024440,
+          "pct_cap": 2.3,
+          "status": "club_option"
+        },
+        "2028-29": {
+          "amount": 6205687,
+          "pct_cap": 3.4,
+          "status": "extension_eligible"
+        },
+        "2029-30": {
+          "amount": 18600000,
+          "pct_cap": 9.7,
+          "status": "rfa"
+        }
+      }
+    },
+    {
+      "player": "Dru Smith",
+      "pos": "SG",
+      "age": 28,
+      "salaries": {
+        "2025-26": {
+          "amount": 2378870,
+          "pct_cap": 1.5,
+          "status": "guaranteed"
+        },
+        "2026-27": {
+          "amount": 2584539,
+          "pct_cap": 1.6,
+          "status": "guaranteed"
+        },
+        "2027-28": {
+          "amount": 2934742,
+          "pct_cap": 1.7,
+          "status": "club_option"
+        },
+        "2028-29": {
+          "amount": 2700000,
+          "pct_cap": 1.5,
+          "status": "ufa"
+        }
+      }
+    },
+    {
+      "player": "Keshad Johnson",
+      "pos": "PF",
+      "age": 24,
+      "salaries": {
+        "2025-26": {
+          "amount": 1955377,
+          "pct_cap": 1.3,
+          "status": "guaranteed"
+        },
+        "2026-27": {
+          "amount": 3000000,
+          "pct_cap": 1.8,
+          "status": "rfa"
+        }
+      }
+    },
+    {
+      "player": "Pelle Larsson",
+      "pos": "SG",
+      "age": 24,
+      "salaries": {
+        "2025-26": {
+          "amount": 1955377,
+          "pct_cap": 1.3,
+          "status": "guaranteed"
+        },
+        "2026-27": {
+          "amount": 2296271,
+          "pct_cap": 1.4,
+          "status": "extension_eligible"
+        },
+        "2027-28": {
+          "amount": 3100000,
+          "pct_cap": 1.8,
+          "status": "rfa"
+        }
+      }
+    },
+    {
+      "player": "Myron Gardner",
+      "pos": "G",
+      "age": 24,
+      "salaries": {
+        "2025-26": {
+          "amount": 395029,
+          "pct_cap": 0.3,
+          "status": "guaranteed"
+        },
+        "2026-27": {
+          "amount": 2584539,
+          "pct_cap": 1.6,
+          "status": "guaranteed"
+        },
+        "2027-28": {
+          "amount": 2525901,
+          "pct_cap": 1.4,
+          "status": "guaranteed"
+        },
+        "2028-29": {
+          "amount": 3100000,
+          "pct_cap": 1.7,
+          "status": "rfa"
+        }
+      }
+    },
+    {
+      "player": "Vladislav Goldin",
+      "pos": "C",
+      "age": 24,
+      "salaries": {
+        "2025-26": {
+          "amount": 0,
+          "pct_cap": 0,
+          "status": "two_way"
+        },
+        "2026-27": {
+          "amount": 0,
+          "pct_cap": 0,
+          "status": "rfa"
+        }
+      }
+    },
+    {
+      "player": "Trevor Keels",
+      "pos": "SG",
+      "age": 22,
+      "salaries": {
+        "2025-26": {
+          "amount": 0,
+          "pct_cap": 0,
+          "status": "two_way"
+        },
+        "2026-27": {
+          "amount": 2200000,
+          "pct_cap": 1.3,
+          "status": "rfa"
+        }
+      }
+    },
+    {
+      "player": "Jahmir Young",
+      "pos": "PG",
+      "age": 25,
+      "salaries": {
+        "2025-26": {
+          "amount": 0,
+          "pct_cap": 0,
+          "status": "two_way"
+        },
+        "2026-27": {
+          "amount": 2200000,
+          "pct_cap": 1.3,
+          "status": "rfa"
+        }
+      }
+    }
+  ],
+  "dead_money": [
+    {
+      "player": "Terry Rozier",
+      "status": "waived",
+      "salaries": {
+        "2025-26": {
+          "amount": 26643031,
+          "pct_cap": 17.2
+        }
+      }
+    }
+  ],
+  "cap_holds": [
+    {
+      "player": "Dwyane Wade",
+      "pos": "SG",
+      "age": 44,
+      "amount": 2300000,
+      "type": "ufa"
+    },
+    {
+      "player": "Jordan Mickey",
+      "pos": "PF",
+      "age": 31,
+      "amount": 2300000,
+      "type": "ufa"
+    },
+    {
+      "player": "Udonis Haslem",
+      "pos": "PF",
+      "age": 45,
+      "amount": 2300000,
+      "type": "ufa"
+    },
+    {
+      "player": "Josh Christopher",
+      "pos": "SG",
+      "age": 24,
+      "amount": 2300000,
+      "type": "rfa"
+    },
+    {
+      "player": "Alec Burks",
+      "pos": "SG",
+      "age": 34,
+      "amount": 2300000,
+      "type": "ufa"
+    }
+  ],
+  "cap_table": {
+    "2025-26": {
+      "cap_max": 154647000,
+      "active_cap": 186447146,
+      "dead_cap": 0,
+      "cap_holds": 11481370,
+      "total_allocations": 197928516,
+      "cap_space": -43281516
+    },
+    "2026-27": {
+      "cap_max": 165000000,
+      "active_cap": 163170734,
+      "dead_cap": 0,
+      "cap_holds": 107418708,
+      "total_allocations": 270589442,
+      "cap_space": -105589442
+    },
+    "2027-28": {
+      "cap_max": 173250000,
+      "active_cap": 84985075,
+      "dead_cap": 0,
+      "cap_holds": 160021048,
+      "total_allocations": 245006123,
+      "cap_space": -71756123
+    },
+    "2028-29": {
+      "cap_max": 181913000,
+      "active_cap": 78721687,
+      "dead_cap": 0,
+      "cap_holds": 54205810,
+      "total_allocations": 132927497,
+      "cap_space": 48985503
+    },
+    "2029-30": {
+      "cap_max": 192166000,
+      "active_cap": 16200000,
+      "dead_cap": 0,
+      "cap_holds": 116953058,
+      "total_allocations": 133153058,
+      "cap_space": 59012942
+    },
+    "2030-31": {
+      "cap_max": 201774000,
+      "active_cap": 0,
+      "dead_cap": 0,
+      "cap_holds": 24300000,
+      "total_allocations": 24300000,
+      "cap_space": 177474000
+    }
+  },
+  "apron_table": {
+    "first_apron": {
+      "2025-26": {
+        "threshold": 195945000,
+        "allocations": 189183666,
+        "space": 6761334
+      },
+      "2026-27": {
+        "threshold": 209000000,
+        "allocations": 165670734,
+        "space": 43329266
+      },
+      "2027-28": {
+        "threshold": 219450000,
+        "allocations": 84985075,
+        "space": 134464925
+      },
+      "2028-29": {
+        "threshold": 230423000,
+        "allocations": 78721687,
+        "space": 151701313
+      },
+      "2029-30": {
+        "threshold": 243485000,
+        "allocations": 16200000,
+        "space": 227285000
+      },
+      "2030-31": {
+        "threshold": 255660000,
+        "allocations": 0,
+        "space": 255660000
+      }
+    },
+    "second_apron": {
+      "2025-26": {
+        "threshold": 207824000,
+        "allocations": 189183666,
+        "space": 18640334
+      },
+      "2026-27": {
+        "threshold": 222000000,
+        "allocations": 165670734,
+        "space": 56329266
+      },
+      "2027-28": {
+        "threshold": 233100000,
+        "allocations": 84985075,
+        "space": 148114925
+      },
+      "2028-29": {
+        "threshold": 244755000,
+        "allocations": 78721687,
+        "space": 166033313
+      },
+      "2029-30": {
+        "threshold": 258246000,
+        "allocations": 16200000,
+        "space": 242046000
+      },
+      "2030-31": {
+        "threshold": 271159000,
+        "allocations": 0,
+        "space": 271159000
+      }
+    }
+  },
+  "tax_table": {
+    "2025-26": {
+      "active_tax": 187001274,
+      "total_tax": 187001274,
+      "tax_space": 893726,
+      "est_bill": 0
+    },
+    "2026-27": {
+      "active_tax": 163170734,
+      "total_tax": 163170734,
+      "tax_space": 37829266,
+      "est_bill": 0
+    },
+    "2027-28": {
+      "active_tax": 84985075,
+      "total_tax": 84985075,
+      "tax_space": 125513925,
+      "est_bill": 0
+    },
+    "2028-29": {
+      "active_tax": 78721687,
+      "total_tax": 78721687,
+      "tax_space": 142303313,
+      "est_bill": 0
+    },
+    "2029-30": {
+      "active_tax": 16200000,
+      "total_tax": 16200000,
+      "tax_space": 217282000,
+      "est_bill": 0
+    },
+    "2030-31": {
+      "active_tax": 0,
+      "total_tax": 0,
+      "tax_space": 245156000,
+      "est_bill": 0
+    }
+  },
+  "contract_deadlines": [
+    {
+      "date": "2026-06-28",
+      "player": "Dru Smith",
+      "type": "guaranteed",
+      "detail": "2026-27 Guaranteed",
+      "value": 2584539
+    },
+    {
+      "date": "2026-06-29",
+      "player": "Andrew Wiggins",
+      "type": "player_option",
+      "detail": "2026-27 Player Option",
+      "value": 30169644
+    },
+    {
+      "date": "2026-06-29",
+      "player": "Vladislav Goldin",
+      "type": "qualifying_offer",
+      "detail": "2026-27 QO (Two-Way)",
+      "value": null
+    },
+    {
+      "date": "2026-06-29",
+      "player": "Keshad Johnson",
+      "type": "qualifying_offer",
+      "detail": "2026-27 QO",
+      "value": null
+    },
+    {
+      "date": "2026-06-29",
+      "player": "Jahmir Young",
+      "type": "qualifying_offer",
+      "detail": "2026-27 QO (Two-Way)",
+      "value": null
+    },
+    {
+      "date": "2026-06-29",
+      "player": "Trevor Keels",
+      "type": "qualifying_offer",
+      "detail": "2026-27 QO (Two-Way)",
+      "value": null
+    },
+    {
+      "date": "2026-06-29",
+      "player": "Myron Gardner",
+      "type": "qualifying_offer",
+      "detail": "2028-29 QO",
+      "value": null
+    },
+    {
+      "date": "2026-06-29",
+      "player": "Pelle Larsson",
+      "type": "club_option",
+      "detail": "2026-27 Club Option (non-guaranteed)",
+      "value": null
+    },
+    {
+      "date": "2026-07-01",
+      "player": "Jaime Jaquez Jr.",
+      "type": "extension_eligible",
+      "detail": "2026-27 Extension Eligible",
+      "value": null
+    },
+    {
+      "date": "2026-07-02",
+      "player": "Pelle Larsson",
+      "type": "extension_eligible",
+      "detail": "2026-27 Extension Eligible",
+      "value": null
+    },
+    {
+      "date": "2026-10-19",
+      "player": "Pelle Larsson",
+      "type": "guaranteed",
+      "detail": "2026-27 Guaranteed (Opening Night)",
+      "value": null
+    },
+    {
+      "date": "2026-10-31",
+      "player": "Kasparas Jakucionis",
+      "type": "club_option",
+      "detail": "2027-28 Club Option",
+      "value": 4024440
+    },
+    {
+      "date": "2026-10-31",
+      "player": "Kel'el Ware",
+      "type": "club_option",
+      "detail": "2027-28 Club Option",
+      "value": 7135992
+    },
+    {
+      "date": "2027-01-10",
+      "player": "Myron Gardner",
+      "type": "guaranteed",
+      "detail": "2026-27 Guaranteed",
+      "value": 2584539
+    },
+    {
+      "date": "2027-06-28",
+      "player": "Dru Smith",
+      "type": "guaranteed",
+      "detail": "2027-28 Guaranteed",
+      "value": 2934742
+    },
+    {
+      "date": "2027-06-29",
+      "player": "Jaime Jaquez Jr.",
+      "type": "qualifying_offer",
+      "detail": "2027-28 QO",
+      "value": 9021556
+    },
+    {
+      "date": "2027-06-29",
+      "player": "Dru Smith",
+      "type": "club_option",
+      "detail": "2027-28 Club Option",
+      "value": null
+    },
+    {
+      "date": "2027-07-01",
+      "player": "Kel'el Ware",
+      "type": "extension_eligible",
+      "detail": "2027-28 Extension Eligible",
+      "value": null
+    },
+    {
+      "date": "2027-07-06",
+      "player": "Bam Adebayo",
+      "type": "extension_eligible",
+      "detail": "2027-28 Extension Eligible",
+      "value": null
+    },
+    {
+      "date": "2027-07-15",
+      "player": "Myron Gardner",
+      "type": "guaranteed",
+      "detail": "2027-28 Guaranteed",
+      "value": 2525901
+    },
+    {
+      "date": "2027-10-31",
+      "player": "Kasparas Jakucionis",
+      "type": "club_option",
+      "detail": "2028-29 Club Option",
+      "value": 6205687
+    },
+    {
+      "date": "2028-02-18",
+      "player": "Myron Gardner",
+      "type": "extension_eligible",
+      "detail": "2027-28 Extension Eligible",
+      "value": null
+    },
+    {
+      "date": "2028-06-29",
+      "player": "Bam Adebayo",
+      "type": "player_option",
+      "detail": "2028-29 Player Option",
+      "value": 57420000
+    },
+    {
+      "date": "2028-06-29",
+      "player": "Kel'el Ware",
+      "type": "qualifying_offer",
+      "detail": "2028-29 QO",
+      "value": 10689719
+    },
+    {
+      "date": "2028-07-01",
+      "player": "Kasparas Jakucionis",
+      "type": "extension_eligible",
+      "detail": "2028-29 Extension Eligible",
+      "value": null
+    },
+    {
+      "date": "2028-10-01",
+      "player": "Nikola Jovic",
+      "type": "extension_eligible",
+      "detail": "2028-29 Extension Eligible",
+      "value": null
+    },
+    {
+      "date": "2029-06-29",
+      "player": "Kasparas Jakucionis",
+      "type": "qualifying_offer",
+      "detail": "2029-30 QO",
+      "value": 9513319
+    }
+  ],
+  "draft_picks": {
+    "round_1": [
+      {
+        "year": 2026,
+        "holder": "MIA",
+        "note": "Not Tradeable; owes 2027 pick to CHA"
+      },
+      {
+        "year": 2027,
+        "holder": "MIA (if 1-14) / CHA (if 15-30)",
+        "note": "Top-14 protected; conveys to Charlotte if 15-30"
+      },
+      {
+        "year": 2028,
+        "holder": "MIA",
+        "note": ""
+      },
+      {
+        "year": 2029,
+        "holder": "MIA",
+        "note": ""
+      },
+      {
+        "year": 2030,
+        "holder": "MIA",
+        "note": ""
+      },
+      {
+        "year": 2031,
+        "holder": "MIA",
+        "note": ""
+      }
+    ],
+    "round_2": [
+      {
+        "year": 2026,
+        "holder": "BKN (if 31-55) / MIA (if 56-60)",
+        "note": "Conditional"
+      },
+      {
+        "year": 2027,
+        "holder": "Multiple teams involved",
+        "note": "Complex conditional via MIA/IND/MEM"
+      },
+      {
+        "year": 2028,
+        "holder": "PHI / NYK / SAS conditional",
+        "note": "Most favorable of HOU, IND, MIA and OKC to PHI"
+      },
+      {
+        "year": 2029,
+        "holder": "MIA (least favorable)",
+        "note": "Conditional via HOU/DET/OKC/SAS"
+      },
+      {
+        "year": 2030,
+        "holder": "DET / CHA conditional",
+        "note": "If DAL conveys 1st to CHA in 2027"
+      },
+      {
+        "year": 2031,
+        "holder": "OKC / WAS / BKN conditional",
+        "note": "Various conditions"
+      }
+    ]
+  }
+}
