@@ -1,38 +1,38 @@
 {
   "PPG": {
-    "value": 120.2,
+    "value": 120.9,
     "rank": 2
   },
   "RPG": {
-    "value": 46.7,
-    "rank": 3
+    "value": 46.3,
+    "rank": 4
   },
   "APG": {
-    "value": 28.6,
-    "rank": 7
+    "value": 29.0,
+    "rank": 5
   },
   "FG%": {
-    "value": 0.464,
-    "rank": 19
+    "value": 0.468,
+    "rank": 15
   },
   "3P%": {
-    "value": 0.356,
-    "rank": 18
+    "value": 0.361,
+    "rank": 11
   },
   "FT%": {
-    "value": 0.793,
+    "value": 0.792,
     "rank": 10
   },
   "SPG": {
-    "value": 8.9,
-    "rank": 9
+    "value": 8.6,
+    "rank": 13
   },
   "BPG": {
     "value": 4.3,
-    "rank": 25
+    "rank": 24
   },
   "TOPG": {
-    "value": 13.2,
-    "rank": 9
+    "value": 13.1,
+    "rank": 8
   }
 }
