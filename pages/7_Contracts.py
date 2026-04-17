@@ -358,34 +358,26 @@ TYPE_COLORS = {
     "qualifying_offer": ("#CCC5B9", "QUALIFYING OFFER"),
 }
 
-deadline_html = ""
+# Render each deadline date group as its own self-contained card
 for date_str, items in deadline_groups.items():
-    # Parse date for display
     dt = datetime.strptime(date_str, "%Y-%m-%d")
     date_display = dt.strftime("%b %d, %Y")
 
-    deadline_html += f'<div style="margin-bottom:16px;">'
-    deadline_html += f'<div style="font-family:\'Orbitron\',var(--font-data); font-size:10px; font-weight:700; letter-spacing:1px; color:{COLORS["accent_primary"]}; text-transform:uppercase; margin-bottom:6px; padding-bottom:4px; border-bottom:1px solid rgba(247,178,103,0.12);">{date_display}</div>'
+    group_html = f'<div style="background:{COLORS["bg_card"]}; border:1px solid rgba(247,178,103,0.08); border-radius:10px; padding:12px 16px; margin-bottom:8px;">'
+    group_html += f'<div style="font-family:\'Orbitron\',var(--font-data); font-size:10px; font-weight:700; letter-spacing:1px; color:{COLORS["accent_primary"]}; text-transform:uppercase; margin-bottom:6px; padding-bottom:4px; border-bottom:1px solid rgba(247,178,103,0.12);">{date_display}</div>'
 
     for item in items:
         tc, tl = TYPE_COLORS.get(item["type"], ("#6e6b64", item["type"].upper()))
         val_str = f' <span style="font-family:var(--font-data); font-variant-numeric:tabular-nums; font-weight:600; color:{COLORS["text_primary"]};">{_fmt(item["value"], short=True)}</span>' if item.get("value") else ""
 
-        deadline_html += f"""
-        <div style="display:flex; align-items:center; gap:8px; padding:5px 0;">
-          <span style="font-family:'Orbitron',var(--font-data); font-size:8px; font-weight:700; letter-spacing:0.5px; padding:2px 6px; border-radius:3px; background:rgba({_hex_to_rgb(tc)},0.15); color:{tc}; white-space:nowrap;">{tl}</span>
-          <span style="font-family:var(--font-data); font-size:0.85rem; color:{COLORS['text_primary']}; font-weight:500;">{item['player']}</span>
-          <span style="font-family:var(--font-data); font-size:0.8rem; color:{COLORS['text_muted']};">{item['detail']}</span>
-          {val_str}
-        </div>
-        """
-    deadline_html += "</div>"
-
-_html(f"""
-<div style="background:{COLORS['bg_card']}; border:1px solid rgba(247,178,103,0.10); border-radius:12px; padding:18px 20px; max-height:500px; overflow-y:auto;">
-  {deadline_html}
-</div>
-""")
+        group_html += f'<div style="display:flex; align-items:center; gap:8px; padding:5px 0;">'
+        group_html += f'<span style="font-family:\'Orbitron\',var(--font-data); font-size:8px; font-weight:700; letter-spacing:0.5px; padding:2px 6px; border-radius:3px; background:rgba({_hex_to_rgb(tc)},0.15); color:{tc}; white-space:nowrap;">{tl}</span>'
+        group_html += f'<span style="font-family:var(--font-data); font-size:0.85rem; color:{COLORS["text_primary"]}; font-weight:500;">{item["player"]}</span>'
+        group_html += f'<span style="font-family:var(--font-data); font-size:0.8rem; color:{COLORS["text_muted"]};">{item["detail"]}</span>'
+        group_html += val_str
+        group_html += '</div>'
+    group_html += '</div>'
+    _html(group_html)
 
 
 st.markdown("---")
@@ -403,13 +395,11 @@ with col_r1:
     <div style="font-family:'Orbitron',var(--font-data); font-size:11px; font-weight:700; letter-spacing:1px; color:{COLORS['accent_primary']}; text-transform:uppercase; margin-bottom:10px;">Round 1</div>
     """)
 
-    r1_html = ""
     for pick in contracts["draft_picks"]["round_1"]:
         year = pick["year"]
         holder = pick["holder"]
         note = pick.get("note", "")
 
-        # Color based on whether MIA owns it outright
         if holder == "MIA" and "owe" not in note.lower():
             badge_bg = "rgba(63,185,80,0.12)"
             badge_color = "#3fb950"
@@ -424,32 +414,19 @@ with col_r1:
             icon = "&#10005;"
 
         note_html = f'<div style="font-family:var(--font-data); font-size:11px; color:{COLORS["text_muted"]}; margin-top:2px;">{note}</div>' if note else ""
-
-        r1_html += f"""
-        <div style="display:flex; align-items:flex-start; gap:10px; padding:8px 12px; margin-bottom:4px; background:{badge_bg}; border-radius:8px;">
-          <span style="font-family:var(--font-data); font-size:1.1rem; min-width:20px; text-align:center; color:{badge_color};">{icon}</span>
-          <div style="flex:1;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-family:'Orbitron',var(--font-data); font-size:12px; font-weight:700; color:{COLORS['text_primary']}; font-variant-numeric:tabular-nums;">{year}</span>
-              <span style="font-family:var(--font-data); font-size:0.8rem; color:{badge_color}; font-weight:600;">{holder}</span>
-            </div>
-            {note_html}
-          </div>
-        </div>
-        """
-
-    _html(f"""
-    <div style="background:{COLORS['bg_card']}; border:1px solid rgba(247,178,103,0.10); border-radius:12px; padding:14px;">
-      {r1_html}
-    </div>
-    """)
+        pick_html = f'<div style="display:flex; align-items:flex-start; gap:10px; padding:8px 12px; margin-bottom:4px; background:{badge_bg}; border-radius:8px;">'
+        pick_html += f'<span style="font-family:var(--font-data); font-size:1.1rem; min-width:20px; text-align:center; color:{badge_color};">{icon}</span>'
+        pick_html += f'<div style="flex:1;"><div style="display:flex; justify-content:space-between; align-items:center;">'
+        pick_html += f'<span style="font-family:\'Orbitron\',var(--font-data); font-size:12px; font-weight:700; color:{COLORS["text_primary"]}; font-variant-numeric:tabular-nums;">{year}</span>'
+        pick_html += f'<span style="font-family:var(--font-data); font-size:0.8rem; color:{badge_color}; font-weight:600;">{holder}</span>'
+        pick_html += f'</div>{note_html}</div></div>'
+        _html(pick_html)
 
 with col_r2:
     _html(f"""
     <div style="font-family:'Orbitron',var(--font-data); font-size:11px; font-weight:700; letter-spacing:1px; color:{COLORS['accent_primary']}; text-transform:uppercase; margin-bottom:10px;">Round 2</div>
     """)
 
-    r2_html = ""
     for pick in contracts["draft_picks"]["round_2"]:
         year = pick["year"]
         holder = pick["holder"]
@@ -469,25 +446,13 @@ with col_r2:
             icon = "&#10005;"
 
         note_html = f'<div style="font-family:var(--font-data); font-size:11px; color:{COLORS["text_muted"]}; margin-top:2px;">{note}</div>' if note else ""
-
-        r2_html += f"""
-        <div style="display:flex; align-items:flex-start; gap:10px; padding:8px 12px; margin-bottom:4px; background:{badge_bg}; border-radius:8px;">
-          <span style="font-family:var(--font-data); font-size:1.1rem; min-width:20px; text-align:center; color:{badge_color};">{icon}</span>
-          <div style="flex:1;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-family:'Orbitron',var(--font-data); font-size:12px; font-weight:700; color:{COLORS['text_primary']}; font-variant-numeric:tabular-nums;">{year}</span>
-              <span style="font-family:var(--font-data); font-size:0.8rem; color:{badge_color}; font-weight:600;">{holder}</span>
-            </div>
-            {note_html}
-          </div>
-        </div>
-        """
-
-    _html(f"""
-    <div style="background:{COLORS['bg_card']}; border:1px solid rgba(247,178,103,0.10); border-radius:12px; padding:14px;">
-      {r2_html}
-    </div>
-    """)
+        pick_html = f'<div style="display:flex; align-items:flex-start; gap:10px; padding:8px 12px; margin-bottom:4px; background:{badge_bg}; border-radius:8px;">'
+        pick_html += f'<span style="font-family:var(--font-data); font-size:1.1rem; min-width:20px; text-align:center; color:{badge_color};">{icon}</span>'
+        pick_html += f'<div style="flex:1;"><div style="display:flex; justify-content:space-between; align-items:center;">'
+        pick_html += f'<span style="font-family:\'Orbitron\',var(--font-data); font-size:12px; font-weight:700; color:{COLORS["text_primary"]}; font-variant-numeric:tabular-nums;">{year}</span>'
+        pick_html += f'<span style="font-family:var(--font-data); font-size:0.8rem; color:{badge_color}; font-weight:600;">{holder}</span>'
+        pick_html += f'</div>{note_html}</div></div>'
+        _html(pick_html)
 
 
 # ── Source attribution ────────────────────────────────────────────────────────
