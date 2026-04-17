@@ -12,7 +12,7 @@ setup_page()
 from components.theme import COLORS
 import plotly.graph_objects as go
 
-st.markdown("# CONTRACTS & CAP")
+st.markdown('<h1 style="font-family:\'Hyperspace\',sans-serif;">CONTRACTS <span style="font-family:\'Orbitron\',sans-serif; font-size:0.7em;">&amp;</span> CAP</h1>', unsafe_allow_html=True)
 
 # ── Load Data ─────────────────────────────────────────────────────────────────
 DATA_DIR = ROOT / "data"
