@@ -301,34 +301,28 @@ with col_detail:
     apron_2 = contracts["apron_table"]["second_apron"]["2025-26"]
 
     details = [
-        ("Cap Maximum", current["cap_max"], COLORS["text_primary"]),
-        ("Total Allocations", current["total_allocations"], COLORS["warm_coral"]),
-        ("Cap Space", current["cap_space"], COLORS["loss_red"] if current["cap_space"] < 0 else COLORS["win_green"]),
-        ("Tax Threshold", apron_1["threshold"] - apron_1["space"] + tax_current["tax_space"], COLORS["text_primary"]),
-        ("Tax Space", tax_current["tax_space"], COLORS["win_green"] if tax_current["tax_space"] > 0 else COLORS["loss_red"]),
-        ("1st Apron", apron_1["threshold"], COLORS["text_primary"]),
-        ("1st Apron Space", apron_1["space"], COLORS["win_green"]),
-        ("2nd Apron", apron_2["threshold"], COLORS["text_primary"]),
-        ("2nd Apron Space", apron_2["space"], COLORS["win_green"]),
+        ("Cap Maximum", current["cap_max"], COLORS["text_primary"], False),
+        ("Total Allocations", current["total_allocations"], COLORS["warm_coral"], False),
+        ("Cap Space", current["cap_space"], COLORS["loss_red"] if current["cap_space"] < 0 else COLORS["win_green"], False),
+        ("Tax Threshold", apron_1["threshold"] - apron_1["space"] + tax_current["tax_space"], COLORS["text_primary"], True),
+        ("Tax Space", tax_current["tax_space"], COLORS["win_green"] if tax_current["tax_space"] > 0 else COLORS["loss_red"], False),
+        ("1st Apron", apron_1["threshold"], COLORS["text_primary"], True),
+        ("1st Apron Space", apron_1["space"], COLORS["win_green"], False),
+        ("2nd Apron", apron_2["threshold"], COLORS["text_primary"], True),
+        ("2nd Apron Space", apron_2["space"], COLORS["win_green"], False),
     ]
 
-    detail_rows = ""
-    for label, val, color in details:
+    for label, val, color, has_border in details:
         is_space = "Space" in label
         val_str = _fmt_signed(val) if is_space or label == "Cap Space" else _fmt(val)
-        border = "border-top:1px solid rgba(247,178,103,0.12);" if label in ("Tax Threshold", "1st Apron", "2nd Apron") else ""
-        detail_rows += f"""
-        <div style="display:flex; justify-content:space-between; align-items:center; padding:7px 0; {border}">
-          <span style="font-family:'Orbitron',var(--font-data); font-size:10px; font-weight:400; letter-spacing:0.5px; color:{COLORS['text_secondary']};">{label}</span>
-          <span style="font-family:var(--font-data); font-size:0.85rem; font-weight:700; color:{color}; font-variant-numeric:tabular-nums;">{val_str}</span>
-        </div>
-        """
-
-    _html(f"""
-    <div style="background:{COLORS['bg_card']}; border:1px solid rgba(247,178,103,0.10); border-radius:12px; padding:16px 18px;">
-      {detail_rows}
-    </div>
-    """)
+        border = "border-top:1px solid rgba(247,178,103,0.12); margin-top:4px; padding-top:8px;" if has_border else ""
+        st.markdown(
+            f'<div style="display:flex; justify-content:space-between; align-items:center; padding:4px 0; {border}">'
+            f'<span style="font-family:\'Orbitron\',var(--font-data); font-size:10px; font-weight:400; letter-spacing:0.5px; color:{COLORS["text_secondary"]};">{label}</span>'
+            f'<span style="font-family:var(--font-data); font-size:0.85rem; font-weight:700; color:{color}; font-variant-numeric:tabular-nums;">{val_str}</span>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
 
 
 st.markdown("---")
