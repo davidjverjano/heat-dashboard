@@ -1,6 +1,30 @@
 {
-  "generated_at": "2026-04-17T18:04:44-04:00",
+  "generated_at": "2026-04-18T10:48:49-04:00",
   "news": [
+    {
+      "headline": "NBA playoffs 2026: Previewing all 20 teams still vying for the title",
+      "description": "Everything you need to know for the Thunder, Pistons, Spurs, Celtics and 16 other teams chasing the 2026 NBA title.",
+      "published": "2026-04-18T05:06:16Z",
+      "link": "https://www.espn.com/nba/story/_/id/48447222/nba-playoffs-2026-preview-teams-postseason",
+      "image_url": "https://a.espncdn.com/photo/2026/0412/nba_playoffs_mega_preview_cr_16x9.jpg",
+      "source": "ESPN"
+    },
+    {
+      "headline": "NBA offseason: Draft, free agency, trade targets for eliminated teams",
+      "description": "Summer is here for 14 franchises that missed the playoffs. What lies ahead for the Warriors, Clippers, Bucks and each eliminated team?",
+      "published": "2026-04-18T05:28:46Z",
+      "link": "https://www.espn.com/nba/story/_/id/48432907/nba-offseason-2026-draft-free-agency-trade-targets-30-teams",
+      "image_url": "https://a.espncdn.com/photo/2026/0414/r1643518_1296x729_16-9.jpg",
+      "source": "ESPN"
+    },
+    {
+      "headline": "2026 NBA playoffs: Schedule, scores, news and highlights",
+      "description": "The Eastern and Western Conference playoff brackets are set after Sunday's games. See the full schedule of games.",
+      "published": "2026-04-18T04:54:03Z",
+      "link": "https://www.espn.com/nba/story/_/id/48419498/nba-playoffs-2026-play-finals-schedule-scores-news-highlights-bracket-dates",
+      "image_url": "https://a.espncdn.com/photo/2026/0418/r1645375_1296x729_16-9.jpg",
+      "source": "ESPN"
+    },
     {
       "headline": "'It's all basketball': LaMelo says no rift with Bam, glad he's OK",
       "description": "LaMelo Ball of the Charlotte Hornets says he's relieved that Miami Heat star Bam Adebayo wasn't more hurt after the run-in with Ball in the second quarter.",
@@ -10,27 +34,11 @@
       "source": "ESPN"
     },
     {
-      "headline": "NBA offseason: Draft, free agency, trade targets for eliminated teams",
-      "description": "Summer is here for 12 franchises that missed the playoffs. What lies ahead for the Clippers, Heat, Mavericks and each eliminated team?",
-      "published": "2026-04-17T17:37:15Z",
-      "link": "https://www.espn.com/nba/story/_/id/48432907/nba-offseason-2026-draft-free-agency-trade-targets-30-teams",
-      "image_url": "https://a.espncdn.com/photo/2026/0410/r1641503_1296x729_16-9.jpg",
-      "source": "ESPN"
-    },
-    {
       "headline": "2025-26 NBA championship odds: Thunder, Celtics favored in respective conferences",
       "description": "The Thunder and Celtics are the favorites to represent their conferences in the NBA Finals.",
       "published": "2026-04-17T15:52:59Z",
       "link": "https://www.espn.com/espn/betting/story/_/id/45539787/2025-nba-finals-odds-mvp-2025-26-championship-betting",
       "image_url": "https://a.espncdn.com/photo/2026/0416/r1644533_1296x729_16-9.jpg",
-      "source": "ESPN"
-    },
-    {
-      "headline": "2026 NBA playoffs: Schedule, scores, news and highlights",
-      "description": "The Eastern and Western Conference playoff brackets are set after Sunday's games. See the full schedule of games.",
-      "published": "2026-04-17T14:22:34Z",
-      "link": "https://www.espn.com/nba/story/_/id/48419498/nba-playoffs-2026-play-finals-schedule-scores-news-highlights-bracket-dates",
-      "image_url": "https://a.espncdn.com/photo/2026/0416/r1644262_1296x729_16-9.jpg",
       "source": "ESPN"
     },
     {
@@ -112,14 +120,6 @@
       "link": "https://www.espn.com/video/clip?id=48490525",
       "image_url": "https://a.espncdn.com/media/motion/wsc/2026/0415/5f9b265d-521d-44c0-8f1f-67026c86b187/5f9b265d-521d-44c0-8f1f-67026c86b187.jpg",
       "source": "ESPN"
-    },
-    {
-      "headline": "Amazon Prime stream cuts out in OT of Heat-Hornets play-in game",
-      "description": "Amazon Prime Video's stream of the Miami-Charlotte play-in game went offline for nearly two minutes during the overtime period, causing fans to miss a Hornets possession.",
-      "published": "2026-04-15T06:04:45Z",
-      "link": "https://www.espn.com/nba/story/_/id/48490511/amazon-prime-stream-cuts-ot-heat-hornets-play-game",
-      "image_url": "https://a.espncdn.com/photo/2026/0415/r1643656_600x400_3-2.jpg",
-      "source": "ESPN"
     }
   ],
   "beat_writers": [
@@ -198,44 +198,44 @@
   "data_facts": [
     {
       "category": "record",
-      "title": "0-1 Over the Last Two Weeks",
-      "body": "Miami has gone 0-1 over the past 14 days, sitting at 43-39 on the season.",
-      "stat_value": "0-1",
+      "title": "3-4 Over the Final Two Weeks",
+      "body": "Miami went 3-4 over the final 14 days of the season, finishing at 43-39 on the year.",
+      "stat_value": "3-4",
       "icon": "\u2744\ufe0f"
     },
     {
       "category": "standings",
       "title": "10th Seed in the East",
-      "body": "Miami holds the 10th seed (0.524), 17.0 GB of first. Streak: W2.",
+      "body": "Miami finished as the 10th seed (0.524), 17.0 GB of first. Eliminated in play-in tournament.",
       "stat_value": "#10",
       "icon": "\ud83d\udcca"
     },
     {
       "category": "hot_streak",
-      "title": "On a 2-Game Winning Streak",
-      "body": "The Heat are currently on a 2-game winning streak.",
+      "title": "Ended on a 2-Game Winning Streak",
+      "body": "The Heat finished the season on a 2-game winning streak.",
       "stat_value": "W2",
       "icon": "\ud83d\udd25"
     },
     {
       "category": "offense",
-      "title": "Offense at 126.0 ORtg Over 14 Days",
-      "body": "Miami's recent ORtg of 126.0 vs season avg of 113.2.",
-      "stat_value": "126.0",
+      "title": "Season ORtg: 114.4",
+      "body": "Miami's season ORtg of 114.4. Final stretch: 129.3.",
+      "stat_value": "114.4",
       "icon": "\ud83d\udcc8"
     },
     {
       "category": "offense",
-      "title": "3-Point Shooting Running Hot",
-      "body": "Shooting 39.0% from three over 14 days vs 35.4% season avg.",
-      "stat_value": "39.0%",
+      "title": "Season 3P%: 36.0%",
+      "body": "Shot 36.0% from three on the season. Final stretch: 42.3%.",
+      "stat_value": "36.0%",
       "icon": "\ud83c\udfaf"
     },
     {
       "category": "trend",
-      "title": "Home 0-0 | Road 0-1",
-      "body": "Home: 0-0, Road: 0-1 over the last 14 days.",
-      "stat_value": "0-0 home",
+      "title": "Home 26-15 | Road 17-25",
+      "body": "Season splits: Home 26-15, Road 17-25.",
+      "stat_value": "26-15 home",
       "icon": "\ud83c\udfe0"
     }
   ],
@@ -244,7 +244,7 @@
     "l": 39
   },
   "last_14_record": {
-    "w": 0,
-    "l": 1
+    "w": 3,
+    "l": 4
   }
 }
